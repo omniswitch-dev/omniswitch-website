@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { 
-  Shield, Zap, Activity, Lock, Globe, Code2, CheckCircle2, XCircle, 
-  Minus, GitBranch, ArrowRight, Terminal, Eye, Layers, Server, 
-  Database, Cpu, Users, BookOpen, ChevronRight, ExternalLink, 
+  Shield, Zap, Activity, Lock, Globe, CheckCircle2, XCircle,
+  GitBranch, ArrowRight, Terminal, Layers, Server,
+  Database, Cpu, BookOpen, ExternalLink,
   Star, Copy, Menu, X
 } from 'lucide-react';
 import Docs from './Docs';
@@ -63,7 +63,7 @@ function App() {
       
       {/* Announcement Bar */}
       <div className="announcement-bar">
-        <span>🚀 OmniSwitch v0.1.0 is now open source — </span>
+        <span>OmniSwitch is open source - </span>
         <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer">
           Star us on GitHub <ArrowRight size={14} />
         </a>
@@ -112,7 +112,7 @@ function App() {
               OmniSwitch
             </span>
             <p className="footer-tagline">The open-source AI gateway for production teams. Route, guard, cache, and observe all your LLM traffic.</p>
-            <p className="footer-copy">© 2026 OmniSwitch. Apache 2.0 License.</p>
+            <p className="footer-copy">(c) 2026 OmniSwitch. Apache 2.0 License.</p>
           </div>
           <div className="footer-col">
             <h4>Product</h4>
@@ -142,7 +142,7 @@ function App() {
 /* ===== HOME PAGE ===== */
 function Home({ navigate }) {
   const [copied, setCopied] = useState(false);
-  const installCmd = 'go install github.com/omniswitch-dev/omniswitch/cmd/gateway@latest';
+  const installCmd = 'OPENAI_API_KEY=... go run ./cmd/gateway';
 
   const handleCopy = () => {
     navigator.clipboard.writeText(installCmd);
@@ -162,8 +162,8 @@ function Home({ navigate }) {
             One Gateway for <span>All Your AI Traffic</span>
           </h1>
           <p className="hero-description">
-            OmniSwitch is an open-source, high-performance AI gateway. Route to 1600+ models, enforce guardrails, 
-            cache responses, manage API keys, and observe everything — all from a single Go binary with zero external dependencies.
+            OmniSwitch is an open-source, self-hosted AI gateway. Route across native and OpenAI-compatible providers, enforce guardrails,
+            isolate cache entries, manage API keys, and observe traffic from a single Go process backed by SQLite.
           </p>
           <div className="install-bar" onClick={handleCopy}>
             <Terminal size={16} />
@@ -180,20 +180,20 @@ function Home({ navigate }) {
           </div>
           <div className="hero-stats">
             <div className="stat-item">
-              <span className="stat-value">&lt;2ms</span>
-              <span className="stat-label">Added Latency</span>
+              <span className="stat-value">4</span>
+              <span className="stat-label">Native Providers</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">1600+</span>
-              <span className="stat-label">Models Supported</span>
+              <span className="stat-value">HTTP</span>
+              <span className="stat-label">MCP Federation</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">0</span>
-              <span className="stat-label">Dependencies</span>
+              <span className="stat-value">SQLite</span>
+              <span className="stat-label">Local Storage</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">27/27</span>
-              <span className="stat-label">Tests Passing</span>
+              <span className="stat-value">OTel</span>
+              <span className="stat-label">Trace Export</span>
             </div>
           </div>
         </div>
@@ -204,13 +204,13 @@ function Home({ navigate }) {
 
       {/* Providers Marquee */}
       <section className="providers-section">
-        <p className="providers-label">Works with every major AI provider</p>
+        <p className="providers-label">Native providers plus OpenAI-compatible endpoints</p>
         <div className="providers-marquee">
           <div className="marquee-track">
-            {['OpenAI', 'Anthropic', 'Google Gemini', 'Groq', 'Ollama', 'vLLM', 'DeepSeek', 'Mistral', 'Cohere', 'Together AI', 'Azure OpenAI', 'AWS Bedrock'].map((p, i) => (
+            {['OpenAI', 'Anthropic', 'Google Gemini', 'Groq', 'Ollama', 'vLLM', 'DeepSeek', 'Mistral', 'Together AI', 'Azure OpenAI'].map((p, i) => (
               <span key={i} className="provider-chip">{p}</span>
             ))}
-            {['OpenAI', 'Anthropic', 'Google Gemini', 'Groq', 'Ollama', 'vLLM', 'DeepSeek', 'Mistral', 'Cohere', 'Together AI', 'Azure OpenAI', 'AWS Bedrock'].map((p, i) => (
+            {['OpenAI', 'Anthropic', 'Google Gemini', 'Groq', 'Ollama', 'vLLM', 'DeepSeek', 'Mistral', 'Together AI', 'Azure OpenAI'].map((p, i) => (
               <span key={`dup-${i}`} className="provider-chip">{p}</span>
             ))}
           </div>
@@ -222,7 +222,7 @@ function Home({ navigate }) {
         <div className="section-header reveal">
           <div className="section-badge">How It Works</div>
           <h2 className="section-title">Integrate in 3 Lines of Code</h2>
-          <p className="section-subtitle">OmniSwitch is 100% OpenAI-compatible. Point your existing SDK to OmniSwitch and you're done.</p>
+          <p className="section-subtitle">Use the OpenAI chat-completions surface with your existing SDK, then add routing and guardrails in gateway configuration.</p>
         </div>
         <div className="code-showcase reveal delay-2">
           <div className="code-tabs">
@@ -233,10 +233,10 @@ function Home({ navigate }) {
           <div className="code-block">
             <pre><code>{`from openai import OpenAI
 
-# Just change the base_url — everything else stays the same
+# Point an OpenAI client at the gateway
 client = OpenAI(
     base_url="http://localhost:8080/v1",
-    api_key="sk-omniswitch-your-key"
+    api_key="sk-sentinel-your-key"
 )
 
 response = client.chat.completions.create(
@@ -258,10 +258,10 @@ print(response.choices[0].message.content)`}</code></pre>
         <div className="features-grid">
           {[
             { icon: <Globe />, title: "AI Gateway", desc: "Unified OpenAI-compatible API across OpenAI, Anthropic, Google, Groq, and any custom endpoint. Automatic provider routing by model name.", color: "#3b82f6" },
-            { icon: <Shield />, title: "Guardrails", desc: "Real-time input/output scanning for prompt injection, SQL injection, PII, toxic content, and secret leakage. Sub-millisecond local execution.", color: "#ef4444" },
-            { icon: <Lock />, title: "Virtual Key Vault", desc: "AES-256-GCM encrypted credential store. Create virtual API keys with rate limits, token budgets, and zero-downtime rotation.", color: "#f59e0b" },
-            { icon: <Zap />, title: "Semantic Cache", desc: "Exact-match and vector-similarity caching in SQLite. Dramatically reduce latency and costs for repeated or similar agent queries.", color: "#10b981" },
-            { icon: <Activity />, title: "Observability", desc: "Built-in dashboard with real-time metrics, request logs, cost tracking, and per-provider analytics. Every request is traced end-to-end.", color: "#8b5cf6" },
+            { icon: <Shield />, title: "Guardrails", desc: "Input/output checks for prompt injection, SQL patterns, PII, toxic content, secrets, and custom regex rules. Buffered streams can be enforced before emission.", color: "#ef4444" },
+            { icon: <Lock />, title: "Keys & Vault", desc: "Hashed API keys with viewer/member/admin/owner access plus encrypted provider credentials, budgets, and local rate limits.", color: "#f59e0b" },
+            { icon: <Zap />, title: "Tenant-Aware Cache", desc: "Exact-match and vector-similarity SQLite cache with API-key, workspace, organization, or deliberate global isolation.", color: "#10b981" },
+            { icon: <Activity />, title: "Observability", desc: "Dashboard logs, trace/session IDs, feedback, per-provider metrics, Prometheus, and OpenTelemetry trace export. Payload logs stay opt-in.", color: "#8b5cf6" },
             { icon: <Layers />, title: "Prompt Management", desc: "Version-controlled prompt templates with variable interpolation. Store, render, and iterate on system prompts without redeploying code.", color: "#ec4899" },
           ].map((f, i) => (
             <div key={i} className={`reveal delay-${(i % 3) + 1}`}>
@@ -331,17 +331,15 @@ print(response.choices[0].message.content)`}</code></pre>
             </thead>
             <tbody>
               {[
-                ["OpenAI-Compatible API", true, true, true],
+                ["Chat & Embeddings API", true, true, true],
                 ["Custom Endpoints (Ollama, vLLM)", true, true, true],
-                ["Virtual Key Management", true, true, true],
+                ["API Key & Budget Controls", true, true, true],
                 ["Input/Output Guardrails", true, true, true],
                 ["Semantic Caching", true, true, false],
-                ["Shadow Routing", true, false, false],
-                ["Built-in Dashboard", true, true, false],
-                ["Prompt Management", true, true, false],
-                ["Zero External Dependencies", true, false, false],
-                ["Single Binary Deploy", true, false, true],
-                ["100% Free & OSS", true, false, true],
+                ["HTTP MCP Federation", true, true, true],
+                ["A2A Routing", false, false, true],
+                ["Self-Hosted Single Process", true, true, true],
+                ["Shared HA Control Plane", false, true, true],
               ].map(([feature, os, pk, ag], i) => (
                 <tr key={i}>
                   <td>{feature}</td>
@@ -390,13 +388,13 @@ function About() {
           <h3>Why We Built OmniSwitch</h3>
           <p>
             We were building AI-powered applications and hit the same wall every team hits: managing multiple LLM providers, 
-            securing API keys, preventing prompt injection, tracking costs, and debugging agent workflows — all while trying to 
+            securing API keys, preventing prompt injection, tracking costs, and debugging agent workflows - all while trying to
             ship features.
           </p>
           <p>
             Existing solutions either required expensive SaaS subscriptions, heavy infrastructure (Redis, Postgres, Kafka), 
-            or were too narrow in scope. We wanted something different: a single binary you can run locally or in production 
-            that handles <strong>everything</strong> — routing, security, caching, and observability — with zero external dependencies.
+            or were too narrow in scope. We wanted something different: a small self-hosted gateway that can run locally or in production
+            and handles routing, security, caching, and observability without requiring a separate database for a single-process deployment.
           </p>
           <p>
             That's OmniSwitch. A production-grade AI gateway written in Go, powered by SQLite, and licensed under Apache 2.0. 
@@ -405,25 +403,25 @@ function About() {
           
           <h3>Our Principles</h3>
           <ul className="about-principles">
-            <li><strong>Local-First:</strong> Your data never leaves your network. No SaaS telemetry. No cloud lock-in.</li>
-            <li><strong>Zero Dependencies:</strong> One binary, one SQLite file. No Redis, Postgres, or message queues.</li>
-            <li><strong>OpenAI-Compatible:</strong> Drop-in replacement. Change one line of code to route through OmniSwitch.</li>
-            <li><strong>Security by Default:</strong> Guardrails are on by default. API keys are encrypted at rest. Every request is logged.</li>
-            <li><strong>Open Source Forever:</strong> Apache 2.0. No "open core" bait-and-switch. The full product is free.</li>
+            <li><strong>Self-Hosted:</strong> Deployment, configuration, and SQLite state stay under your operational control.</li>
+            <li><strong>Small Operational Footprint:</strong> One Go process and SQLite provide a simple self-hosted deployment.</li>
+            <li><strong>OpenAI-Compatible Chat:</strong> Point an OpenAI client to the chat-completions endpoint, then add routing in configuration.</li>
+            <li><strong>Security by Default:</strong> Raw payload logs are opt-in, cache defaults to API-key isolation, and an auth-enabled empty deployment requires an explicit bootstrap key.</li>
+            <li><strong>Open Source:</strong> Apache 2.0 licensed.</li>
           </ul>
 
           <h3>Tech Stack</h3>
           <div className="tech-stack-grid">
-            <div className="tech-item"><Server size={20} /> <span><strong>Go</strong> — Core runtime</span></div>
-            <div className="tech-item"><Database size={20} /> <span><strong>SQLite</strong> — Storage, cache, logs</span></div>
-            <div className="tech-item"><Lock size={20} /> <span><strong>AES-256-GCM</strong> — Key encryption</span></div>
-            <div className="tech-item"><Shield size={20} /> <span><strong>CEL</strong> — Policy evaluation</span></div>
+            <div className="tech-item"><Server size={20} /> <span><strong>Go</strong> - Core runtime</span></div>
+            <div className="tech-item"><Database size={20} /> <span><strong>SQLite</strong> - Storage, cache, logs</span></div>
+            <div className="tech-item"><Lock size={20} /> <span><strong>AES-256-GCM</strong> - Key encryption</span></div>
+            <div className="tech-item"><Shield size={20} /> <span><strong>CEL</strong> - Policy evaluation</span></div>
           </div>
 
           <h3>Contributing</h3>
           <p>
             OmniSwitch is built in the open and we welcome contributions. Whether it's a bug fix, a new provider adapter, 
-            or an entirely new guardrail engine — we'd love your help.
+            or an entirely new guardrail engine - we'd love your help.
           </p>
           <div className="about-cta">
             <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary">
