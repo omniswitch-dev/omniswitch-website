@@ -64,7 +64,7 @@ function App() {
       {/* Announcement Bar */}
       <div className="announcement-bar">
         <span>🚀 OmniSwitch v0.1.0 is now open source — </span>
-        <a href="https://github.com/onlychirag/omniswitch" target="_blank" rel="noreferrer">
+        <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer">
           Star us on GitHub <ArrowRight size={14} />
         </a>
       </div>
@@ -81,13 +81,13 @@ function App() {
           <a href="#" onClick={() => navigate('api')} className={currentPage === 'api' ? 'nav-link active-link' : 'nav-link'}>API Reference</a>
           <a href="#" onClick={() => navigate('comparison')} className={currentPage === 'comparison' ? 'nav-link active-link' : 'nav-link'}>Compare</a>
           <a href="#" onClick={() => navigate('about')} className={currentPage === 'about' ? 'nav-link active-link' : 'nav-link'}>About</a>
-          <a href="https://github.com/onlychirag/omniswitch" target="_blank" rel="noreferrer" className="nav-link">GitHub <ExternalLink size={12} /></a>
-          <a href="https://github.com/onlychirag/omniswitch" target="_blank" rel="noreferrer" className="btn-primary mobile-only-btn">
+          <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="nav-link">GitHub <ExternalLink size={12} /></a>
+          <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary mobile-only-btn">
             <GitBranch size={18} /> Get Started
           </a>
         </nav>
         <div className="nav-actions">
-          <a href="https://github.com/onlychirag/omniswitch" target="_blank" rel="noreferrer" className="btn-primary">
+          <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary">
             <GitBranch size={18} /> Get Started
           </a>
           <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -119,7 +119,7 @@ function App() {
             <a href="#" onClick={() => navigate('home')}>Features</a>
             <a href="#" onClick={() => navigate('comparison')}>Comparison</a>
             <a href="#" onClick={() => navigate('api')}>API Reference</a>
-            <a href="https://github.com/onlychirag/omniswitch/releases" target="_blank" rel="noreferrer">Changelog</a>
+            <a href="https://github.com/omniswitch-dev/omniswitch/releases" target="_blank" rel="noreferrer">Changelog</a>
           </div>
           <div className="footer-col">
             <h4>Resources</h4>
@@ -129,9 +129,9 @@ function App() {
           </div>
           <div className="footer-col">
             <h4>Community</h4>
-            <a href="https://github.com/onlychirag/omniswitch" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="https://github.com/onlychirag/omniswitch/issues" target="_blank" rel="noreferrer">Report a Bug</a>
-            <a href="https://github.com/onlychirag/omniswitch/discussions" target="_blank" rel="noreferrer">Discussions</a>
+            <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://github.com/omniswitch-dev/omniswitch/issues" target="_blank" rel="noreferrer">Report a Bug</a>
+            <a href="https://github.com/omniswitch-dev/omniswitch/discussions" target="_blank" rel="noreferrer">Discussions</a>
           </div>
         </div>
       </footer>
@@ -142,7 +142,7 @@ function App() {
 /* ===== HOME PAGE ===== */
 function Home({ navigate }) {
   const [copied, setCopied] = useState(false);
-  const installCmd = 'go install github.com/onlychirag/omniswitch/cmd/gateway@latest';
+  const installCmd = 'go install github.com/omniswitch-dev/omniswitch/cmd/gateway@latest';
 
   const handleCopy = () => {
     navigator.clipboard.writeText(installCmd);
@@ -171,7 +171,7 @@ function Home({ navigate }) {
             <button className="copy-btn">{copied ? <CheckCircle2 size={16} /> : <Copy size={16} />}</button>
           </div>
           <div className="hero-actions">
-            <a href="https://github.com/onlychirag/omniswitch" target="_blank" rel="noreferrer" className="btn-primary btn-lg">
+            <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary btn-lg">
               <GitBranch size={20} /> View on GitHub
             </a>
             <a href="#" onClick={() => navigate('docs')} className="btn-secondary btn-lg">
@@ -363,7 +363,7 @@ print(response.choices[0].message.content)`}</code></pre>
             Deploy in under 60 seconds. One binary. No vendor lock-in. Full control over your AI infrastructure.
           </p>
           <div className="hero-actions" style={{ justifyContent: 'center' }}>
-            <a href="https://github.com/onlychirag/omniswitch" target="_blank" rel="noreferrer" className="btn-primary btn-lg">
+            <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary btn-lg">
               Get Started <ArrowRight size={20} />
             </a>
             <a href="#" onClick={() => navigate('docs')} className="btn-secondary btn-lg">
@@ -426,10 +426,10 @@ function About() {
             or an entirely new guardrail engine — we'd love your help.
           </p>
           <div className="about-cta">
-            <a href="https://github.com/onlychirag/omniswitch" target="_blank" rel="noreferrer" className="btn-primary">
+            <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary">
               <GitBranch size={18} /> Contribute on GitHub
             </a>
-            <a href="https://github.com/onlychirag/omniswitch/issues" target="_blank" rel="noreferrer" className="btn-secondary">
+            <a href="https://github.com/omniswitch-dev/omniswitch/issues" target="_blank" rel="noreferrer" className="btn-secondary">
               Report an Issue
             </a>
           </div>

@@ -27,8 +27,8 @@ export default function Docs() {
           <div className="code-block">
             <div className="code-header">Terminal</div>
             <pre><code>{`# Clone the repository
-git clone https://github.com/onlychirag/sentinel-ai-gateway
-cd sentinel-ai-gateway
+git clone https://github.com/omniswitch-dev/omniswitch
+cd omniswitch
 
 # Start the gateway with an OpenAI Key
 OPENAI_API_KEY=sk-your-key go run ./cmd/gateway`}</code></pre>
