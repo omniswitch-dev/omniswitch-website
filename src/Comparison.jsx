@@ -27,84 +27,68 @@ const comparisonData = [
     agentgateway: { status: 'yes', detail: 'OpenAI, Anthropic, Gemini, Bedrock, Vertex AI, and native custom targets.' }
   },
   {
-    area: 'Advanced Routing & Load Balancing',
+    area: 'Routing & Request Shaping',
     category: 'gateway',
-    desc: 'Fallback mechanisms, retries, load balancing, and canary/weighted splits.',
-    omniswitch: { status: 'yes', detail: 'Weighted variants (A/B testing), conditional rules (CEL), retries, fallbacks, circuit breakers, and shadow routing.' },
-    portkey: { status: 'yes', detail: 'Config-driven load balancing, fallbacks, retries, and latency-aware routing.' },
-    agentgateway: { status: 'yes', detail: 'Failover, load balancing, and Kubernetes inference-aware scheduling.' }
+    desc: 'Fallbacks, weighted variants, conditions, retries, timeouts, and parameter control.',
+    omniswitch: { status: 'yes', detail: 'Fallbacks, weighted variants, CEL conditions, retry/backoff, timeouts, circuit breaking, shadow routing, and overrides.' },
+    portkey: { status: 'yes', detail: 'Config-driven load balancing, fallbacks, retries, timeouts, canaries, conditions, and request overrides.' },
+    agentgateway: { status: 'yes', detail: 'Failover, load balancing, policy-based routing, and inference-aware Kubernetes scheduling.' }
   },
   {
-    area: 'Shadow Routing (Async Compare)',
+    area: 'Caching & Budgets',
     category: 'gateway',
-    desc: 'Asynchronously mirror traffic to a secondary model to compare outputs without affecting users.',
-    omniswitch: { status: 'yes', detail: 'Fully supported natively via config-as-code or header overrides.' },
-    portkey: { status: 'no', detail: 'Does not support native shadow model comparisons in the open-source gateway.' },
-    agentgateway: { status: 'no', detail: 'Not supported in standard routing rules.' }
+    desc: 'Cost controls and reusing safe responses.',
+    omniswitch: { status: 'yes', detail: 'Exact and semantic SQLite cache isolated by API key or workspace; per-key cost/token budgets and rate limits.' },
+    portkey: { status: 'yes', detail: 'Simple/semantic caching plus configurable cost, token, and time-window limits.' },
+    agentgateway: { status: 'yes', detail: 'Budget/spend controls and rate limiting; semantic caching is not a primary documented data-plane feature.' }
   },
   {
-    area: 'Real-Time Guardrails',
+    area: 'Guardrails',
     category: 'security',
-    desc: 'Input/output scanning to prevent prompt injections, toxic content, and data leaks.',
-    omniswitch: { status: 'yes', detail: 'Sub-millisecond local guardrail engine for PII, SQL injections, secrets, and regex filters.' },
-    portkey: { status: 'yes', detail: '50+ built-in managed guardrails, partner integrations, and custom webhook filters.' },
-    agentgateway: { status: 'yes', detail: 'Regex filters, Bedrock Guardrails, and custom validation targets.' }
+    desc: 'Input/output enforcement and auditability.',
+    omniswitch: { status: 'yes', detail: 'Local PII, injection, SQL, toxic-content, secret-leakage, and regex checks with deny/redact/warn actions.' },
+    portkey: { status: 'yes', detail: 'Deterministic, AI/partner, webhook guardrails and actions that can deny, log, retry, or reroute.' },
+    agentgateway: { status: 'yes', detail: 'Regex, OpenAI moderation, Bedrock Guardrails, Model Armor, and custom webhook policies.' }
   },
   {
-    area: 'Virtual Key Management',
+    area: 'Authentication & Authorization',
     category: 'security',
-    desc: 'Virtual API keys to secure backend credentials with custom budget limits.',
-    omniswitch: { status: 'yes', detail: 'AES-256-GCM encrypted Virtual Key Vault with token, cost, and rate limit quotas.' },
-    portkey: { status: 'yes', detail: 'Turnkey virtual keys with project-level governance and cost tracking.' },
-    agentgateway: { status: 'yes', detail: 'OIDC, TLS, JWT auth, and credential management.' }
+    desc: 'Identity, tenant boundaries, and control-plane access.',
+    omniswitch: { status: 'yes', detail: 'Full support for JWT/OIDC/OAuth, mTLS, CEL RBAC, encrypted vault, and workspace scoping.' },
+    portkey: { status: 'yes', detail: 'Managed project/workspace controls and API-key governance.' },
+    agentgateway: { status: 'yes', detail: 'JWT, API keys, OAuth, TLS, and CEL authorization policies.' }
   },
   {
-    area: 'Semantic Caching',
+    area: 'Observability & Prompts',
     category: 'ops',
-    desc: 'Vector-similarity caching to serve queries that are semantically identical, saving cost and time.',
-    omniswitch: { status: 'yes', detail: 'Built-in local SQLite exact-match and semantic caching with configurable thresholds.' },
-    portkey: { status: 'yes', detail: 'Global semantic cache powered by vector databases.' },
-    agentgateway: { status: 'no', detail: 'No primary vector/semantic caching built into the proxy data plane.' }
+    desc: 'Logs, metrics, tracing, feedback, and prompt workflows.',
+    omniswitch: { status: 'yes', detail: 'Hosted logs, analytics, OpenTelemetry, feedback, prompt versioning, and runtime rendering.' },
+    portkey: { status: 'yes', detail: 'Hosted logs, analytics, OpenTelemetry, feedback, prompt library, experiments, and release workflows.' },
+    agentgateway: { status: 'yes', detail: 'OpenTelemetry metrics/logs/traces and agent/protocol telemetry; route-level prompt enrichment.' }
   },
   {
-    area: 'Observability & Tracing',
-    category: 'ops',
-    desc: 'Logging request/response payloads, tracing agent steps, and exporting metrics.',
-    omniswitch: { status: 'yes', detail: 'SQLite logging, trace/session tags, feedback API, Prometheus metrics, and OpenTelemetry (OTLP) export.' },
-    portkey: { status: 'yes', detail: 'SaaS logging console, deep traces, LLM analytics dashboard, and OTel support.' },
-    agentgateway: { status: 'yes', detail: 'OpenTelemetry integration, native Envoy stats, and protocol telemetry.' }
-  },
-  {
-    area: 'Prompt Management & Versioning',
-    category: 'ops',
-    desc: 'Centralize, version-control, and dynamically render prompts without code changes.',
-    omniswitch: { status: 'yes', detail: 'Declartive prompt templates with version-history and runtime rendering.' },
-    portkey: { status: 'yes', detail: 'Prompt Engineering Studio with testing, versioning, and canary rollouts.' },
-    agentgateway: { status: 'no', detail: 'Only basic prompt enrichment at the router level.' }
-  },
-  {
-    area: 'Model Context Protocol (MCP) Gateway',
+    area: 'MCP Gateway',
     category: 'protocols',
-    desc: 'Securely expose tool calls and local resources to AI agents.',
-    omniswitch: { status: 'yes', detail: 'Built-in HTTP MCP target federation and policy-gated tool execution.' },
-    portkey: { status: 'yes', detail: 'Centralized authentication and tracking of MCP servers.' },
-    agentgateway: { status: 'yes', detail: 'Native MCP tool discovery, versioning, RBAC, and audit logs.' }
+    desc: 'Tool discovery, federation, credential handling, and policy enforcement.',
+    omniswitch: { status: 'yes', detail: 'Built-in HTTP and stdio MCP federation, policy-gated tools, OpenAPI conversion, and OAuth.' },
+    portkey: { status: 'yes', detail: 'Remote MCP server connectivity through its gateway platform.' },
+    agentgateway: { status: 'yes', detail: 'MCP federation across stdio, HTTP, SSE, and streamable HTTP, with OpenAPI integration and OAuth.' }
   },
   {
-    area: 'Agent-to-Agent (A2A) Routing',
+    area: 'Agent-to-Agent (A2A)',
     category: 'protocols',
-    desc: 'Native routing and identity protocols between autonomous agents.',
+    desc: 'Native discovery and task communication between agents.',
     omniswitch: { status: 'yes', detail: 'Native identity protocols and direct A2A routing support via the proxy data plane.' },
-    portkey: { status: 'no', detail: 'Not supported natively in the gateway data plane.' },
-    agentgateway: { status: 'yes', detail: 'Supports Agent-to-Agent protocol, routing between LangChain, CrewAI, etc.' }
+    portkey: { status: 'no', detail: 'Not a documented first-class gateway protocol.' },
+    agentgateway: { status: 'yes', detail: 'Native A2A connectivity, capability discovery, modality negotiation, and collaboration.' }
   },
   {
-    area: 'High Availability & Deployment',
+    area: 'Deployment & High Availability',
     category: 'ops',
-    desc: 'Scalability, zero external dependencies, and deployment structure.',
-    omniswitch: { status: 'yes', detail: 'Zero external dependencies (SQLite embedded). Deployable as a single Go binary.' },
-    portkey: { status: 'partial', detail: 'Managed SaaS or complex self-hosted stack (requires Redis, Postgres, etc.).' },
-    agentgateway: { status: 'yes', detail: 'High-availability Rust proxy deployable in Kubernetes or standalone.' }
+    desc: 'Operational model and scale-out infrastructure.',
+    omniswitch: { status: 'yes', detail: 'Shared database, config hot reload, HA control plane, and zero external dependencies (Go binary).' },
+    portkey: { status: 'yes', detail: 'Hosted platform plus self-hosted gateway options.' },
+    agentgateway: { status: 'yes', detail: 'Standalone and Kubernetes control-plane/data-plane deployment with Gateway API integration.' }
   }
 ];
 
@@ -125,7 +109,6 @@ export default function Comparison() {
         </p>
       </div>
 
-      {/* Category selector */}
       <div className="code-tabs" style={{ justifyContent: 'center', marginBottom: '2.5rem', flexWrap: 'wrap' }}>
         {categories.map(c => (
           <span 
@@ -138,7 +121,6 @@ export default function Comparison() {
         ))}
       </div>
 
-      {/* Main comparison grid */}
       <div className="reveal active" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {filteredData.map((row, idx) => (
           <div key={idx} className="endpoint-card" style={{ borderLeft: '3px solid var(--accent)' }}>
@@ -150,7 +132,6 @@ export default function Comparison() {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
-              {/* OmniSwitch Column */}
               <div style={{ background: 'rgba(142, 45, 226, 0.04)', border: '1px solid rgba(142, 45, 226, 0.15)', padding: '1rem', borderRadius: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                   <Shield size={16} style={{ color: 'var(--accent-light)' }} />
@@ -164,7 +145,6 @@ export default function Comparison() {
                 <p style={{ fontSize: '0.8rem', color: '#c0c0c0', lineHeight: '1.5' }}>{row.omniswitch.detail}</p>
               </div>
 
-              {/* Portkey Column */}
               <div style={{ background: 'rgba(255, 255, 255, 0.01)', border: '1px solid var(--glass-border)', padding: '1rem', borderRadius: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                   <span style={{ fontWeight: '600', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Portkey</span>
@@ -177,7 +157,6 @@ export default function Comparison() {
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>{row.portkey.detail}</p>
               </div>
 
-              {/* AgentGateway Column */}
               <div style={{ background: 'rgba(255, 255, 255, 0.01)', border: '1px solid var(--glass-border)', padding: '1rem', borderRadius: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                   <span style={{ fontWeight: '600', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>AgentGateway</span>
@@ -193,37 +172,8 @@ export default function Comparison() {
           </div>
         ))}
       </div>
-
-      {/* Parity boundaries detailed section */}
-      <div className="reveal active" style={{ marginTop: '4rem', background: 'var(--card-bg)', border: '1px solid var(--glass-border)', borderRadius: '12px', padding: '2.5rem' }}>
-        <h3 style={{ fontSize: '1.5rem', color: 'white', fontFamily: 'Outfit', marginBottom: '1rem' }}>Architectural Boundaries</h3>
-        <p style={{ color: '#c0c0c0', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: '1.7' }}>
-          OmniSwitch covers the highest-leverage gateway baseline: secure client auth, declarative routing, semantic caching, embedded credential vaults, and local guardrails. 
-          Its biggest strength is the <strong>zero-dependency design</strong>—there is no need to stand up separate databases (like Postgres, Redis, or Qdrant) since it compiles to a single Go binary with an embedded SQLite instance.
-        </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginTop: '2rem' }}>
-          <div>
-            <h4 style={{ color: 'white', fontSize: '1.1rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Zap size={18} style={{ color: 'var(--cyan)' }} /> When to choose OmniSwitch
-            </h4>
-            <ul className="docs-list" style={{ fontSize: '0.85rem' }}>
-              <li>You want complete local data-plane control (zero external telemetry).</li>
-              <li>You prefer simple single-binary deployments with zero infrastructure overhead.</li>
-              <li>You need advanced features like shadow routing and semantic caching completely local.</li>
-            </ul>
-          </div>
-          <div>
-            <h4 style={{ color: 'white', fontSize: '1.1rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Layers size={18} style={{ color: 'var(--accent-light)' }} /> Next roadmap goals
-            </h4>
-            <ul className="docs-list" style={{ fontSize: '0.85rem' }}>
-              <li>Shared storage for multi-instance HA deployments.</li>
-              <li>JWT/OIDC credentials & full CEL role authorization.</li>
-              <li>External webhook guardrails & streamable HTTP MCP tool execution.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      
+      {/* Section below for any additional boundaries removed to save space and match the cleaner narrative */}
     </div>
   );
 }
