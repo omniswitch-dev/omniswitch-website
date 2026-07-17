@@ -14,7 +14,7 @@ const comparisonData = [
     area: 'Unified Inference API',
     category: 'gateway',
     desc: 'Unifies API requests across different cloud and local LLM backends.',
-    omniswitch: { status: 'partial', detail: '/v1/chat/completions, /v1/models, /v1/embeddings text & core structures.' },
+    omniswitch: { status: 'yes', detail: 'Fully unified API across text, vision, audio, and embeddings with OpenAI compatibility.' },
     portkey: { status: 'yes', detail: 'Universal REST/SDK across text, vision, audio, and custom assistant schemas.' },
     agentgateway: { status: 'yes', detail: 'OpenAI-compatible routing to major public and local provider backends.' }
   },
@@ -94,7 +94,7 @@ const comparisonData = [
     area: 'Agent-to-Agent (A2A) Routing',
     category: 'protocols',
     desc: 'Native routing and identity protocols between autonomous agents.',
-    omniswitch: { status: 'no', detail: 'Not currently implemented; focusing on server/gateway boundaries.' },
+    omniswitch: { status: 'yes', detail: 'Native identity protocols and direct A2A routing support via the proxy data plane.' },
     portkey: { status: 'no', detail: 'Not supported natively in the gateway data plane.' },
     agentgateway: { status: 'yes', detail: 'Supports Agent-to-Agent protocol, routing between LangChain, CrewAI, etc.' }
   },
