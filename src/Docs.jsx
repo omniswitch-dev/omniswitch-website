@@ -73,6 +73,7 @@ providers:
             <li><strong>Anthropic:</strong> <code>type: anthropic</code></li>
             <li><strong>Google Gemini:</strong> <code>type: google</code></li>
             <li><strong>Groq:</strong> <code>type: groq</code></li>
+            <li><strong>Cohere:</strong> <code>type: cohere</code> (Native rerank support with rerank-v3.5, rerank-english-v3.0, rerank-multilingual-v3.0)</li>
             <li><strong>Everything Else:</strong> <code>type: custom</code> (Supports Azure, DeepSeek, vLLM, Ollama, Together AI, etc.)</li>
           </ul>
         </section>

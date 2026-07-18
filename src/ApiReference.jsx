@@ -78,6 +78,48 @@ export default function ApiReference() {
             <li><code>rate_limit</code> (integer) - Maximum requests per minute.</li>
           </ul>
         </div>
+
+        <div className="endpoint-card">
+          <div className="endpoint-header">
+            <span className="method post">POST</span>
+            <span className="path">/v1/rerank</span>
+          </div>
+          <p className="endpoint-desc">Provider-neutral rerank endpoint for RAG retrieval stacks. Reuses gateway auth, budgets, guardrails, and logging.</p>
+          
+          <h4>Body</h4>
+          <ul className="api-list">
+            <li><code>model</code> (string) - Rerank model (e.g. <code>rerank-v3.5</code>).</li>
+            <li><code>query</code> (string) - The search query to rank against.</li>
+            <li><code>documents</code> (array) - List of documents (strings or objects) to rerank.</li>
+          </ul>
+        </div>
+
+        <div className="endpoint-card">
+          <div className="endpoint-header">
+            <span className="method post">POST</span>
+            <span className="path">/v1/moderations</span>
+          </div>
+          <p className="endpoint-desc">OpenAI-compatible local moderation endpoint. Runs OmniSwitch guardrails locally without sending data to any external moderation API.</p>
+          
+          <h4>Body</h4>
+          <ul className="api-list">
+            <li><code>input</code> (string | string[]) - Text(s) to evaluate for content policy violations.</li>
+            <li><code>model</code> (string, optional) - Model identifier (defaults to <code>omniswitch-guardrails</code>).</li>
+          </ul>
+        </div>
+
+        <div className="endpoint-card">
+          <div className="endpoint-header">
+            <span className="method post">POST</span>
+            <span className="path">/a2a</span>
+          </div>
+          <p className="endpoint-desc">Agent-to-Agent v1 JSON-RPC endpoint. Supports <code>SendMessage</code> and <code>GetExtendedAgentCard</code> methods. Inference is routed through the full gateway pipeline.</p>
+          
+          <h4>Discovery</h4>
+          <ul className="api-list">
+            <li><code>GET /.well-known/agent.json</code> - Returns the A2A Agent Card with skills, capabilities, and security schemes.</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

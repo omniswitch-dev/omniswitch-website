@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { 
-  Shield, Zap, Activity, Lock, Globe, Code2, CheckCircle2, XCircle, 
-  Minus, GitBranch, ArrowRight, Terminal, Eye, Layers, Server, 
-  Database, Cpu, Users, BookOpen, ChevronRight, ExternalLink, 
-  Star, Copy, Menu, X
+  Shield, Zap, Activity, Lock, Globe, CheckCircle2, XCircle, 
+  GitBranch, ArrowRight, Terminal, Layers, Server, 
+  Database, Cpu, BookOpen, ExternalLink, 
+  Star, Copy, Menu, X, Key, Search, Users, Cloud, Box, Scale
 } from 'lucide-react';
 import Docs from './Docs';
 import ApiReference from './ApiReference';
@@ -163,7 +163,8 @@ function Home({ navigate }) {
           </h1>
           <p className="hero-description">
             OmniSwitch is an open-source, high-performance AI gateway. Route to 1600+ models, enforce guardrails, 
-            cache responses, manage API keys, and observe everything — all from a single Go binary with zero external dependencies.
+            cache responses, manage API keys, authenticate with JWT/OIDC, and observe everything — with A2A protocol support, 
+            reranking, and Kubernetes-ready HA deployments.
           </p>
           <div className="install-bar" onClick={handleCopy}>
             <Terminal size={16} />
@@ -253,16 +254,22 @@ print(response.choices[0].message.content)`}</code></pre>
         <div className="section-header reveal">
           <div className="section-badge">Core Modules</div>
           <h2 className="section-title">Everything You Need to Ship AI to Production</h2>
-          <p className="section-subtitle">Six production-grade modules, all in a single binary. No Redis. No Postgres. No Kafka.</p>
+          <p className="section-subtitle">Twelve production-grade modules in a single binary — from inference routing to agent protocols.</p>
         </div>
         <div className="features-grid">
           {[
-            { icon: <Globe />, title: "AI Gateway", desc: "Unified OpenAI-compatible API across OpenAI, Anthropic, Google, Groq, and any custom endpoint. Automatic provider routing by model name.", color: "#3b82f6" },
-            { icon: <Shield />, title: "Guardrails", desc: "Real-time input/output scanning for prompt injection, SQL injection, PII, toxic content, and secret leakage. Sub-millisecond local execution.", color: "#ef4444" },
+            { icon: <Globe />, title: "AI Gateway", desc: "Unified OpenAI-compatible API across OpenAI, Anthropic, Google, Groq, Cohere, and any custom endpoint. Automatic provider routing by model name.", color: "#3b82f6" },
+            { icon: <Shield />, title: "Guardrails & Moderations", desc: "Real-time input/output scanning for prompt injection, PII, toxic content, and secret leakage. Plus a local /v1/moderations endpoint — no external API calls.", color: "#ef4444" },
             { icon: <Lock />, title: "Virtual Key Vault", desc: "AES-256-GCM encrypted credential store. Create virtual API keys with rate limits, token budgets, and zero-downtime rotation.", color: "#f59e0b" },
             { icon: <Zap />, title: "Semantic Cache", desc: "Exact-match and vector-similarity caching in SQLite. Dramatically reduce latency and costs for repeated or similar agent queries.", color: "#10b981" },
-            { icon: <Activity />, title: "Observability", desc: "Built-in dashboard with real-time metrics, request logs, cost tracking, and per-provider analytics. Every request is traced end-to-end.", color: "#8b5cf6" },
-            { icon: <Layers />, title: "Prompt Management", desc: "Version-controlled prompt templates with variable interpolation. Store, render, and iterate on system prompts without redeploying code.", color: "#ec4899" },
+            { icon: <Key />, title: "JWT/OIDC Authentication", desc: "Validate signed JWTs against any OIDC provider with JWKS auto-rotation. Map custom claims to roles, workspaces, and organizations.", color: "#06b6d4" },
+            { icon: <Scale />, title: "CEL Authorization", desc: "Fine-grained allow/deny rules using Common Expression Language. Control access by method, path, model, role, workspace, or custom JWT claims.", color: "#8b5cf6" },
+            { icon: <Search />, title: "Rerank Endpoint", desc: "Provider-neutral /v1/rerank API for RAG retrieval stacks with native Cohere support. Reuses auth, budgets, guardrails, and full logging.", color: "#f97316" },
+            { icon: <Users />, title: "A2A Protocol", desc: "Agent-to-Agent v1 support with Agent Card discovery and SendMessage JSON-RPC. Route inter-agent communication through the full gateway pipeline.", color: "#ec4899" },
+            { icon: <Layers />, title: "MCP Gateway", desc: "Federate multiple MCP servers over HTTP and stdio. Policy-gated tool execution with namespaced tool discovery and audit logging.", color: "#14b8a6" },
+            { icon: <Activity />, title: "Observability", desc: "Built-in dashboard with real-time metrics, request logs, cost tracking, OpenTelemetry export, and per-provider analytics.", color: "#a855f7" },
+            { icon: <Cloud />, title: "Redis HA Rate Limiting", desc: "Distributed rate limiting with atomic Lua scripts for multi-instance deployments. Fail-closed by default with startup health checks.", color: "#ef4444" },
+            { icon: <Box />, title: "Kubernetes Ready", desc: "Production Kubernetes manifests with Deployment, Service, ConfigMap, Redis StatefulSet, and Kustomization. Deploy a full HA stack in minutes.", color: "#6366f1" },
           ].map((f, i) => (
             <div key={i} className={`reveal delay-${(i % 3) + 1}`}>
               <div className="feature-card">
@@ -297,6 +304,10 @@ print(response.choices[0].message.content)`}</code></pre>
                 <span>Guardrails</span>
                 <span>Cache</span>
                 <span>Vault</span>
+                <span>JWT/OIDC</span>
+                <span>A2A</span>
+                <span>Rerank</span>
+                <span>MCP</span>
                 <span>Logs</span>
               </div>
             </div>
@@ -307,6 +318,7 @@ print(response.choices[0].message.content)`}</code></pre>
             <div className="arch-box provider-box"><span>Anthropic</span></div>
             <div className="arch-box provider-box"><span>Google</span></div>
             <div className="arch-box provider-box"><span>Groq</span></div>
+            <div className="arch-box provider-box"><span>Cohere</span></div>
             <div className="arch-box provider-box"><span>Ollama</span></div>
           </div>
         </div>
@@ -335,11 +347,17 @@ print(response.choices[0].message.content)`}</code></pre>
                 ["Custom Endpoints (Ollama, vLLM)", true, true, true],
                 ["Virtual Key Management", true, true, true],
                 ["Input/Output Guardrails", true, true, true],
+                ["JWT/OIDC Authentication", true, false, true],
+                ["CEL Authorization Policies", true, false, true],
                 ["Semantic Caching", true, true, false],
+                ["Rerank Endpoint (RAG)", true, false, false],
+                ["A2A Protocol Support", true, false, true],
+                ["MCP Gateway (HTTP + stdio)", true, true, true],
+                ["Local Moderations API", true, false, false],
+                ["Distributed Redis Rate Limiting", true, false, false],
                 ["Shadow Routing", true, false, false],
                 ["Built-in Dashboard", true, true, false],
-                ["Prompt Management", true, true, false],
-                ["Zero External Dependencies", true, false, false],
+                ["Kubernetes Manifests", true, false, true],
                 ["Single Binary Deploy", true, false, true],
                 ["100% Free & OSS", true, false, true],
               ].map(([feature, os, pk, ag], i) => (
