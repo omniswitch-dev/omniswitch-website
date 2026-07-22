@@ -14,7 +14,16 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
+    document.body.classList.toggle('menu-open', mobileMenuOpen);
+    return () => document.body.classList.remove('menu-open');
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    // Skip parallax effects on touch devices to prevent overflow
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+
     // Glow blob
     const blob = document.getElementById('glow-blob');
     const handleMouseMove = (e) => {
@@ -24,6 +33,7 @@ function App() {
           top: `${e.clientY + window.scrollY}px`
         }, { duration: 3000, fill: "forwards" });
       }
+      if (isTouch) return;
       const img = document.querySelector('.hero-dashboard-img');
       if (!img) return;
       const centerX = window.innerWidth / 2;
