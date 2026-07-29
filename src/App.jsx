@@ -30,7 +30,7 @@ function App() {
       if (blob) {
         blob.animate({
           left: `${e.clientX}px`,
-          top: `${e.clientY + window.scrollY}px`
+          top: `${e.clientY}px`
         }, { duration: 3000, fill: "forwards" });
       }
       if (isTouch) return;
