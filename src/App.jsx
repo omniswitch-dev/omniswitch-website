@@ -14,6 +14,17 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Handle browser back/forward buttons and initial load
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const path = window.location.pathname.replace('/', '');
+      setCurrentPage(path || 'home');
+    };
+    window.addEventListener('popstate', handleLocationChange);
+    handleLocationChange(); // Set initial page based on URL
+    return () => window.removeEventListener('popstate', handleLocationChange);
+  }, []);
+
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.classList.toggle('menu-open', mobileMenuOpen);
@@ -74,7 +85,18 @@ function App() {
   const navigate = (page) => {
     setCurrentPage(page);
     setMobileMenuOpen(false);
+    window.history.pushState(null, '', `/${page === 'home' ? '' : page}`);
   };
+
+  const NavLink = ({ page, label }) => (
+    <a 
+      href={`/${page === 'home' ? '' : page}`} 
+      onClick={(e) => { e.preventDefault(); navigate(page); }}
+      className={currentPage === page ? 'nav-link active-link' : 'nav-link'}
+    >
+      {label}
+    </a>
+  );
 
   return (
     <div className="app-container">
@@ -91,16 +113,16 @@ function App() {
 
       {/* Header */}
       <header>
-        <a href="#" onClick={() => navigate('home')} className="logo">
+        <a href="/" onClick={(e) => { e.preventDefault(); navigate('home'); }} className="logo">
           <Shield className="logo-icon" size={28} />
           OmniSwitch
         </a>
         <nav className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-          <a href="#" onClick={() => navigate('home')} className={currentPage === 'home' ? 'nav-link active-link' : 'nav-link'}>Product</a>
-          <a href="#" onClick={() => navigate('docs')} className={currentPage === 'docs' ? 'nav-link active-link' : 'nav-link'}>Docs</a>
-          <a href="#" onClick={() => navigate('api')} className={currentPage === 'api' ? 'nav-link active-link' : 'nav-link'}>API Reference</a>
-          <a href="#" onClick={() => navigate('comparison')} className={currentPage === 'comparison' ? 'nav-link active-link' : 'nav-link'}>Compare</a>
-          <a href="#" onClick={() => navigate('about')} className={currentPage === 'about' ? 'nav-link active-link' : 'nav-link'}>About</a>
+          <NavLink page="home" label="Product" />
+          <NavLink page="docs" label="Docs" />
+          <NavLink page="api" label="API Reference" />
+          <NavLink page="comparison" label="Compare" />
+          <NavLink page="about" label="About" />
           <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="nav-link">GitHub <ExternalLink size={12} /></a>
           <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary mobile-only-btn">
             <GitBranch size={18} /> Get Started
@@ -136,16 +158,16 @@ function App() {
           </div>
           <div className="footer-col">
             <h4>Product</h4>
-            <a href="#" onClick={() => navigate('home')}>Features</a>
-            <a href="#" onClick={() => navigate('comparison')}>Comparison</a>
-            <a href="#" onClick={() => navigate('api')}>API Reference</a>
+            <a href="/" onClick={(e) => { e.preventDefault(); navigate('home'); }}>Features</a>
+            <a href="/comparison" onClick={(e) => { e.preventDefault(); navigate('comparison'); }}>Comparison</a>
+            <a href="/api" onClick={(e) => { e.preventDefault(); navigate('api'); }}>API Reference</a>
             <a href="https://github.com/omniswitch-dev/omniswitch/releases" target="_blank" rel="noreferrer">Changelog</a>
           </div>
           <div className="footer-col">
             <h4>Resources</h4>
-            <a href="#" onClick={() => navigate('docs')}>Documentation</a>
-            <a href="#" onClick={() => navigate('docs')}>Quickstart Guide</a>
-            <a href="#" onClick={() => navigate('about')}>About</a>
+            <a href="/docs" onClick={(e) => { e.preventDefault(); navigate('docs'); }}>Documentation</a>
+            <a href="/docs" onClick={(e) => { e.preventDefault(); navigate('docs'); }}>Quickstart Guide</a>
+            <a href="/about" onClick={(e) => { e.preventDefault(); navigate('about'); }}>About</a>
           </div>
           <div className="footer-col">
             <h4>Community</h4>
@@ -196,7 +218,7 @@ function Home({ navigate }) {
             <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary btn-lg">
               <GitBranch size={20} /> View on GitHub
             </a>
-            <a href="#" onClick={() => navigate('docs')} className="btn-secondary btn-lg">
+            <a href="/docs" onClick={(e) => { e.preventDefault(); navigate('docs'); }} className="btn-secondary btn-lg">
               <BookOpen size={20} /> Read the Docs
             </a>
           </div>
@@ -435,8 +457,8 @@ console.log(response.choices[0].message.content);` : `curl -X POST http://localh
             <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary btn-lg">
               Get Started <ArrowRight size={20} />
             </a>
-            <a href="#" onClick={() => navigate('docs')} className="btn-secondary btn-lg">
-              Read the Docs
+            <a href="/docs" onClick={(e) => { e.preventDefault(); navigate('docs'); }} className="btn-secondary btn-lg">
+              <BookOpen size={20} /> Read the Docs
             </a>
           </div>
         </div>
