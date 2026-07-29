@@ -221,11 +221,9 @@ function Home({ navigate }) {
         </div>
         <div className="hero-image-wrapper">
           <img 
-            src="/dashboard-mockup.webp" 
+            src="/dashboard-mockup.png" 
             alt="OmniSwitch AI Gateway Dashboard" 
             className="hero-dashboard-img" 
-            width="1024" 
-            height="1024" 
             fetchpriority="high" 
             loading="eager" 
           />
