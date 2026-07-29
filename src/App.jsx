@@ -152,6 +152,7 @@ function App() {
 /* ===== HOME PAGE ===== */
 function Home({ navigate }) {
   const [copied, setCopied] = useState(false);
+  const [activeCodeTab, setActiveCodeTab] = useState('Python');
   const installCmd = 'go install github.com/omniswitch-dev/omniswitch/cmd/gateway@latest';
 
   const handleCopy = () => {
@@ -237,12 +238,18 @@ function Home({ navigate }) {
         </div>
         <div className="code-showcase reveal delay-2">
           <div className="code-tabs">
-            <span className="code-tab active">Python</span>
-            <span className="code-tab">Node.js</span>
-            <span className="code-tab">cURL</span>
+            {['Python', 'Node.js', 'cURL'].map(tab => (
+              <span 
+                key={tab} 
+                className={`code-tab ${activeCodeTab === tab ? 'active' : ''}`}
+                onClick={() => setActiveCodeTab(tab)}
+              >
+                {tab}
+              </span>
+            ))}
           </div>
           <div className="code-block">
-            <pre><code>{`from openai import OpenAI
+            <pre><code>{activeCodeTab === 'Python' ? `from openai import OpenAI
 
 # Just change the base_url — everything else stays the same
 client = OpenAI(
@@ -254,7 +261,25 @@ response = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=[{"role": "user", "content": "Hello, OmniSwitch!"}]
 )
-print(response.choices[0].message.content)`}</code></pre>
+print(response.choices[0].message.content)` : activeCodeTab === 'Node.js' ? `import OpenAI from 'openai';
+
+// Just change the baseURL — everything else stays the same
+const openai = new OpenAI({
+  baseURL: 'http://localhost:8080/v1',
+  apiKey: 'sk-omniswitch-your-key'
+});
+
+const response = await openai.chat.completions.create({
+  model: 'gpt-4o-mini',
+  messages: [{ role: 'user', content: 'Hello, OmniSwitch!' }]
+});
+console.log(response.choices[0].message.content);` : `curl -X POST http://localhost:8080/v1/chat/completions \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer sk-omniswitch-your-key" \\
+  -d '{
+    "model": "gpt-4o-mini",
+    "messages": [{"role": "user", "content": "Hello, OmniSwitch!"}]
+  }'`}</code></pre>
           </div>
         </div>
       </section>

@@ -1,8 +1,5 @@
-# OmniSwitch — https://omniswitch.dev
-# Allow all search engine crawlers
-
 User-agent: *
 Allow: /
 
-# Sitemap location
+# Point to sitemap
 Sitemap: https://omniswitch.dev/sitemap.xml
