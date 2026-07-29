@@ -24,25 +24,35 @@ function App() {
     // Skip parallax effects on touch devices to prevent overflow
     const isTouch = window.matchMedia('(pointer: coarse)').matches;
 
-    // Glow blob
+    // Glow blob & Parallax with rAF throttling for performance
     const blob = document.getElementById('glow-blob');
+    let ticking = false;
+
     const handleMouseMove = (e) => {
-      if (blob) {
-        blob.animate({
-          left: `${e.clientX}px`,
-          top: `${e.clientY}px`
-        }, { duration: 3000, fill: "forwards" });
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (blob) {
+            blob.animate({
+              left: `${e.clientX}px`,
+              top: `${e.clientY}px`
+            }, { duration: 3000, fill: "forwards" });
+          }
+          if (!isTouch) {
+            const img = document.querySelector('.hero-dashboard-img');
+            if (img) {
+              const centerX = window.innerWidth / 2;
+              const centerY = window.innerHeight / 2;
+              const rotateY = (e.clientX - centerX) / 40;
+              const rotateX = (centerY - e.clientY) / 40;
+              img.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
-      if (isTouch) return;
-      const img = document.querySelector('.hero-dashboard-img');
-      if (!img) return;
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      const rotateY = (e.clientX - centerX) / 40;
-      const rotateX = (centerY - e.clientY) / 40;
-      img.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     };
-    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     // Scroll reveals
     const observer = new IntersectionObserver((entries) => {
@@ -210,7 +220,15 @@ function Home({ navigate }) {
           </div>
         </div>
         <div className="hero-image-wrapper">
-          <img src="/dashboard-mockup.png" alt="OmniSwitch AI Gateway Dashboard" className="hero-dashboard-img" />
+          <img 
+            src="/dashboard-mockup.webp" 
+            alt="OmniSwitch AI Gateway Dashboard" 
+            className="hero-dashboard-img" 
+            width="1024" 
+            height="1024" 
+            fetchpriority="high" 
+            loading="eager" 
+          />
         </div>
       </section>
 
