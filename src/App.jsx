@@ -3,7 +3,7 @@ import {
   Shield, Zap, Activity, Lock, Globe, CheckCircle2, XCircle, 
   GitBranch, ArrowRight, Terminal, Layers, Server, 
   Database, Cpu, BookOpen, ExternalLink, 
-  Star, Copy, Menu, X, Key, Search, Users, Cloud, Box, Scale
+  Star, Copy, Menu, X, Key, Search, Users, Cloud, Box, Scale, RefreshCw
 } from 'lucide-react';
 import Docs from './Docs';
 import ApiReference from './ApiReference';
@@ -185,7 +185,7 @@ function App() {
 function Home({ navigate }) {
   const [copied, setCopied] = useState(false);
   const [activeCodeTab, setActiveCodeTab] = useState('Python');
-  const installCmd = 'go install github.com/omniswitch-dev/omniswitch/cmd/gateway@latest';
+  const installCmd = 'curl -fsSL https://raw.githubusercontent.com/omniswitch-dev/omniswitch/main/install.sh | sh';
 
   const handleCopy = () => {
     navigator.clipboard.writeText(installCmd);
@@ -205,9 +205,7 @@ function Home({ navigate }) {
             One Gateway for <span>All Your AI Traffic</span>
           </h1>
           <p className="hero-description">
-            OmniSwitch is an open-source, high-performance AI gateway. Route to 1600+ models, enforce guardrails, 
-            cache responses, manage API keys, authenticate with JWT/OIDC, and observe everything — with A2A protocol support, 
-            reranking, and Kubernetes-ready HA deployments.
+            OmniSwitch is an open-source AI gateway built for production teams. Route across OpenAI, Anthropic, Google, Groq, Cohere, Azure, Bedrock, and any OpenAI-compatible endpoint. Enforce guardrails, cache responses, manage budgets, and observe everything from a single binary.
           </p>
           <div className="install-bar" onClick={handleCopy}>
             <Terminal size={16} />
@@ -224,20 +222,20 @@ function Home({ navigate }) {
           </div>
           <div className="hero-stats">
             <div className="stat-item">
-              <span className="stat-value">&lt;2ms</span>
-              <span className="stat-label">Added Latency</span>
+              <span className="stat-value">13</span>
+              <span className="stat-label">Production Modules</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">1600+</span>
-              <span className="stat-label">Models Supported</span>
+              <span className="stat-value">8</span>
+              <span className="stat-label">Native Providers</span>
             </div>
             <div className="stat-item">
               <span className="stat-value">0</span>
               <span className="stat-label">Dependencies</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">27/27</span>
-              <span className="stat-label">Tests Passing</span>
+              <span className="stat-value">100%</span>
+              <span className="stat-label">Self-Hosted</span>
             </div>
           </div>
         </div>
@@ -327,12 +325,12 @@ console.log(response.choices[0].message.content);` : `curl -X POST http://localh
         <div className="section-header reveal">
           <div className="section-badge">Core Modules</div>
           <h2 className="section-title">Everything You Need to Ship AI to Production</h2>
-          <p className="section-subtitle">Twelve production-grade modules in a single binary — from inference routing to agent protocols.</p>
+          <p className="section-subtitle">Thirteen production-grade modules in a single binary — from inference routing to agent protocols.</p>
         </div>
         <div className="features-grid">
           {[
             { icon: <Globe />, title: "AI Gateway", desc: "Unified OpenAI-compatible API across OpenAI, Anthropic, Google, Groq, Cohere, and any custom endpoint. Automatic provider routing by model name.", color: "#3b82f6" },
-            { icon: <Shield />, title: "Guardrails & Moderations", desc: "Real-time input/output scanning for prompt injection, PII, toxic content, and secret leakage. Plus a local /v1/moderations endpoint — no external API calls.", color: "#ef4444" },
+            { icon: <Shield />, title: "Guardrails & Moderations", desc: "Real-time input/output scanning for prompt injection, PII, toxic content, and secret leakage. Rules are precompiled and scanned in a single pass by an embedded Rust-WASM engine with a pure-Go fallback. Plus a local /v1/moderations endpoint.", color: "#ef4444" },
             { icon: <Lock />, title: "Virtual Key Vault", desc: "AES-256-GCM encrypted credential store. Create virtual API keys with rate limits, token budgets, and zero-downtime rotation.", color: "#f59e0b" },
             { icon: <Zap />, title: "Semantic Cache", desc: "Exact-match and vector-similarity caching in SQLite. Dramatically reduce latency and costs for repeated or similar agent queries.", color: "#10b981" },
             { icon: <Key />, title: "JWT/OIDC Authentication", desc: "Validate signed JWTs against any OIDC provider with JWKS auto-rotation. Map custom claims to roles, workspaces, and organizations.", color: "#06b6d4" },
@@ -340,9 +338,10 @@ console.log(response.choices[0].message.content);` : `curl -X POST http://localh
             { icon: <Search />, title: "Rerank Endpoint", desc: "Provider-neutral /v1/rerank API for RAG retrieval stacks with native Cohere support. Reuses auth, budgets, guardrails, and full logging.", color: "#f97316" },
             { icon: <Users />, title: "A2A Protocol", desc: "Agent-to-Agent v1 support with Agent Card discovery and SendMessage JSON-RPC. Route inter-agent communication through the full gateway pipeline.", color: "#ec4899" },
             { icon: <Layers />, title: "MCP Gateway", desc: "Federate multiple MCP servers over HTTP and stdio. Policy-gated tool execution with namespaced tool discovery and audit logging.", color: "#14b8a6" },
-            { icon: <Activity />, title: "Observability", desc: "Built-in dashboard with real-time metrics, request logs, cost tracking, OpenTelemetry export, and per-provider analytics.", color: "#a855f7" },
+            { icon: <Activity />, title: "Observability", desc: "Built-in dashboard with real-time metrics, request logs, per-request trace waterfalls, cost tracking, OpenTelemetry export to Langfuse or Jaeger, and per-provider analytics.", color: "#a855f7" },
             { icon: <Cloud />, title: "Redis HA Rate Limiting", desc: "Distributed rate limiting with atomic Lua scripts for multi-instance deployments. Fail-closed by default with startup health checks.", color: "#ef4444" },
             { icon: <Box />, title: "Kubernetes Ready", desc: "Production Kubernetes manifests with Deployment, Service, ConfigMap, Redis StatefulSet, and Kustomization. Deploy a full HA stack in minutes.", color: "#6366f1" },
+            { icon: <RefreshCw />, title: "Config Hot-Reload", desc: "Edit routes, guardrails, cache posture, circuit breaker, and shadow routing while serving - no restart. Invalid config files keep the last-known-good state.", color: "#0ea5e9" },
           ].map((f, i) => (
             <div key={i} className={`reveal delay-${(i % 3) + 1}`}>
               <div className="feature-card">
@@ -429,6 +428,9 @@ console.log(response.choices[0].message.content);` : `curl -X POST http://localh
                 ["Local Moderations API", true, false, false],
                 ["Distributed Redis Rate Limiting", true, false, false],
                 ["Shadow Routing", true, false, false],
+                ["Hot Config Reload (Self-Hosted)", true, false, true],
+                ["Rust-Accelerated Guardrails", true, false, false],
+                ["Per-Request Trace Waterfall", true, true, false],
                 ["Built-in Dashboard", true, true, false],
                 ["Kubernetes Manifests", true, false, true],
                 ["Single Binary Deploy", true, false, true],

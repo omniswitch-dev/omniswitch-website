@@ -62,7 +62,7 @@ const comparisonData = [
     area: 'Observability & Prompts',
     category: 'ops',
     desc: 'Logs, metrics, tracing, feedback, and prompt workflows.',
-    omniswitch: { status: 'yes', detail: 'Hosted logs, analytics, OpenTelemetry, feedback, prompt versioning, and runtime rendering.' },
+    omniswitch: { status: 'yes', detail: 'SQLite logs with per-request trace waterfalls, feedback, prompt versioning, OTLP export (Langfuse/Jaeger), Prometheus metrics, and runtime rendering.' },
     portkey: { status: 'yes', detail: 'Hosted logs, analytics, OpenTelemetry, feedback, prompt library, experiments, and release workflows.' },
     agentgateway: { status: 'yes', detail: 'OpenTelemetry metrics/logs/traces and agent/protocol telemetry; route-level prompt enrichment.' }
   },
@@ -70,7 +70,7 @@ const comparisonData = [
     area: 'MCP Gateway',
     category: 'protocols',
     desc: 'Tool discovery, federation, credential handling, and policy enforcement.',
-    omniswitch: { status: 'yes', detail: 'Built-in HTTP and stdio MCP federation, policy-gated tools, OpenAPI conversion, and OAuth.' },
+    omniswitch: { status: 'yes', detail: 'Built-in HTTP, SSE/streamable-HTTP and stdio MCP federation with policy-gated tool calls, target headers, delegated OIDC bearers, and audit logging.' },
     portkey: { status: 'yes', detail: 'Remote MCP server connectivity through its gateway platform.' },
     agentgateway: { status: 'yes', detail: 'MCP federation across stdio, HTTP, SSE, and streamable HTTP, with OpenAPI integration and OAuth.' }
   },
@@ -78,7 +78,7 @@ const comparisonData = [
     area: 'Agent-to-Agent (A2A)',
     category: 'protocols',
     desc: 'Native discovery and task communication between agents.',
-    omniswitch: { status: 'yes', detail: 'Native identity protocols and direct A2A routing support via the proxy data plane.' },
+    omniswitch: { status: 'yes', detail: 'Agent Card discovery and authenticated JSON-RPC SendMessage routed through the full gateway pipeline (auth, guardrails, cache, budgets).' },
     portkey: { status: 'no', detail: 'Not a documented first-class gateway protocol.' },
     agentgateway: { status: 'yes', detail: 'Native A2A connectivity, capability discovery, modality negotiation, and collaboration.' }
   },
@@ -86,7 +86,7 @@ const comparisonData = [
     area: 'Deployment & High Availability',
     category: 'ops',
     desc: 'Operational model and scale-out infrastructure.',
-    omniswitch: { status: 'yes', detail: 'Shared database, config hot reload, HA control plane, and zero external dependencies (Go binary).' },
+    omniswitch: { status: 'yes', detail: 'Config hot-reload (routes, guardrails, cache posture) with no restarts, Redis-coordinated rate limiting across replicas, single Go binary. Keys and logs are SQLite-local today.' },
     portkey: { status: 'yes', detail: 'Hosted platform plus self-hosted gateway options.' },
     agentgateway: { status: 'yes', detail: 'Standalone and Kubernetes control-plane/data-plane deployment with Gateway API integration.' }
   }
