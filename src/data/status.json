@@ -1,0 +1,60 @@
+{
+  "updated": "2026-09-11",
+  "source": "omniswitch README.md, ROADMAP.md, docs/PORTKEY_COMPARISON.md",
+  "columns": [
+    {
+      "key": "stable",
+      "title": "Stable in beta",
+      "pill": "Won't break before 1.0",
+      "items": [
+        {
+          "text": "Chat completions, embeddings, models, rerank",
+          "detail": "OpenAI-compatible request and response shapes"
+        },
+        { "text": "Routing: fallbacks, weighted variants, retries, timeouts, CEL conditions" },
+        { "text": "API keys, per-key budgets, rate limits (local or Redis)" },
+        { "text": "Built-in guardrails and regex rules, hot-reloaded" },
+        { "text": "Exact cache, SQLite logs, Prometheus /metrics, OTLP export" },
+        { "text": "Binary, Docker, Compose, Kubernetes manifests" }
+      ]
+    },
+    {
+      "key": "beta",
+      "title": "Beta — may change",
+      "pill": "Feedback wanted",
+      "items": [
+        {
+          "text": "Responses API and Anthropic Messages",
+          "detail": "Subsets; unsupported fields are listed in docs/API.md"
+        },
+        {
+          "text": "Semantic cache",
+          "detail": "Normalized token-frequency cosine similarity, not embeddings; scope and threshold semantics still being tuned"
+        },
+        { "text": "MCP gateway: HTTP/stdio federation, policy gating" },
+        {
+          "text": "A2A: Agent Card and SendMessage",
+          "detail": "No task lifecycle, streaming, or push notifications yet"
+        },
+        { "text": "OIDC/JWKS identity and CEL authorization" },
+        { "text": "Webhook guardrail connectors" }
+      ]
+    },
+    {
+      "key": "soon",
+      "title": "Not yet",
+      "pill": "Roadmap",
+      "items": [
+        {
+          "text": "Multi-replica shared state",
+          "detail": "Keys, logs and budgets are SQLite-local today; Redis covers rate limits only"
+        },
+        { "text": "Postgres storage driver" },
+        { "text": "SAML, SCIM, mTLS" },
+        { "text": "Image, audio, batch and file endpoints" },
+        { "text": "Evals and experiments beyond policy replay" },
+        { "text": "Guardrail-triggered reroute" }
+      ]
+    }
+  ]
+}

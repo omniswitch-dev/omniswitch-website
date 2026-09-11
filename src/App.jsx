@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { 
-  Shield, Zap, Activity, Lock, Globe, CheckCircle2, XCircle, 
+  Shield, Zap, Activity, Lock, Globe, CheckCircle2, 
   GitBranch, ArrowRight, Terminal, Layers, Server, 
   Database, Cpu, BookOpen, ExternalLink, 
   Star, Copy, Menu, X, Key, Search, Users, Cloud, Box, Scale, RefreshCw
@@ -8,6 +8,15 @@ import {
 import Docs from './Docs';
 import ApiReference from './ApiReference';
 import Comparison from './Comparison';
+import Quickstart from './Quickstart';
+import Install from './Install';
+import Benchmarks from './Benchmarks';
+import Security from './Security';
+import Community from './Community';
+import Roadmap from './Roadmap';
+import Changelog from './Changelog';
+import statusData from './data/status.json';
+import benchmarksData from './data/benchmarks.json';
 import './index.css';
 
 function App() {
@@ -105,9 +114,10 @@ function App() {
       
       {/* Announcement Bar */}
       <div className="announcement-bar">
-        <span>🚀 OmniSwitch v0.1.0 is now open source — </span>
-        <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer">
-          Star us on GitHub <ArrowRight size={14} />
+        <span className="pill pill-beta" style={{ marginRight: '0.5rem' }}>Public beta</span>
+        <span>OmniSwitch v0.2.0-beta is open. Chat, routing and guardrails are stable; MCP and A2A are still changing. — </span>
+        <a href="/#status" onClick={(e) => { e.preventDefault(); navigate('home'); setTimeout(() => document.getElementById('status')?.scrollIntoView({ behavior: 'smooth' }), 50); }}>
+          See what's stable <ArrowRight size={14} />
         </a>
       </div>
 
@@ -119,10 +129,11 @@ function App() {
         </a>
         <nav className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
           <NavLink page="home" label="Product" />
+          <NavLink page="quickstart" label="Quickstart" />
           <NavLink page="docs" label="Docs" />
-          <NavLink page="api" label="API Reference" />
+          <NavLink page="benchmarks" label="Benchmarks" />
           <NavLink page="comparison" label="Compare" />
-          <NavLink page="about" label="About" />
+          <NavLink page="changelog" label="Changelog" />
           <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="nav-link">GitHub <ExternalLink size={12} /></a>
           <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary mobile-only-btn">
             <GitBranch size={18} /> Get Started
@@ -142,8 +153,15 @@ function App() {
       {currentPage === 'home' && <Home navigate={navigate} />}
       {currentPage === 'docs' && <Docs />}
       {currentPage === 'api' && <ApiReference />}
-      {currentPage === 'comparison' && <Comparison />}
-      {currentPage === 'about' && <About />}
+      {currentPage === 'comparison' && <Comparison navigate={navigate} />}
+      {currentPage === 'quickstart' && <Quickstart navigate={navigate} />}
+      {currentPage === 'install' && <Install />}
+      {currentPage === 'benchmarks' && <Benchmarks />}
+      {currentPage === 'security' && <Security />}
+      {currentPage === 'community' && <Community navigate={navigate} />}
+      {currentPage === 'roadmap' && <Roadmap />}
+      {currentPage === 'changelog' && <Changelog />}
+      {currentPage === 'about' && <About navigate={navigate} />}
 
       {/* Footer */}
       <footer>
@@ -159,14 +177,18 @@ function App() {
           <div className="footer-col">
             <h4>Product</h4>
             <a href="/" onClick={(e) => { e.preventDefault(); navigate('home'); }}>Features</a>
+            <a href="/quickstart" onClick={(e) => { e.preventDefault(); navigate('quickstart'); }}>Quickstart</a>
+            <a href="/benchmarks" onClick={(e) => { e.preventDefault(); navigate('benchmarks'); }}>Benchmarks</a>
             <a href="/comparison" onClick={(e) => { e.preventDefault(); navigate('comparison'); }}>Comparison</a>
             <a href="/api" onClick={(e) => { e.preventDefault(); navigate('api'); }}>API Reference</a>
-            <a href="https://github.com/omniswitch-dev/omniswitch/releases" target="_blank" rel="noreferrer">Changelog</a>
+            <a href="/changelog" onClick={(e) => { e.preventDefault(); navigate('changelog'); }}>Changelog</a>
           </div>
           <div className="footer-col">
             <h4>Resources</h4>
             <a href="/docs" onClick={(e) => { e.preventDefault(); navigate('docs'); }}>Documentation</a>
-            <a href="/docs" onClick={(e) => { e.preventDefault(); navigate('docs'); }}>Quickstart Guide</a>
+            <a href="/install" onClick={(e) => { e.preventDefault(); navigate('install'); }}>Install guide</a>
+            <a href="/security" onClick={(e) => { e.preventDefault(); navigate('security'); }}>Security policy</a>
+            <a href="/roadmap" onClick={(e) => { e.preventDefault(); navigate('roadmap'); }}>Roadmap</a>
             <a href="/about" onClick={(e) => { e.preventDefault(); navigate('about'); }}>About</a>
           </div>
           <div className="footer-col">
@@ -174,6 +196,7 @@ function App() {
             <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer">GitHub</a>
             <a href="https://github.com/omniswitch-dev/omniswitch/issues" target="_blank" rel="noreferrer">Report a Bug</a>
             <a href="https://github.com/omniswitch-dev/omniswitch/discussions" target="_blank" rel="noreferrer">Discussions</a>
+            <a href="/community" onClick={(e) => { e.preventDefault(); navigate('community'); }}>Beta feedback</a>
           </div>
         </div>
       </footer>
@@ -186,6 +209,7 @@ function Home({ navigate }) {
   const [copied, setCopied] = useState(false);
   const [activeCodeTab, setActiveCodeTab] = useState('Python');
   const installCmd = 'curl -fsSL https://raw.githubusercontent.com/omniswitch-dev/omniswitch/main/install.sh | sh';
+  const benchmarksPending = benchmarksData.state === 'pending';
 
   const handleCopy = () => {
     navigator.clipboard.writeText(installCmd);
@@ -193,90 +217,71 @@ function Home({ navigate }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const goto = (page) => (e) => { e.preventDefault(); navigate(page); };
+
+  const nativeProviders = ['OpenAI', 'Anthropic', 'Google Gemini', 'Groq', 'Cohere', 'Azure OpenAI', 'AWS Bedrock'];
+  const presetProviders = ['Mistral', 'DeepSeek', 'xAI', 'Together', 'Fireworks', 'OpenRouter', 'Ollama', 'vLLM'];
+
   return (
     <>
       {/* Hero */}
       <section className="hero">
         <div className="hero-content">
           <div className="hero-badge">
-            <Star size={14} /> Open Source &middot; Apache 2.0
+            <Star size={14} /> Open Source &middot; Apache-2.0 &middot; Single Go Binary
           </div>
           <h1 className="hero-title">
-            One Gateway for <span>All Your AI Traffic</span>
+            One base URL for <span>every model</span>. Fallbacks, guardrails and tracing included.
           </h1>
           <p className="hero-description">
-            OmniSwitch is an open-source AI gateway built for production teams. Route across OpenAI, Anthropic, Google, Groq, Cohere, Azure, Bedrock, and any OpenAI-compatible endpoint. Enforce guardrails, cache responses, manage budgets, and observe everything from a single binary.
+            OmniSwitch is a self-hosted, OpenAI-compatible AI gateway. Keep the SDK you already use — change one line —
+            and get provider fallbacks, per-app keys and budgets, local guardrails, and a request trace for every call.
+            It's an early public beta: see the <a href="#status" onClick={(e) => { e.preventDefault(); document.getElementById('status')?.scrollIntoView({ behavior: 'smooth' }); }}>status board</a> below for what's stable.
           </p>
           <div className="install-bar" onClick={handleCopy}>
             <Terminal size={16} />
             <code>{installCmd}</code>
             <button className="copy-btn">{copied ? <CheckCircle2 size={16} /> : <Copy size={16} />}</button>
           </div>
+          <p className="alt-install">
+            Also: <a href="/install" onClick={goto('install')}>brew install omniswitch-dev/tap/omniswitch</a> ·{' '}
+            <a href="/install" onClick={goto('install')}>docker run ghcr.io/omniswitch-dev/omniswitch</a> ·{' '}
+            <a href="/install" onClick={goto('install')}>Helm chart</a>
+          </p>
           <div className="hero-actions">
-            <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary btn-lg">
-              <GitBranch size={20} /> View on GitHub
+            <a href="#quickstart" onClick={(e) => { e.preventDefault(); navigate('quickstart'); }} className="btn-primary btn-lg">
+              <GitBranch size={20} /> Run it in 2 minutes
             </a>
-            <a href="/docs" onClick={(e) => { e.preventDefault(); navigate('docs'); }} className="btn-secondary btn-lg">
-              <BookOpen size={20} /> Read the Docs
+            <a href="/benchmarks" onClick={goto('benchmarks')} className="btn-secondary btn-lg">
+              <Activity size={20} /> Read the benchmarks
             </a>
           </div>
-          <div className="hero-stats">
-            <div className="stat-item">
-              <span className="stat-value">13</span>
-              <span className="stat-label">Production Modules</span>
+          <div className="hero-facts">
+            <div className="hero-fact">
+              <span className="v">1 binary</span>
+              <span className="l">SQLite built in · Redis optional</span>
             </div>
-            <div className="stat-item">
-              <span className="stat-value">8</span>
-              <span className="stat-label">Native Providers</span>
+            <div className="hero-fact">
+              <span className="v">7 + any</span>
+              <span className="l">native adapters + OpenAI-compatible</span>
             </div>
-            <div className="stat-item">
-              <span className="stat-value">0</span>
-              <span className="stat-label">Dependencies</span>
+            <div className="hero-fact">
+              <span className="v">Apache-2.0</span>
+              <span className="l">no enterprise fork</span>
             </div>
-            <div className="stat-item">
-              <span className="stat-value">100%</span>
-              <span className="stat-label">Self-Hosted</span>
+            <div className="hero-fact">
+              <span className="v">{benchmarksPending ? 'pending' : 'v0.2.0-beta'}</span>
+              <span className="l">{benchmarksPending ? (
+                <a href="/benchmarks" onClick={goto('benchmarks')}>first cross-gateway run · see methodology</a>
+              ) : 'current release'}</span>
             </div>
           </div>
         </div>
-        <div className="hero-image-wrapper">
-          <img 
-            src="/dashboard-mockup.png" 
-            alt="OmniSwitch AI Gateway Dashboard" 
-            className="hero-dashboard-img" 
-            fetchpriority="high" 
-            loading="eager" 
-          />
-        </div>
-      </section>
-
-      {/* Providers Marquee */}
-      <section className="providers-section">
-        <p className="providers-label">Works with every major AI provider</p>
-        <div className="providers-marquee">
-          <div className="marquee-track">
-            {['OpenAI', 'Anthropic', 'Google Gemini', 'Groq', 'Ollama', 'vLLM', 'DeepSeek', 'Mistral', 'Cohere', 'Together AI', 'Azure OpenAI', 'AWS Bedrock'].map((p, i) => (
-              <span key={i} className="provider-chip">{p}</span>
-            ))}
-            {['OpenAI', 'Anthropic', 'Google Gemini', 'Groq', 'Ollama', 'vLLM', 'DeepSeek', 'Mistral', 'Cohere', 'Together AI', 'Azure OpenAI', 'AWS Bedrock'].map((p, i) => (
-              <span key={`dup-${i}`} className="provider-chip">{p}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="how-it-works">
-        <div className="section-header reveal">
-          <div className="section-badge">How It Works</div>
-          <h2 className="section-title">Integrate in 3 Lines of Code</h2>
-          <p className="section-subtitle">OmniSwitch is 100% OpenAI-compatible. Point your existing SDK to OmniSwitch and you're done.</p>
-        </div>
-        <div className="code-showcase reveal delay-2">
+        <div className="term-card">
           <div className="code-tabs">
             {['Python', 'Node.js', 'cURL'].map(tab => (
-              <span 
-                key={tab} 
+              <span
+                key={tab}
                 className={`code-tab ${activeCodeTab === tab ? 'active' : ''}`}
                 onClick={() => setActiveCodeTab(tab)}
               >
@@ -287,35 +292,95 @@ function Home({ navigate }) {
           <div className="code-block">
             <pre><code>{activeCodeTab === 'Python' ? `from openai import OpenAI
 
-# Just change the base_url — everything else stays the same
 client = OpenAI(
-    base_url="http://localhost:8080/v1",
-    api_key="sk-omniswitch-your-key"
+    base_url="http://localhost:8080/v1",   # ← the only change
+    api_key="sk-omniswitch-…",
 )
 
-response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[{"role": "user", "content": "Hello, OmniSwitch!"}]
+r = client.chat.completions.create(
+    model="smart-model",                   # a route, not a vendor model
+    messages=[{"role": "user", "content": "Summarize this ticket…"}],
 )
-print(response.choices[0].message.content)` : activeCodeTab === 'Node.js' ? `import OpenAI from 'openai';
+print(r.choices[0].message.content)` : activeCodeTab === 'Node.js' ? `import OpenAI from 'openai';
 
-// Just change the baseURL — everything else stays the same
-const openai = new OpenAI({
-  baseURL: 'http://localhost:8080/v1',
-  apiKey: 'sk-omniswitch-your-key'
+const client = new OpenAI({
+  baseURL: 'http://localhost:8080/v1',   // ← the only change
+  apiKey: 'sk-omniswitch-…',
 });
 
-const response = await openai.chat.completions.create({
-  model: 'gpt-4o-mini',
-  messages: [{ role: 'user', content: 'Hello, OmniSwitch!' }]
+const r = await client.chat.completions.create({
+  model: 'smart-model',                  // a route, not a vendor model
+  messages: [{ role: 'user', content: 'Summarize this ticket…' }],
 });
-console.log(response.choices[0].message.content);` : `curl -X POST http://localhost:8080/v1/chat/completions \\
+console.log(r.choices[0].message.content);` : `curl http://localhost:8080/v1/chat/completions \\
   -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer sk-omniswitch-your-key" \\
+  -H "Authorization: Bearer sk-omniswitch-…" \\
   -d '{
-    "model": "gpt-4o-mini",
-    "messages": [{"role": "user", "content": "Hello, OmniSwitch!"}]
+    "model": "smart-model",
+    "messages": [{"role": "user", "content": "Summarize this ticket…"}]
   }'`}</code></pre>
+          </div>
+          <div className="term-log">
+            <div><span className="t">12:04:11.021</span> <span className="tag tag-ok">route</span> smart-model → @openai-prod/gpt-4o-mini <span className="t">guardrails: pii=redact ✓</span></div>
+            <div><span className="t">12:04:11.842</span> <span className="tag tag-warn">retry</span> 429 from openai-prod · backoff 200ms · attempt 2/3</div>
+            <div><span className="t">12:04:12.050</span> <span className="tag tag-warn">fallback</span> → @anthropic-prod/claude-sonnet</div>
+            <div><span className="t">12:04:12.913</span> <span className="tag tag-ok">200</span> 863 ms · 412 tok · trace <span className="s">/traces/9f2c…</span></div>
+          </div>
+        </div>
+      </section>
+
+      {/* Providers strip */}
+      <section className="providers-section">
+        <div className="providers-strip">
+          <span className="providers-label">Providers</span>
+          {nativeProviders.map(p => <span key={p} className="chip chip-native">{p}</span>)}
+          {presetProviders.map(p => <span key={p} className="chip">{p}</span>)}
+          <span className="chip chip-more">+ any OpenAI-compatible URL</span>
+        </div>
+        <p className="providers-legend">Highlighted chips are native adapters · plain chips are one-env-var presets over the OpenAI-compatible custom provider.</p>
+      </section>
+
+      {/* Quickstart */}
+      <section id="quickstart" className="quickstart">
+        <div className="section-header reveal">
+          <div className="section-badge">Quickstart</div>
+          <h2 className="section-title">From zero to a governed request in three steps</h2>
+          <p className="section-subtitle">No account, no cloud control plane, no SDK swap. Everything below runs on your laptop; the same binary runs in Docker or Kubernetes.</p>
+        </div>
+        <div className="qs-steps reveal delay-2">
+          <div className="qs-step">
+            <div className="num">1</div>
+            <h3>Install and start</h3>
+            <p>One binary. SQLite is embedded, so there is nothing else to run.</p>
+            <pre>{`curl -fsSL https://…/install.sh | sh
+OPENAI_API_KEY=sk-… omniswitch serve
+# → gateway on :8080, dashboard at /
+# → bootstrap key printed once: sk-omniswitch-…`}</pre>
+            <span className="hint">Prefer containers? <a href="/install" onClick={goto('install')}>docker compose up -d</a></span>
+          </div>
+          <div className="qs-step">
+            <div className="num">2</div>
+            <h3>Point your SDK at it</h3>
+            <p>Any OpenAI client works. Use the bootstrap key or mint per-app keys with budgets.</p>
+            <pre>{`client = OpenAI(
+  base_url="http://localhost:8080/v1",
+  api_key="sk-omniswitch-…")
+client.chat.completions.create(
+  model="gpt-4o-mini", messages=[…])`}</pre>
+            <span className="hint">Also speaks /v1/messages (Anthropic) and /v1/responses (subset).</span>
+          </div>
+          <div className="qs-step">
+            <div className="num">3</div>
+            <h3>Add a route with a fallback</h3>
+            <p>Edit YAML; it hot-reloads. A bad file is rejected and the last-good config stays live.</p>
+            <pre>{`routes:
+  smart-model:
+    fallbacks: ["@anthropic-prod"]
+    max_retries: 2
+    retry_codes: [429, 502, 503]
+    variants:
+      - model: "@openai-prod/gpt-4o-mini"`}</pre>
+            <span className="hint">Full walkthrough in the <a href="/quickstart" onClick={goto('quickstart')}>Quickstart guide</a>.</span>
           </div>
         </div>
       </section>
@@ -325,14 +390,14 @@ console.log(response.choices[0].message.content);` : `curl -X POST http://localh
         <div className="section-header reveal">
           <div className="section-badge">Core Modules</div>
           <h2 className="section-title">Everything You Need to Ship AI to Production</h2>
-          <p className="section-subtitle">Thirteen production-grade modules in a single binary — from inference routing to agent protocols.</p>
+          <p className="section-subtitle">A single binary covering inference routing, guardrails, budgets, and agent protocols. Some modules are still beta — see the status board below.</p>
         </div>
         <div className="features-grid">
           {[
             { icon: <Globe />, title: "AI Gateway", desc: "Unified OpenAI-compatible API across OpenAI, Anthropic, Google, Groq, Cohere, and any custom endpoint. Automatic provider routing by model name.", color: "#3b82f6" },
             { icon: <Shield />, title: "Guardrails & Moderations", desc: "Real-time input/output scanning for prompt injection, PII, toxic content, and secret leakage. Rules are precompiled and scanned in a single pass by an embedded Rust-WASM engine with a pure-Go fallback. Plus a local /v1/moderations endpoint.", color: "#ef4444" },
             { icon: <Lock />, title: "Virtual Key Vault", desc: "AES-256-GCM encrypted credential store. Create virtual API keys with rate limits, token budgets, and zero-downtime rotation.", color: "#f59e0b" },
-            { icon: <Zap />, title: "Semantic Cache", desc: "Exact-match and vector-similarity caching in SQLite. Dramatically reduce latency and costs for repeated or similar agent queries.", color: "#10b981" },
+            { icon: <Zap />, title: "Semantic Cache", desc: "Exact and similarity-based semantic cache in SQLite, on top of exact-match caching. Reduces latency and cost for repeated or similar agent queries; scope and threshold semantics are still being tuned in beta.", color: "#10b981" },
             { icon: <Key />, title: "JWT/OIDC Authentication", desc: "Validate signed JWTs against any OIDC provider with JWKS auto-rotation. Map custom claims to roles, workspaces, and organizations.", color: "#06b6d4" },
             { icon: <Scale />, title: "CEL Authorization", desc: "Fine-grained allow/deny rules using Common Expression Language. Control access by method, path, model, role, workspace, or custom JWT claims.", color: "#8b5cf6" },
             { icon: <Search />, title: "Rerank Endpoint", desc: "Provider-neutral /v1/rerank API for RAG retrieval stacks with native Cohere support. Reuses auth, budgets, guardrails, and full logging.", color: "#f97316" },
@@ -396,67 +461,130 @@ console.log(response.choices[0].message.content);` : `curl -X POST http://localh
         </div>
       </section>
 
-      {/* Comparison */}
+      {/* Status board */}
+      <section id="status" className="status-section">
+        <div className="section-header reveal">
+          <div className="section-badge">Beta status</div>
+          <h2 className="section-title">What is stable, what is beta, what is not here yet</h2>
+          <p className="section-subtitle">We would rather you know before you build on it. Updated every release; tracked in the changelog.</p>
+        </div>
+        <div className="status-board reveal delay-2">
+          {statusData.columns.map(col => (
+            <div key={col.key} className={`status-col ${col.key}`}>
+              <header>
+                <h3>{col.title}</h3>
+                <span className={`pill pill-${col.key === 'soon' ? 'soon' : col.key}`}>{col.pill}</span>
+              </header>
+              <ul>
+                {col.items.map((item, i) => (
+                  <li key={i}>
+                    <span>{item.text}{item.detail && <small>{item.detail}</small>}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p className="status-note">
+          Something here wrong or missing? <a href="https://github.com/omniswitch-dev/omniswitch/issues/new" target="_blank" rel="noreferrer">Open a "beta-status" issue</a>.
+          Sourced from {statusData.source}, updated {statusData.updated}.
+        </p>
+      </section>
+
+      {/* Benchmarks teaser */}
+      <section className="bench-teaser-section">
+        <div className="bench-teaser reveal">
+          <div className="bench-teaser-panel">
+            <div className="section-badge" style={{ marginBottom: 0 }}>Benchmarks</div>
+            <h2 className="section-title">Numbers we publish — and how we got them</h2>
+            <p>A gateway adds latency; the question is how much and how it behaves under failure. We plan to run OmniSwitch
+            and other self-hosted gateways on the same pinned hardware against a mock backend, publish the raw runs, and
+            say plainly what the numbers do not mean.</p>
+            <ul className="docs-list">
+              <li>Same machine, same mock backend, same load generator, five repetitions</li>
+              <li>Versions and commit SHAs pinned; configs published as-run</li>
+              <li>Raw JSON, manifests and Dockerfiles downloadable per run</li>
+              <li>Corrections from other maintainers get a re-run and a changelog entry</li>
+            </ul>
+            <div className="hero-actions" style={{ margin: 0 }}>
+              <a href="/benchmarks" onClick={(e) => { e.preventDefault(); navigate('benchmarks'); }} className="btn-primary">Read the benchmark page</a>
+              <a href="https://github.com/omniswitch-dev/omniswitch/blob/main/BENCHMARKS.md" target="_blank" rel="noreferrer" className="btn-secondary">Reproduce it yourself</a>
+            </div>
+          </div>
+          <div className="bench-teaser-panel">
+            {benchmarksPending ? (
+              <>
+                <div className="pill pill-beta" style={{ marginBottom: '0.8rem' }}>Cross-gateway run: pending</div>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '0.8rem' }}>
+                  No cross-gateway comparison has run yet. The one number we can show today is the guardrail-scanning
+                  micro-benchmark from BENCHMARKS.md, measured on a laptop-class machine — not the pinned rig this page
+                  will use once the harness lands.
+                </p>
+                <div className="kpi-grid">
+                  {benchmarksData.kpis.map((k, i) => (
+                    <div key={i} className="kpi-tile ghost">
+                      <div className="l">{k.label}</div>
+                      <div className="v">&mdash;</div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <p>Published results — see the benchmarks page.</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Community */}
+      <section className="community-section">
+        <div className="section-header reveal">
+          <div className="section-badge">Community</div>
+          <h2 className="section-title">Help us finish the beta</h2>
+          <p className="section-subtitle">Here is what we need most and where the conversation happens.</p>
+        </div>
+        <div className="community-grid reveal delay-2">
+          <div className="community-card">
+            <h3>Try it on real traffic</h3>
+            <p>Put OmniSwitch in front of one app, one route, one fallback. Tell us what broke, what confused you, and what you had to read the source to figure out.</p>
+            <a className="link" href="https://github.com/omniswitch-dev/omniswitch/issues/new?template=beta-feedback.yml" target="_blank" rel="noreferrer">Beta feedback template →</a>
+          </div>
+          <div className="community-card">
+            <h3>Good first issues</h3>
+            <p>Provider presets, docs gaps, dashboard rough edges and test coverage are labelled and scoped for a first PR.</p>
+            <a className="link" href="https://github.com/omniswitch-dev/omniswitch/issues?q=is%3Aopen+is%3Aissue+label%3Agood-first-issue" target="_blank" rel="noreferrer">Issues labelled good-first-issue →</a>
+          </div>
+          <div className="community-card">
+            <h3>Discussions and roadmap</h3>
+            <p>Design proposals, changelog, and beta exit criteria live in GitHub Discussions. Security reports go through SECURITY.md, not issues.</p>
+            <a className="link" href="/community" onClick={(e) => { e.preventDefault(); navigate('community'); }}>Join the discussion →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* Why OmniSwitch */}
       <section id="comparison" className="comparison">
         <div className="section-header reveal">
           <div className="section-badge">Why OmniSwitch</div>
-          <h2 className="section-title">Open-Source. Self-Hosted. Zero Lock-In.</h2>
-          <p className="section-subtitle">See how OmniSwitch stacks up against other AI gateways.</p>
+          <h2 className="section-title">Open-Source. Self-Hosted. No Vendor Lock-In.</h2>
+          <p className="section-subtitle">A detailed, footnoted feature comparison against other AI gateways lives on its own page — several rows are partial, not full support, and we say so.</p>
         </div>
-        <div className="comparison-table-wrapper reveal delay-2">
-          <table className="comparison-table">
-            <thead>
-              <tr>
-                <th>Capability</th>
-                <th className="highlight-col">OmniSwitch</th>
-                <th>Portkey</th>
-                <th>AgentGateway</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                ["OpenAI-Compatible API", true, true, true],
-                ["Custom Endpoints (Ollama, vLLM)", true, true, true],
-                ["Virtual Key Management", true, true, true],
-                ["Input/Output Guardrails", true, true, true],
-                ["JWT/OIDC Authentication", true, false, true],
-                ["CEL Authorization Policies", true, false, true],
-                ["Semantic Caching", true, true, false],
-                ["Rerank Endpoint (RAG)", true, false, false],
-                ["A2A Protocol Support", true, false, true],
-                ["MCP Gateway (HTTP + stdio)", true, true, true],
-                ["Local Moderations API", true, false, false],
-                ["Distributed Redis Rate Limiting", true, false, false],
-                ["Shadow Routing", true, false, false],
-                ["Hot Config Reload (Self-Hosted)", true, false, true],
-                ["Rust-Accelerated Guardrails", true, false, false],
-                ["Per-Request Trace Waterfall", true, true, false],
-                ["Built-in Dashboard", true, true, false],
-                ["Kubernetes Manifests", true, false, true],
-                ["Single Binary Deploy", true, false, true],
-                ["100% Free & OSS", true, false, true],
-              ].map(([feature, os, pk, ag], i) => (
-                <tr key={i}>
-                  <td>{feature}</td>
-                  <td className="highlight-col">{os ? <Check /> : <Cross />}</td>
-                  <td>{pk ? <Check /> : <Cross />}</td>
-                  <td>{ag ? <Check /> : <Cross />}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="hero-actions reveal delay-2" style={{ justifyContent: 'center' }}>
+          <a href="/comparison" onClick={(e) => { e.preventDefault(); navigate('comparison'); }} className="btn-primary btn-lg">
+            See the full comparison <ArrowRight size={20} />
+          </a>
         </div>
       </section>
 
       {/* CTA */}
       <section className="cta">
         <div className="cta-content reveal">
-          <h2 className="cta-title">Start Building with OmniSwitch Today</h2>
+          <h2 className="cta-title">Put a Gateway in Front of Your App This Afternoon</h2>
           <p className="cta-desc">
-            Deploy in under 60 seconds. One binary. No vendor lock-in. Full control over your AI infrastructure.
+            One binary. No vendor lock-in. Full control over your AI infrastructure — still in public beta.
           </p>
           <div className="hero-actions" style={{ justifyContent: 'center' }}>
-            <a href="https://github.com/omniswitch-dev/omniswitch" target="_blank" rel="noreferrer" className="btn-primary btn-lg">
+            <a href="/quickstart" onClick={(e) => { e.preventDefault(); navigate('quickstart'); }} className="btn-primary btn-lg">
               Get Started <ArrowRight size={20} />
             </a>
             <a href="/docs" onClick={(e) => { e.preventDefault(); navigate('docs'); }} className="btn-secondary btn-lg">
@@ -470,7 +598,7 @@ console.log(response.choices[0].message.content);` : `curl -X POST http://localh
 }
 
 /* ===== ABOUT PAGE ===== */
-function About() {
+function About({ navigate }) {
   return (
     <div className="about-container">
       <div className="section-header reveal">
@@ -489,18 +617,19 @@ function About() {
           <p>
             Existing solutions either required expensive SaaS subscriptions, heavy infrastructure (Redis, Postgres, Kafka), 
             or were too narrow in scope. We wanted something different: a single binary you can run locally or in production 
-            that handles <strong>everything</strong> — routing, security, caching, and observability — with zero external dependencies.
+            that handles <strong>most of it</strong> — routing, security, caching, and observability — with no required external services.
           </p>
           <p>
-            That's OmniSwitch. A production-grade AI gateway written in Go, powered by SQLite, and licensed under Apache 2.0. 
-            It's the infrastructure layer we wished existed when we started.
+            That's OmniSwitch. Written in Go, powered by SQLite, licensed under Apache 2.0, and built for production teams —
+            currently in public beta. Some modules are stable, others are still changing; see the{' '}
+            <a href="/#status" onClick={(e) => { e.preventDefault(); navigate('home'); setTimeout(() => document.getElementById('status')?.scrollIntoView({ behavior: 'smooth' }), 50); }}>status board</a> on the homepage.
           </p>
           
           <h3>Our Principles</h3>
           <ul className="about-principles">
             <li><strong>Local-First:</strong> Your data never leaves your network. No SaaS telemetry. No cloud lock-in.</li>
-            <li><strong>Zero Dependencies:</strong> One binary, one SQLite file. No Redis, Postgres, or message queues.</li>
-            <li><strong>OpenAI-Compatible:</strong> Drop-in replacement. Change one line of code to route through OmniSwitch.</li>
+            <li><strong>No Required External Services:</strong> One binary, one SQLite file by default. Redis is optional (multi-replica rate limits); a Postgres driver is planned but not shipped yet.</li>
+            <li><strong>OpenAI-Compatible:</strong> Change one line of code to route chat completions, embeddings, and more through OmniSwitch.</li>
             <li><strong>Security by Default:</strong> Guardrails are on by default. API keys are encrypted at rest. Every request is logged.</li>
             <li><strong>Open Source Forever:</strong> Apache 2.0. No "open core" bait-and-switch. The full product is free.</li>
           </ul>
@@ -531,9 +660,5 @@ function About() {
     </div>
   );
 }
-
-/* ===== HELPERS ===== */
-function Check() { return <CheckCircle2 className="check-icon" size={20} />; }
-function Cross() { return <XCircle className="x-icon" size={20} />; }
 
 export default App;

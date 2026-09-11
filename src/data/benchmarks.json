@@ -1,0 +1,148 @@
+{
+  "state": "pending",
+  "methodology_version": "v1",
+  "methodology_frozen": "2026-09-11",
+  "updated": "2026-09-11",
+  "run": {
+    "status": "not_scheduled",
+    "compared": "Self-hosted only: OmniSwitch plus other self-hosted OpenAI-compatible gateways (LiteLLM proxy, Bifrost, Portkey Gateway OSS, and others named in the harness repo once published).",
+    "machine": "Pinned single cloud instance, CPU-governor pinned to performance; exact SKU recorded in the run manifest once scheduled.",
+    "harness": "In development as part of the OmniSwitch beta plan (Track B). Not yet published as a standalone repo.",
+    "tracking": "Follow BENCHMARKS.md and GitHub Discussions for the harness announcement."
+  },
+  "timeline": [
+    {
+      "status": "done",
+      "label": "Guardrail micro-benchmark published",
+      "detail": "BENCHMARKS.md, 2026-09-11"
+    },
+    {
+      "status": "now",
+      "label": "Cross-gateway harness in development",
+      "detail": "Methodology v1 below is frozen; harness code is being built"
+    },
+    {
+      "status": "todo",
+      "label": "Maintainer heads-up and config review window",
+      "detail": "Before any measured run, compared projects get a chance to review their config"
+    },
+    {
+      "status": "todo",
+      "label": "Run on pinned hardware, 5 repetitions per scenario",
+      "detail": "Date to be announced once the harness lands"
+    },
+    {
+      "status": "todo",
+      "label": "Report #1 published with raw artifacts",
+      "detail": "Homepage and this page switch to the published state automatically once results.json ships"
+    }
+  ],
+  "kpis": [
+    { "label": "Added latency · p50", "detail": "64 concurrent, non-streaming, over direct-to-mock baseline" },
+    { "label": "Added latency · p99", "detail": "Same run; tail latency is the number that matters" },
+    { "label": "Throughput ceiling", "detail": "Open-loop, rate stepped until error rate exceeds 1%" },
+    { "label": "Memory · RSS", "detail": "Steady state under load, payload logging off" }
+  ],
+  "measured": {
+    "title": "Guardrail scanning · 8 rules · single pass vs per-rule regexp",
+    "environment": "AMD Ryzen 5 5500U (12 threads), Windows, Go 1.26, wazero 1.9 — laptop-class, not the pinned benchmark rig",
+    "source": "BENCHMARKS.md",
+    "rows": [
+      { "payload": "8 KB", "go": "~1.48 ms", "wasm": "~1.24 ms", "speedup": "1.19x" },
+      { "payload": "64 KB", "go": "~12.8 ms", "wasm": "~9.3 ms", "speedup": "1.38x" },
+      { "payload": "256 KB", "go": "~53.5 ms", "wasm": "~37.8 ms", "speedup": "1.42x" }
+    ],
+    "reading": "The Rust-WASM accelerator pays off for large payloads and many rules; at small sizes the WASM call overhead roughly cancels the engine advantage. The bigger real-world win was precompiling rule regexes once instead of per request.",
+    "reproduce": "go test ./internal/accel/ -bench \"First|Regexp\" -benchtime=2s"
+  },
+  "scenarios": [
+    {
+      "n": 1,
+      "title": "Non-streaming overhead",
+      "primary": true,
+      "desc": "Added latency over direct-to-mock at 64 concurrent; throughput ceiling by rate stepping.",
+      "metric": "p50 / p95 / p99 added ms, req/s before p99 doubles"
+    },
+    {
+      "n": 2,
+      "title": "Streaming TTFT",
+      "desc": "Fixed-cadence SSE chunks; does the gateway buffer, and what does it add to first byte?",
+      "metric": "TTFT delta ms, inter-chunk jitter"
+    },
+    {
+      "n": 3,
+      "title": "Upstream failure",
+      "desc": "Primary upstream returns errors mid-run. What reaches the client, how fast does fallback engage, how does recovery look?",
+      "metric": "client error rate, time to first fallback, recovery seconds"
+    },
+    {
+      "n": 4,
+      "title": "Cache hit path",
+      "desc": "Cost of serving an exact-match cache hit, with cache scope per API key.",
+      "metric": "hit latency p99, req/s"
+    },
+    {
+      "n": 5,
+      "title": "Guardrails on",
+      "desc": "Built-in PII + injection + 8 regex rules on input and output, 8 KB and 64 KB payloads.",
+      "metric": "added ms vs scenario 1"
+    },
+    {
+      "n": 6,
+      "title": "Memory and CPU",
+      "desc": "RSS and CPU seconds over a 60s run at 64 concurrent, logging on, payload logging off.",
+      "metric": "RSS MB steady, CPU ms per request"
+    }
+  ],
+  "methodology": [
+    {
+      "title": "Environment",
+      "items": [
+        "Dedicated vCPU instance, CPU governor performance, nothing else running",
+        "Load generator and gateway on the same host; mock backend on loopback",
+        "OS, kernel, Go, Rust and Python versions recorded in the run manifest",
+        "Each gateway built from a pinned tag; commit SHA recorded",
+        "Fresh process per repetition; idle period between runs"
+      ]
+    },
+    {
+      "title": "Workload",
+      "items": [
+        "Mock OpenAI-shaped backend, fixed think time, fixed-size JSON body",
+        "60s per run, warm-up discarded, 5 repetitions, median reported with min/max",
+        "Closed-loop concurrency for the table; open-loop stepping for the ceiling",
+        "Identical request bodies and headers for every gateway"
+      ]
+    },
+    {
+      "title": "Fairness controls",
+      "items": [
+        "Default quickstart configs, auth on everywhere, payload logging off everywhere",
+        "No OmniSwitch tuning; no competitor detuning; per-gateway config diffs published",
+        "Vendor-published numbers are never mixed into our tables",
+        "Maintainers of compared projects notified before the run",
+        "Managed services excluded — a network hop is not comparable to a local binary"
+      ]
+    }
+  ],
+  "reproduce": {
+    "note": "Run the micro-benchmark that exists today yourself",
+    "commands": [
+      "git clone https://github.com/omniswitch-dev/omniswitch && cd omniswitch",
+      "go test ./internal/accel/ -bench \"First|Regexp\" -benchtime=2s",
+      "go test ./internal/guardrail/ -bench . -benchtime=2s"
+    ]
+  },
+  "caveats": [
+    "Microbenchmarks against a mock. Real providers add hundreds to thousands of ms; a millisecond between gateways will not be visible to users. Tail behaviour under failure will.",
+    "One machine, one cloud, once published. Ratios travel better than absolutes — re-run on your own hardware.",
+    "Co-located load generator removes network noise but competes for CPU at the ceiling; ceilings will be conservative for everyone.",
+    "Default configs differ across gateways. We will publish per-gateway config diffs rather than normalizing features away."
+  ],
+  "not_claimed": [
+    "That OmniSwitch is \"the fastest gateway\". If top results are within noise, we will say so.",
+    "Anything about managed services, model quality, cost savings, or cache hit rates on your traffic.",
+    "Kubernetes-native strengths of control-plane gateways run standalone.",
+    "Stability across versions — every release re-runs the harness once it exists and posts regressions here."
+  ]
+}
