@@ -1,5 +1,4 @@
 import React from 'react';
-import { Server, Code, Play } from 'lucide-react';
 import './index.css';
 
 export default function ApiReference() {
@@ -7,7 +6,7 @@ export default function ApiReference() {
     <div className="api-container">
       <div className="api-header">
         <h1>API Reference</h1>
-        <p>OmniSwitch provides a unified API that is 100% compatible with the OpenAI specification.</p>
+        <p>OmniSwitch provides a unified API compatible with the OpenAI specification for chat completions, embeddings, models, and rerank. Responses and Anthropic Messages support a documented subset; see the status board on the homepage.</p>
       </div>
 
       <div className="api-endpoints">
@@ -117,7 +116,7 @@ export default function ApiReference() {
           
           <h4>Discovery</h4>
           <ul className="api-list">
-            <li><code>GET /.well-known/agent.json</code> - Returns the A2A Agent Card with skills, capabilities, and security schemes.</li>
+            <li><code>GET /.well-known/agent-card.json</code> - Returns the A2A Agent Card with skills, capabilities, and security schemes.</li>
           </ul>
         </div>
       </div>

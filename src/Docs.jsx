@@ -1,5 +1,6 @@
 import React from 'react';
 import { BookOpen, Terminal, Settings, Shield, Key, RefreshCw } from 'lucide-react';
+import { BetaBadge, KnownLimitations } from './BetaNotice';
 import './index.css';
 
 export default function Docs() {
@@ -7,6 +8,7 @@ export default function Docs() {
     <div className="docs-container">
       <div className="docs-sidebar">
         <h3>Documentation</h3>
+        <BetaBadge text="Public beta" />
         <ul>
           <li><a href="#quickstart" className="active">Quickstart</a></li>
           <li><a href="#configuration">Configuration</a></li>
@@ -20,6 +22,7 @@ export default function Docs() {
       <div className="docs-content">
         <h1 className="docs-title">OmniSwitch Documentation</h1>
         <p className="docs-intro">Learn how to deploy, configure, and scale OmniSwitch AI Gateway.</p>
+        <KnownLimitations />
 
         <section id="quickstart" className="docs-section">
           <h2><Terminal size={24} className="section-icon" /> Quickstart</h2>
@@ -157,23 +160,3 @@ curl -X POST http://localhost:8080/api/keys \\
   );
 }
 
-// Temporary icon for Globe (reusing from App if needed, but defined here to avoid missing imports)
-function Globe({ size, className }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size} height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <circle cx="12" cy="12" r="10"></circle>
-      <line x1="2" y1="12" x2="22" y2="12"></line>
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-    </svg>
-  );
-}
