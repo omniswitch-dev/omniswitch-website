@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "tag": "v0.2.0",
+  "published": false,
+  "updated": "2026-10-09",
+  "repo": "omniswitch-dev/omniswitch",
+  "docker_image": "ghcr.io/omniswitch-dev/omniswitch:0.2.0",
+  "install_script": "https://raw.githubusercontent.com/omniswitch-dev/omniswitch/main/install.sh",
+  "homebrew": "omniswitch-dev/tap/omniswitch",
+  "archive_template": "omniswitch_{version}_{os}_{arch}.tar.gz",
+  "archive_windows_template": "omniswitch_{version}_{os}_{arch}.zip",
+  "prerelease": {
+    "repo": "chiragkumarkakwani-ctrl/omniswitch",
+    "ref": "vorflux/v0.2.0-foundation",
+    "commit": "a8a594b",
+    "go_version": "1.24",
+    "install": "git clone --branch vorflux/v0.2.0-foundation https://github.com/chiragkumarkakwani-ctrl/omniswitch.git\ncd omniswitch\ngit checkout a8a594b\ngo build -o omniswitch ./cmd/gateway",
+    "docker": "docker build -t omniswitch:local .\ndocker run --rm -p 8080:8080 --env-file .env.local \\\n  -v omniswitch-data:/data omniswitch:local"
+  },
+  "commands": {
+    "run": "./omniswitch serve --config omniswitch.yaml",
+    "health": "curl --fail http://localhost:8080/healthz\ncurl --fail http://localhost:8080/readyz",
+    "python_install": "python -m pip install openai",
+    "uninstall": "rm ./omniswitch"
+  }
+}

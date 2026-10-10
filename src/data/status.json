@@ -1,59 +1,67 @@
 {
-  "updated": "2026-09-11",
-  "source": "omniswitch README.md, ROADMAP.md, docs/PORTKEY_COMPARISON.md",
+  "updated": "2026-10-09",
+  "source": "Release foundation a8a594b; approved v0.2.0 release plan; internal/gateway/a2a.go and a2a_tasks.go",
   "columns": [
     {
       "key": "stable",
-      "title": "Stable in beta",
-      "pill": "Won't break before 1.0",
+      "title": "Core capabilities",
+      "home_title": "Core capabilities",
+      "summary": "Chat completions, routing, API keys, budgets, local guardrails, and request tracing.",
       "items": [
         {
-          "text": "Chat completions, embeddings, models, rerank",
-          "detail": "OpenAI-compatible request and response shapes"
+          "text": "OpenAI-compatible chat completions, embeddings, models, and rerank",
+          "detail": "Provider and endpoint scope is documented; validate your workload."
         },
-        { "text": "Routing: fallbacks, weighted variants, retries, timeouts, CEL conditions" },
-        { "text": "API keys, per-key budgets, rate limits (local or Redis)" },
-        { "text": "Built-in guardrails and regex rules, hot-reloaded" },
-        { "text": "Exact cache, SQLite logs, Prometheus /metrics, OTLP export" },
-        { "text": "Binary, Docker, Compose, Kubernetes manifests" }
+        { "text": "Fallbacks, weighted routes, retries, timeouts, and CEL conditions" },
+        { "text": "Gateway API keys, per-key budgets, and local or Redis request limits" },
+        { "text": "Local guardrails, regex rules, exact cache, and metadata-first request logs" },
+        { "text": "Prometheus metrics and OTLP telemetry export" }
       ]
     },
     {
       "key": "beta",
-      "title": "Beta — may change",
-      "pill": "Feedback wanted",
+      "title": "Still evolving",
+      "home_title": "Still evolving",
+      "summary": "MCP, A2A, OIDC/CEL authorization, and the Responses and Messages API subsets.",
       "items": [
         {
-          "text": "Responses API and Anthropic Messages",
-          "detail": "Subsets; unsupported fields are listed in docs/API.md"
+          "text": "Responses and Messages APIs",
+          "detail": "Documented subsets. Tool-capable streaming translation is part of the unreleased v0.2.0 work."
         },
         {
-          "text": "Semantic cache",
-          "detail": "Normalized token-frequency cosine similarity, not embeddings; scope and threshold semantics still being tuned"
+          "text": "Lexical similarity cache",
+          "detail": "Token-frequency cosine similarity, not embeddings."
         },
-        { "text": "MCP gateway: HTTP/stdio federation, policy gating" },
+        { "text": "MCP federation and policy-gated calls over HTTP/SSE and stdio" },
         {
-          "text": "A2A: Agent Card and SendMessage",
-          "detail": "No task lifecycle, streaming, or push notifications yet"
+          "text": "A2A",
+          "detail": "SendMessage, SendMessageStream (SSE task events), GetTask, best-effort CancelTask; tasks in memory; no push notifications; no downstream agent proxy."
         },
-        { "text": "OIDC/JWKS identity and CEL authorization" },
-        { "text": "Webhook guardrail connectors" }
+        { "text": "OIDC workload identity and CEL authorization" }
       ]
     },
     {
       "key": "soon",
-      "title": "Not yet",
-      "pill": "Roadmap",
+      "title": "Know the boundaries",
+      "home_title": "Know the boundaries",
+      "summary": "Single-replica SQLite control plane. Redis shares rate limits, not control state. No dashboard SSO, mTLS, SAML, or SCIM.",
       "items": [
         {
-          "text": "Multi-replica shared state",
-          "detail": "Keys, logs and budgets are SQLite-local today; Redis covers rate limits only"
+          "text": "Multi-replica Postgres deployment",
+          "detail": "Part of the unreleased v0.2.0 work; use one replica with SQLite."
         },
-        { "text": "Postgres storage driver" },
-        { "text": "SAML, SCIM, mTLS" },
-        { "text": "Image, audio, batch and file endpoints" },
-        { "text": "Evals and experiments beyond policy replay" },
-        { "text": "Guardrail-triggered reroute" }
+        {
+          "text": "Dashboard SSO, admin audit log, and MCP OAuth discovery",
+          "detail": "Deferred beyond v0.2.0."
+        },
+        {
+          "text": "Embedding-based similarity cache and downstream agent proxy",
+          "detail": "Deferred; not current capabilities."
+        },
+        {
+          "text": "Published cross-gateway performance results",
+          "detail": "Pending a measured campaign and reproducible artifacts."
+        }
       ]
     }
   ]

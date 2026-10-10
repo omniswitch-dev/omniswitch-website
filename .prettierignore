@@ -1,0 +1,10 @@
+dist/
+dist-ssr/
+node_modules/
+package-lock.json
+
+# Generated claims and social assets are deterministic build/sync output.
+src/data/claims.json
+src/data/claims-pin.json
+public/og/
+public/google*.html

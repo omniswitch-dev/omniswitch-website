@@ -2,83 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href="https://omniswitch.dev/" />
-    <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OmniSwitch — Open-Source AI Gateway (Public Beta)</title>
-    <meta name="description" content="OmniSwitch is a self-hosted, open-source AI gateway: one OpenAI-compatible base URL, provider fallbacks, local guardrails, budgets, caching, and request tracing from a single Go binary. Public beta." />
-    <meta name="keywords" content="AI gateway, LLM proxy, OpenAI proxy, guardrails, prompt management, API key management, open source, MCP gateway, agent to agent, A2A, rerank, JWT OIDC, Kubernetes, Go" />
-    <meta name="author" content="OmniSwitch" />
-    <meta name="robots" content="index, follow" />
-
-    <!-- Preconnect to Google Fonts for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="OmniSwitch — Open-Source AI Gateway (Public Beta)" />
-    <meta property="og:description" content="A self-hosted, OpenAI-compatible AI gateway. One binary, SQLite built in, Redis optional. Fallbacks, local guardrails, budgets, caching, and per-request tracing. Apache-2.0, currently in public beta." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://omniswitch.dev" />
-    <meta property="og:site_name" content="OmniSwitch" />
-    <meta property="og:image" content="https://omniswitch.dev/dashboard-mockup.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="en_US" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="OmniSwitch — Open-Source AI Gateway (Public Beta)" />
-    <meta name="twitter:description" content="Route, guard, cache, and observe LLM traffic through one self-hosted Go binary. OpenAI-compatible. Apache-2.0." />
-    <meta name="twitter:image" content="https://omniswitch.dev/dashboard-mockup.png" />
-
-    <meta name="theme-color" content="#06060a" />
-
-    <!-- Structured Data (JSON-LD) for Google Rich Results -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "OmniSwitch",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "Linux, macOS, Windows",
-      "description": "Open-source, self-hosted AI gateway. OpenAI-compatible chat, embeddings, rerank and models endpoints, plus Responses and Anthropic Messages subsets. Route across providers, enforce guardrails, cache responses, manage API keys, and observe everything from a single Go binary. Currently in public beta.",
-      "url": "https://omniswitch.dev",
-      "downloadUrl": "https://github.com/omniswitch-dev/omniswitch",
-      "license": "https://github.com/omniswitch-dev/omniswitch/blob/main/LICENSE",
-      "softwareVersion": "0.2.0-beta",
-      "author": {
-        "@type": "Organization",
-        "name": "OmniSwitch",
-        "url": "https://github.com/omniswitch-dev"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "OmniSwitch",
-      "url": "https://omniswitch.dev",
-      "description": "Open-source AI gateway for production teams",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://omniswitch.dev/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <!--app-head-->
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app-html--></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
-

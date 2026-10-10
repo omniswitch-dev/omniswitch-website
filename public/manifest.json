@@ -1,11 +1,11 @@
 {
-  "name": "OmniSwitch — Open-Source AI Gateway",
+  "name": "OmniSwitch — Secure Self-Hosted AI Control",
   "short_name": "OmniSwitch",
-  "description": "Route, guard, cache, and observe all your LLM traffic through a single Go binary. Open-source AI gateway for production teams.",
+  "description": "A secure self-hosted control plane, universal AI gateway, and beta infrastructure for governed model, tool, and agent access.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#06060a",
-  "theme_color": "#8e2de2",
+  "theme_color": "#06060a",
   "icons": [
     {
       "src": "/favicon.svg",

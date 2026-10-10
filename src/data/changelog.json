@@ -1,0 +1,36 @@
+[
+  {
+    "version": "0.2.0",
+    "state": "unreleased",
+    "date": "2026-10-09",
+    "title": "Startup-ready release work",
+    "items": [
+      "Release verification: signed checksums, per-archive SBOMs, and build provenance.",
+      "Tool-capable Responses and Messages API subsets with streaming; OpenAI image and audio endpoints.",
+      "Token and spend limits, sourced modality pricing, versioned migrations, and retention.",
+      "Per-tool MCP discovery filtering and configurable token exchange (Beta).",
+      "An authenticated operator console with roles and live request, policy, provider, and budget data."
+    ],
+    "note": "Prepared release scope, not a published release. Read the final product release notes and corrected register before deploying these additions."
+  },
+  {
+    "version": "0.2.0-beta.1",
+    "state": "planned",
+    "date": null,
+    "title": "Release verification candidate",
+    "items": [
+      "A planned pre-release tag for validating install, signing, SBOMs, attestations, and deployment checks."
+    ],
+    "note": "No beta tag or artifact is assumed to exist; use the pinned source-build quickstart."
+  },
+  {
+    "version": "0.1.0",
+    "state": "published",
+    "date": "2026-08-24",
+    "title": "Initial public release",
+    "items": [
+      "The self-hosted Go gateway, provider routing, local guardrails, request logs, and beta agent protocols."
+    ],
+    "note": "Use the current evaluation guide rather than assuming the older release has the v0.2.0 install fixes."
+  }
+]

@@ -5,9 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir dist/.server && node scripts/prerender.mjs && node scripts/check-dist.mjs",
+    "test": "oxlint && node --test scripts/*.test.mjs",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "preview": "node scripts/serve-dist.mjs",
+    "claims:sync": "node scripts/sync-claims.mjs",
+    "claims:check": "node scripts/sync-claims.mjs --check",
+    "og": "vite build --ssr src/entry-server.jsx --outDir dist/.server && node scripts/og-images.mjs",
+    "check:dist": "node scripts/check-dist.mjs",
+    "check:links": "node scripts/check-links.mjs --external",
+    "check:release": "node scripts/check-release.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -17,10 +26,12 @@
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "2.6.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "oxlint": "^1.71.0",
+    "prettier": "3.9.9",
     "vite": "^8.1.1"
   }
 }

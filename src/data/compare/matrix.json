@@ -1,0 +1,96 @@
+{
+  "optional_ids": ["self-hosted", "token-rate-limits"],
+  "hub_rows": [
+    "self-hosted",
+    "fallbacks-retries",
+    "mcp-http",
+    "a2a-tasks",
+    "token-rate-limits",
+    "guardrails-builtin",
+    "otlp-export",
+    "license"
+  ],
+  "labels": {
+    "self-hosted": "Self-hosted deployment",
+    "fallbacks-retries": "Routing & fallbacks",
+    "mcp-http": "MCP gateway",
+    "a2a-tasks": "A2A task methods",
+    "token-rate-limits": "Token-based rate limits",
+    "guardrails-builtin": "Built-in guardrails",
+    "otlp-export": "OTLP telemetry export",
+    "semantic-cache": "Similarity cache (see scope)"
+  },
+  "groups": [
+    {
+      "name": "Deployment & license",
+      "capabilities": [
+        "self-hosted",
+        "sqlite-postgres",
+        "kubernetes-manifests-helm",
+        "hot-reload",
+        "dashboard",
+        "license"
+      ]
+    },
+    {
+      "name": "APIs & providers",
+      "capabilities": [
+        "openai-compatible-chat",
+        "embeddings",
+        "responses-api",
+        "anthropic-messages-api",
+        "native-providers",
+        "custom-openai-endpoint"
+      ]
+    },
+    {
+      "name": "Routing, reliability & cost",
+      "capabilities": [
+        "fallbacks-retries",
+        "weighted-load-balancing",
+        "conditional-routing",
+        "circuit-breaker",
+        "exact-cache",
+        "semantic-cache",
+        "budgets-quotas",
+        "rate-limiting",
+        "token-rate-limits"
+      ]
+    },
+    {
+      "name": "Identity & guardrails",
+      "capabilities": [
+        "api-keys",
+        "oidc-jwt",
+        "mtls",
+        "rbac-policy-cel",
+        "guardrails-builtin",
+        "guardrail-webhooks",
+        "output-redaction",
+        "streaming-guardrails"
+      ]
+    },
+    {
+      "name": "Governed agent infrastructure",
+      "capabilities": [
+        "mcp-http",
+        "mcp-stdio",
+        "mcp-federation",
+        "openapi-to-mcp",
+        "mcp-oauth-token-exchange",
+        "a2a-agent-card",
+        "a2a-tasks"
+      ]
+    },
+    {
+      "name": "Operations & evidence",
+      "capabilities": [
+        "prompt-management",
+        "evals",
+        "otlp-export",
+        "prometheus",
+        "published-benchmarks"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-
-# Point to sitemap
-Sitemap: https://omniswitch.dev/sitemap.xml

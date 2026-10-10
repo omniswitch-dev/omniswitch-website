@@ -1,14 +1,15 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/react'
+import { createRoot, hydrateRoot } from 'react-dom/client'
+import Telemetry from './components/Telemetry.jsx'
 import './index.css'
 import App from './App.jsx'
 
-createRoot(document.getElementById('root')).render(
+const root = document.getElementById('root')
+const app = (
   <StrictMode>
-    <App />
-    <Analytics />
-    <SpeedInsights />
-  </StrictMode>,
+    <App url={location.pathname + location.search + location.hash} />
+    <Telemetry />
+  </StrictMode>
 )
+if (root.hasChildNodes() && root.querySelector('main')) hydrateRoot(root, app)
+else createRoot(root).render(app)

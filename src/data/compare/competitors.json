@@ -1,0 +1,283 @@
+[
+  {
+    "slug": "litellm",
+    "name": "LiteLLM",
+    "primary": "litellm",
+    "footnote": 2,
+    "editions": [{ "id": "litellm-rust", "label": "Rust gateway (beta)" }],
+    "column_note": "Python proxy; edition scope varies",
+    "fit": {
+      "headline": "Provider breadth and a Python-first ecosystem.",
+      "body": "Evaluate its provider integrations and operational ecosystem. Review the documented Enterprise boundary for admin audit logs and SSO beyond five users."
+    },
+    "choose_omniswitch": [
+      "You want an inspectable self-hosted control layer in one Go binary.",
+      "Local guardrails, scoped gateway keys, and request traces meet your needs.",
+      "You can validate documented API subsets and accept public-beta boundaries."
+    ],
+    "choose_them": [
+      "Your team already operates a Python-based AI infrastructure stack.",
+      "You need integrations from its broad provider ecosystem.",
+      "You have evaluated the relevant OSS, Rust beta, and Enterprise edition boundaries."
+    ],
+    "context": [],
+    "sources": [
+      {
+        "label": "Enterprise edition boundaries",
+        "url": "https://docs.litellm.ai/docs/enterprise",
+        "accessed": "2026-10-09"
+      },
+      {
+        "label": "Release notes",
+        "url": "https://docs.litellm.ai/release_notes/",
+        "accessed": "2026-10-09"
+      },
+      {
+        "label": "Routing and load balancing",
+        "url": "https://docs.litellm.ai/docs/proxy/load_balancing",
+        "accessed": "2026-10-09"
+      }
+    ],
+    "migration": {
+      "headline": "Pilot the client contract before changing traffic.",
+      "checklist": [
+        "Inventory routes, key scopes, callbacks, and metadata.",
+        "Map routing, fallback, and budget settings explicitly.",
+        "Verify representative chat requests, streaming, tools, and errors."
+      ],
+      "headers_url": "https://docs.litellm.ai/docs/proxy/request_headers"
+    }
+  },
+  {
+    "slug": "portkey",
+    "name": "Portkey",
+    "primary": "portkey-oss",
+    "footnote": 3,
+    "editions": [{ "id": "portkey-cloud", "label": "Managed platform" }],
+    "column_note": "OSS gateway; cloud shown separately",
+    "fit": {
+      "headline": "An OSS gateway with a wider platform path.",
+      "body": "Evaluate its routing and platform workflow. Check the current Enterprise boundary for SSO, SCIM, and audit logs rather than relying on older SaaS-only comparisons."
+    },
+    "choose_omniswitch": [
+      "You want to operate a compact self-hosted control plane.",
+      "You prefer local policy checks and a file-driven gateway configuration.",
+      "You will map provider credentials and keys explicitly rather than import platform config."
+    ],
+    "choose_them": [
+      "Your existing gateway configuration or platform workflow fits.",
+      "You want to evaluate the wider OSS and managed platform together.",
+      "You have checked current edition terms for enterprise identity and audit features."
+    ],
+    "context": [
+      {
+        "title": "Portkey → Palo Alto Networks",
+        "text": "Palo Alto Networks completed its acquisition of Portkey on 29 May 2026. Review the current product editions and terms, not older SaaS-only comparisons.",
+        "source": "https://www.paloaltonetworks.com/company/press/2026/palo-alto-networks-completes-acquisition-of-portkey-to-secure-ai-agents",
+        "accessed": "2026-10-09"
+      }
+    ],
+    "sources": [
+      {
+        "label": "OSS gateway repository",
+        "url": "https://github.com/Portkey-AI/gateway",
+        "accessed": "2026-10-09"
+      },
+      {
+        "label": "The Gateway Grew Up",
+        "url": "https://portkey.ai/blog/the-gateway-grew-up/",
+        "accessed": "2026-10-09"
+      },
+      {
+        "label": "MCP gateway documentation",
+        "url": "https://docs.portkey.ai/docs/product/mcp-gateway",
+        "accessed": "2026-10-09"
+      }
+    ],
+    "migration": {
+      "headline": "Translate the configuration. Don’t assume it transfers.",
+      "checklist": [
+        "Inventory configs, gateway keys, provider credentials, and policies.",
+        "Map retries, routing, budgets, and guardrails.",
+        "Verify request shaping, streaming, and error handling against your app."
+      ],
+      "headers_url": "https://docs.portkey.ai/docs/api-reference/inference-api/headers"
+    }
+  },
+  {
+    "slug": "helicone",
+    "name": "Helicone",
+    "primary": "helicone",
+    "footnote": 4,
+    "editions": [{ "id": "helicone-cloud", "label": "Managed platform" }],
+    "column_note": "OSS gateway; maintenance context",
+    "fit": {
+      "headline": "Your existing observability workflow still fits.",
+      "body": "Staying can be reasonable: services remain live in maintenance mode. Confirm roadmap and support expectations before committing to a new dependency."
+    },
+    "choose_omniswitch": [
+      "Self-hosted policy and gateway ownership are your primary requirements.",
+      "You can re-map your logging and observability contract.",
+      "You want a local gateway with an explicitly bounded beta scope."
+    ],
+    "choose_them": [
+      "Your current observability workflow meets your needs.",
+      "You have evaluated the live service and maintenance commitment.",
+      "Avoiding a migration is more important than changing the gateway operating model."
+    ],
+    "context": [
+      {
+        "title": "Helicone → Mintlify",
+        "text": "Helicone announced it was joining Mintlify on 3 March 2026. Services remain live in maintenance mode, with security updates, new models, and fixes continuing.",
+        "source": "https://www.helicone.ai/blog/joining-mintlify",
+        "accessed": "2026-10-09"
+      }
+    ],
+    "sources": [
+      {
+        "label": "AI gateway repository",
+        "url": "https://github.com/Helicone/ai-gateway",
+        "accessed": "2026-10-09"
+      },
+      {
+        "label": "Joining Mintlify announcement",
+        "url": "https://www.helicone.ai/blog/joining-mintlify",
+        "accessed": "2026-10-09"
+      }
+    ],
+    "migration": {
+      "headline": "Keep the observability questions. Re-map the gateway contract.",
+      "checklist": [
+        "Inventory routes, custom headers, and metadata.",
+        "Map keys, fallback behavior, and log fields.",
+        "Pilot representative calls and inspect traces before moving traffic."
+      ],
+      "headers_url": "https://docs.helicone.ai/helicone-headers/header-directory"
+    }
+  },
+  {
+    "slug": "kong-ai-gateway",
+    "name": "Kong AI Gateway",
+    "primary": "kong-ai-gateway",
+    "footnote": 5,
+    "editions": [{ "id": "kong-konnect", "label": "Konnect (managed)" }],
+    "column_note": "OSS ai-proxy scope; AI license varies",
+    "fit": {
+      "headline": "AI governance inside your API platform.",
+      "body": "Evaluate Kong when its API platform is already part of your architecture. Advanced AI plugins have licensing boundaries; distinguish them from OSS ai-proxy capabilities."
+    },
+    "choose_omniswitch": [
+      "You want a dedicated self-hosted AI control layer rather than a wider API platform.",
+      "A Go binary and file-driven deployment fit your operating model.",
+      "You can work within the documented API and beta protocol scope."
+    ],
+    "choose_them": [
+      "Kong is already part of your API platform.",
+      "You need to evaluate advanced AI traffic plugins in that platform.",
+      "You have reviewed the required AI license and Konnect operating model."
+    ],
+    "context": [],
+    "sources": [
+      {
+        "label": "AI Gateway 3.14 release",
+        "url": "https://konghq.com/blog/product-releases/ai-gateway-3-14",
+        "accessed": "2026-10-09"
+      },
+      {
+        "label": "AI Proxy Advanced licensing and scope",
+        "url": "https://developer.konghq.com/plugins/ai-proxy-advanced/",
+        "accessed": "2026-10-09"
+      },
+      {
+        "label": "MCP Proxy plugin",
+        "url": "https://developer.konghq.com/plugins/ai-mcp-proxy/",
+        "accessed": "2026-10-09"
+      },
+      {
+        "label": "A2A Proxy plugin",
+        "url": "https://developer.konghq.com/plugins/ai-a2a-proxy/",
+        "accessed": "2026-10-09"
+      }
+    ],
+    "migration": null
+  },
+  {
+    "slug": "cloudflare-ai-gateway",
+    "name": "Cloudflare AI Gateway",
+    "primary": "cloudflare-ai-gateway",
+    "footnote": 6,
+    "editions": [],
+    "column_note": "Managed service",
+    "fit": {
+      "headline": "A managed gateway at your existing edge.",
+      "body": "Evaluate it when you prefer a managed service and already use Cloudflare. Compare the network and control-plane model separately from a local self-hosted binary."
+    },
+    "choose_omniswitch": [
+      "Running the control plane in your infrastructure is a requirement.",
+      "Local policy checks and inspectable request data matter to your team.",
+      "You are prepared to own deployment and operations."
+    ],
+    "choose_them": [
+      "A managed operating model is your preference.",
+      "You already use the Cloudflare ecosystem.",
+      "You have checked its current feature scope, logging, and spend controls."
+    ],
+    "context": [],
+    "sources": [
+      {
+        "label": "Gateway feature documentation",
+        "url": "https://developers.cloudflare.com/ai-gateway/features/",
+        "accessed": "2026-10-09"
+      },
+      {
+        "label": "AI Gateway changelog",
+        "url": "https://developers.cloudflare.com/changelog/product-group/ai-gateway/",
+        "accessed": "2026-10-09"
+      }
+    ],
+    "migration": null
+  },
+  {
+    "slug": "envoy-ai-gateway",
+    "name": "Agent Router",
+    "primary": "envoy-ai-gateway",
+    "footnote": 7,
+    "editions": [],
+    "column_note": "Formerly Envoy AI Gateway",
+    "fit": {
+      "headline": "Kubernetes and Envoy are already your foundation.",
+      "body": "Evaluate its Kubernetes/Envoy integration when that platform matches your operating model. Agent Router is the renamed Envoy AI Gateway, not the separate AgentGateway project."
+    },
+    "choose_omniswitch": [
+      "You want a compact control plane without adopting a Kubernetes-native gateway layer.",
+      "A binary, Docker, or a small self-hosted deployment meets your needs.",
+      "You value local policy and explicit protocol boundaries."
+    ],
+    "choose_them": [
+      "Kubernetes and Envoy are already part of your architecture.",
+      "You want AI routing integrated with that gateway platform.",
+      "You have verified the current CRDs, charts, and protocol support for your workload."
+    ],
+    "context": [
+      {
+        "title": "Envoy AI Gateway → Agent Router",
+        "text": "The project was renamed Agent Router in v1.2.0 on 6 October 2026. Existing API groups, CRDs, charts, images, and CLI names remain unchanged. It is not the separate AgentGateway project.",
+        "source": "https://theagentrouter.ai/release-notes/",
+        "accessed": "2026-10-09"
+      }
+    ],
+    "sources": [
+      {
+        "label": "Agent Router release notes",
+        "url": "https://theagentrouter.ai/release-notes/",
+        "accessed": "2026-10-09"
+      },
+      {
+        "label": "Envoy AI Gateway repository",
+        "url": "https://github.com/envoyproxy/ai-gateway",
+        "accessed": "2026-10-09"
+      }
+    ],
+    "migration": null
+  }
+]

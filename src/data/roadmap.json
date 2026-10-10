@@ -1,0 +1,36 @@
+{
+  "updated": "2026-10-09",
+  "shipped_capabilities": [
+    "openai-compatible-chat",
+    "embeddings",
+    "fallbacks-retries",
+    "weighted-load-balancing",
+    "conditional-routing",
+    "api-keys",
+    "budgets-quotas",
+    "guardrails-builtin",
+    "otlp-export"
+  ],
+  "near_term": [
+    "Complete and verify the v0.2.0 release artifacts and installation paths.",
+    "Tool-capable streaming Responses/Messages subsets, OpenAI image/audio endpoints.",
+    "Token and spend policies, extended pricing, migrations, retention, and Postgres deployment.",
+    "Per-tool MCP discovery filtering and configurable beta token exchange.",
+    "The redesigned authenticated operator console and corrected capability register."
+  ],
+  "medium_term": [
+    "Dashboard OIDC SSO and an admin audit log.",
+    "MCP OAuth protected-resource discovery (RFC 9728).",
+    "A database-backed policy management API."
+  ],
+  "long_term": [
+    "Embedding-based similarity cache.",
+    "Downstream A2A agent proxy, persistent task orchestration, and push notifications.",
+    "Expanded eval experiments and workload-driven API coverage."
+  ],
+  "not_promised": [
+    "No dates are promised for deferred work.",
+    "No performance ranking before a published benchmark campaign.",
+    "No mTLS, SAML, SCIM, automatic configuration import, or unlimited API parity claim."
+  ]
+}

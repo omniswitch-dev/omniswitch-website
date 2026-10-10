@@ -1,0 +1,29 @@
+[
+  {
+    "label": "A2A exclusivity",
+    "pattern": "\\b(?:only|first)\\b.{0,60}\\bA2A\\b|\\bA2A\\b.{0,60}\\b(?:only|first)\\s+(?:AI\\s+)?gateway\\b"
+  },
+  {
+    "label": "token-exchange exclusivity",
+    "pattern": "\\bunique\\b.{0,60}token[ -]exchange|token[ -]exchange.{0,60}\\bunique\\b"
+  },
+  {
+    "label": "unqualified similarity-cache claim",
+    "pattern": "\\bsemantic\\s+cache\\b",
+    "marketing_only": true
+  },
+  { "label": "unsupported provider count", "pattern": "\\b250\\+?\\s+providers\\b" },
+  { "label": "unbounded OpenAI parity", "pattern": "\\bfull\\s+OpenAI\\s+parity\\b" },
+  { "label": "security certification claim", "pattern": "\\bSOC[ -]?2\\b" },
+  { "label": "enterprise readiness claim", "pattern": "\\benterprise[ -]ready\\b" },
+  { "label": "unverified migration compatibility", "pattern": "\\bdrop[ -]in\\b" },
+  {
+    "label": "unsupported speed ranking",
+    "pattern": "\\bfastest\\s+(?:AI\\s+)?gateway\\b|\\bzero\\s+latency\\b"
+  },
+  {
+    "label": "speed number without published benchmark evidence",
+    "pattern": "\\b[0-9]+(?:\\.[0-9]+)?\\s*(?:ms|μs|us|ns|rps|req(?:uests)?/s|tokens/s)\\b",
+    "benchmark_only_exception": true
+  }
+]

@@ -2,12 +2,12 @@
   "state": "pending",
   "methodology_version": "v1",
   "methodology_frozen": "2026-09-11",
-  "updated": "2026-09-11",
+  "updated": "2026-10-09",
   "run": {
     "status": "not_scheduled",
     "compared": "Self-hosted only: OmniSwitch plus other self-hosted OpenAI-compatible gateways (LiteLLM proxy, Bifrost, Portkey Gateway OSS, and others named in the harness repo once published).",
     "machine": "Pinned single cloud instance, CPU-governor pinned to performance; exact SKU recorded in the run manifest once scheduled.",
-    "harness": "In development as part of the OmniSwitch beta plan (Track B). Not yet published as a standalone repo.",
+    "harness": "The cross-gateway harness is available under bench/ on the release-foundation branch. No measurement campaign has been published.",
     "tracking": "Follow BENCHMARKS.md and GitHub Discussions for the harness announcement."
   },
   "timeline": [
@@ -18,8 +18,8 @@
     },
     {
       "status": "now",
-      "label": "Cross-gateway harness in development",
-      "detail": "Methodology v1 below is frozen; harness code is being built"
+      "label": "Cross-gateway harness prepared",
+      "detail": "Methodology v1 below is frozen; bench/ has the harness and current status"
     },
     {
       "status": "todo",
@@ -34,13 +34,22 @@
     {
       "status": "todo",
       "label": "Report #1 published with raw artifacts",
-      "detail": "Homepage and this page switch to the published state automatically once results.json ships"
+      "detail": "Results require a published run manifest, raw artifacts, and explicit content review"
     }
   ],
   "kpis": [
-    { "label": "Added latency · p50", "detail": "64 concurrent, non-streaming, over direct-to-mock baseline" },
-    { "label": "Added latency · p99", "detail": "Same run; tail latency is the number that matters" },
-    { "label": "Throughput ceiling", "detail": "Open-loop, rate stepped until error rate exceeds 1%" },
+    {
+      "label": "Added latency · p50",
+      "detail": "64 concurrent, non-streaming, over direct-to-mock baseline"
+    },
+    {
+      "label": "Added latency · p99",
+      "detail": "Same run; tail latency is the number that matters"
+    },
+    {
+      "label": "Throughput ceiling",
+      "detail": "Open-loop, rate stepped until error rate exceeds 1%"
+    },
     { "label": "Memory · RSS", "detail": "Steady state under load, payload logging off" }
   ],
   "measured": {
@@ -140,7 +149,7 @@
     "Default configs differ across gateways. We will publish per-gateway config diffs rather than normalizing features away."
   ],
   "not_claimed": [
-    "That OmniSwitch is \"the fastest gateway\". If top results are within noise, we will say so.",
+    "A performance ranking before measured, reproducible results exist.",
     "Anything about managed services, model quality, cost savings, or cache hit rates on your traffic.",
     "Kubernetes-native strengths of control-plane gateways run standalone.",
     "Stability across versions — every release re-runs the harness once it exists and posts regressions here."
