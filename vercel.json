@@ -1,11 +1,87 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "redirects": [{ "source": "/comparison", "destination": "/compare", "permanent": true }],
+  "redirects": [
+    {
+      "source": "/install",
+      "destination": "/quickstart#install",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "destination": "/#control",
+      "permanent": true
+    },
+    {
+      "source": "/community",
+      "destination": "/docs#scope",
+      "permanent": true
+    },
+    {
+      "source": "/roadmap",
+      "destination": "/docs#scope",
+      "permanent": true
+    },
+    {
+      "source": "/changelog",
+      "destination": "/docs#scope",
+      "permanent": true
+    },
+    {
+      "source": "/benchmarks",
+      "destination": "/docs#observability",
+      "permanent": true
+    },
+    {
+      "source": "/compare",
+      "destination": "/docs",
+      "permanent": true
+    },
+    {
+      "source": "/comparison",
+      "destination": "/docs",
+      "permanent": true
+    },
+    {
+      "source": "/compare/litellm",
+      "destination": "/docs",
+      "permanent": true
+    },
+    {
+      "source": "/compare/portkey",
+      "destination": "/docs",
+      "permanent": true
+    },
+    {
+      "source": "/compare/helicone",
+      "destination": "/docs",
+      "permanent": true
+    },
+    {
+      "source": "/compare/kong-ai-gateway",
+      "destination": "/docs",
+      "permanent": true
+    },
+    {
+      "source": "/compare/cloudflare-ai-gateway",
+      "destination": "/docs",
+      "permanent": true
+    },
+    {
+      "source": "/compare/envoy-ai-gateway",
+      "destination": "/docs",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }

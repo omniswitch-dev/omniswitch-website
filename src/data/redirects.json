@@ -1,0 +1,16 @@
+{
+  "/install": "/quickstart#install",
+  "/about": "/#control",
+  "/community": "/docs#scope",
+  "/roadmap": "/docs#scope",
+  "/changelog": "/docs#scope",
+  "/benchmarks": "/docs#observability",
+  "/compare": "/docs",
+  "/comparison": "/docs",
+  "/compare/litellm": "/docs",
+  "/compare/portkey": "/docs",
+  "/compare/helicone": "/docs",
+  "/compare/kong-ai-gateway": "/docs",
+  "/compare/cloudflare-ai-gateway": "/docs",
+  "/compare/envoy-ai-gateway": "/docs"
+}

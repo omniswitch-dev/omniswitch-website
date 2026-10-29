@@ -6,7 +6,7 @@ export default function PageShell({
   eyebrow,
   title,
   lede,
-  updated = '2026-10-09',
+  updated = '2026-10-29',
   children,
   toc,
   breadcrumbs,
@@ -61,9 +61,8 @@ export function NextSteps() {
   return (
     <div className="next-steps">
       <TextLink href="/quickstart">Quickstart</TextLink>
-      <TextLink href="/install">Install options</TextLink>
       <TextLink href="/docs">Documentation</TextLink>
-      <TextLink href="/changelog">Release notes</TextLink>
+      <TextLink href="/api">API reference</TextLink>
     </div>
   )
 }
