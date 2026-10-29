@@ -1,59 +1,32 @@
 import { useContext, useRef } from 'react'
-import { ArrowUpRight, Menu, GitFork } from 'lucide-react'
+import { Menu, GitFork } from 'lucide-react'
 import Link from './Link.jsx'
 import { Button } from './UI.jsx'
 import { NavigationContext } from './navigation.js'
+import { repoUrl } from '../data/product.js'
 import './Layout.css'
 
 const nav = [
   ['Product', '/#control', 'product'],
   ['Docs', '/docs', 'docs'],
-  ['Compare', '/compare', 'compare'],
-  ['Community', '/community', 'community'],
 ]
 const footer = [
-  [
-    'Product',
-    [
-      ['Gateway', '/#routing', 'gateway'],
-      ['Security', '/security', 'security'],
-      ['Agent protocols', '/#agents', 'agents'],
-      ['Compare', '/compare', 'compare'],
-    ],
-  ],
-  [
-    'Developers',
-    [
-      ['Quickstart', '/quickstart', 'quickstart'],
-      ['Documentation', '/docs', 'docs'],
-      ['API reference', '/api', 'api'],
-      ['Install', '/install', 'install'],
-    ],
-  ],
-  [
-    'Open source',
-    [
-      ['Community', '/community', 'community'],
-      ['Changelog', '/changelog', 'changelog'],
-      ['Roadmap', '/roadmap', 'roadmap'],
-      ['About', '/about', 'about'],
-    ],
-  ],
+  ['Quickstart', '/quickstart'],
+  ['Documentation', '/docs'],
+  ['API reference', '/api'],
+  ['Security', '/security'],
 ]
-
 function Brand({ id }) {
   return (
     <Link href="/" className="brand" aria-label="OmniSwitch home" data-component-id={id}>
-      <img src="/favicon.svg" width="29" height="28" alt="" />
+      <img src="/brand/omniswitch-mark.svg" width="28" height="30" alt="" />
       <span>OmniSwitch</span>
     </Link>
   )
 }
-
 export default function Layout({ children }) {
   const { path } = useContext(NavigationContext)
   const menu = useRef(null)
-  const current = (href) => (href === '/compare' ? path.startsWith(href) : path === href)
   function closeMenu(event) {
     if (event.target.closest('a')) menu.current.open = false
   }
@@ -70,28 +43,24 @@ export default function Layout({ children }) {
               <Link
                 key={id}
                 href={href}
-                className={current(href) ? 'selected' : undefined}
-                aria-current={current(href) ? 'page' : undefined}
-                data-component-id={`nav-${id}`}
+                aria-current={path === href ? 'page' : undefined}
+                className={path === href ? 'selected' : undefined}
               >
                 {name}
               </Link>
             ))}
           </nav>
           <div className="nav-actions">
-            <Link
-              href="https://github.com/omniswitch-dev/omniswitch"
-              data-component-id="nav-github"
-              className="header-github"
-            >
-              <GitFork className="icon" aria-hidden="true" /> GitHub
+            <Link href={repoUrl} className="header-github">
+              <GitFork className="icon" aria-hidden="true" />
+              GitHub
             </Link>
-            <Button href="/quickstart" small arrow data-component-id="nav-get-started">
+            <Button href="/quickstart" small arrow>
               Get started
             </Button>
           </div>
           <details className="mobile-navigation" ref={menu}>
-            <summary aria-label="Toggle navigation" data-component-id="mobile-navigation-toggle">
+            <summary aria-label="Toggle navigation">
               <Menu className="icon" aria-hidden="true" />
             </summary>
             <nav aria-label="Mobile navigation" onClick={closeMenu}>
@@ -101,8 +70,8 @@ export default function Layout({ children }) {
                 </Link>
               ))}
               <Link href="/quickstart">Quickstart</Link>
-              <Link href="/install">Install options</Link>
-              <Link href="https://github.com/omniswitch-dev/omniswitch">GitHub</Link>
+              <Link href="/api">API reference</Link>
+              <Link href={repoUrl}>GitHub</Link>
             </nav>
           </details>
         </div>
@@ -110,34 +79,24 @@ export default function Layout({ children }) {
       <main id="main" tabIndex={-1}>
         {children}
       </main>
-      <footer className="site-footer" id="footer-nav">
+      <footer className="site-footer">
         <div className="container">
           <div className="footer-top">
             <div className="footer-brand">
               <Brand id="footer-brand" />
               <p>Self-hosted AI gateway for models and tools.</p>
-              <a className="github-link" href="https://github.com/omniswitch-dev/omniswitch">
-                <GitFork className="icon" aria-hidden="true" />
-                View on GitHub
-                <ArrowUpRight className="icon" aria-hidden="true" />
-              </a>
             </div>
             <nav className="footer-links" aria-label="Footer navigation">
-              {footer.map(([title, links]) => (
-                <div key={title}>
-                  <strong>{title.toUpperCase()}</strong>
-                  {links.map(([name, href, id]) => (
-                    <Link href={href} key={id} data-component-id={`footer-${id}`}>
-                      {name}
-                    </Link>
-                  ))}
-                </div>
+              {footer.map(([name, href]) => (
+                <Link key={href} href={href}>
+                  {name}
+                </Link>
               ))}
             </nav>
           </div>
           <div className="footer-bottom">
             <span>© 2026 OmniSwitch · Apache-2.0</span>
-            <Link href="/roadmap">Open source · Public beta</Link>
+            <a href={repoUrl}>Open source on GitHub ↗</a>
           </div>
         </div>
       </footer>

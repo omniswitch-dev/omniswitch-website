@@ -61,7 +61,7 @@ function GatewayFlow() {
       </div>
       <ArrowRight className="flow-arrow" aria-hidden="true" />
       <div className="flow-gateway">
-        <img src="/favicon.svg" width="25" height="25" alt="" />
+        <img src="/brand/omniswitch-mark.svg" width="25" height="25" alt="" />
         <span>OmniSwitch</span>
       </div>
       <ArrowRight className="flow-arrow" aria-hidden="true" />
@@ -77,7 +77,7 @@ export default function Home() {
   return (
     <div className="home">
       <section className="home-hero container" id="top" aria-labelledby="hero-title">
-        <a href="/#beta" className="hero-release">
+        <a href="/docs#scope" className="hero-release">
           <span className="release-dot" />
           Open source · Public beta
           <ArrowRight className="icon" aria-hidden="true" />
@@ -156,14 +156,14 @@ export default function Home() {
           <h2 id="start-title">Run it on your infrastructure.</h2>
           <p>Follow the quickstart, explore the code, and choose the setup that fits your stack.</p>
           <p className="beta-note">
-            OmniSwitch is in public beta. <a href="/roadmap">Review the scope and roadmap</a>.
+            OmniSwitch is in public beta. <a href="/docs#scope">Review the current scope</a>.
           </p>
         </div>
         <div className="start-actions">
           <Button href="/quickstart" variant="primary" arrow data-component-id="bottom-run">
             Read the quickstart
           </Button>
-          <TextLink href="/install">Installation options</TextLink>
+          <TextLink href="/quickstart#install">Installation options</TextLink>
         </div>
       </section>
     </div>

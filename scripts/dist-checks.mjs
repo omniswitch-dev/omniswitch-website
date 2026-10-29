@@ -65,7 +65,8 @@ export function validatePage(html, route, rules) {
       structured.find((s) => s['@type'] === 'WebPage').dateModified ===
         route.updated, 'missing dated WebPage')
   require(!/SearchAction|AggregateRating|FAQPage/.test(blocks[0][1]), 'unsupported structured data')
-  require(visibleText(html).length >= 600, 'body is an empty or incomplete shell')
+  require(visibleText(html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] || '').length >=
+    (route.path === '/404' ? 80 : 200), 'body is an empty or incomplete shell')
   require(!/fonts\.googleapis\.com|fonts\.gstatic\.com|dashboard-mockup\.png/.test(
     html,
   ), 'removed resource reference')

@@ -1,6 +1,8 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import redirects from '../src/data/redirects.json' with { type: 'json' }
+import { escapeHtml } from '../src/seo.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const dist = resolve(root, 'dist')
@@ -44,5 +46,15 @@ await writeFile(
   'User-agent: *\nAllow: /\nSitemap: https://omniswitch.dev/sitemap.xml\n',
 )
 await writeFile(resolve(dist, 'route-manifest.json'), JSON.stringify(manifest, null, 2) + '\n')
+await writeFile(resolve(dist, 'redirect-manifest.json'), JSON.stringify(redirects, null, 2) + '\n')
+for (const [path, destination] of Object.entries(redirects)) {
+  const filename = resolve(dist, path.slice(1), 'index.html')
+  await mkdir(dirname(filename), { recursive: true })
+  const target = escapeHtml(destination)
+  await writeFile(
+    filename,
+    `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Page moved | OmniSwitch</title><meta name="robots" content="noindex,follow"><meta http-equiv="refresh" content="0;url=${target}"><link rel="canonical" href="https://omniswitch.dev${target}"></head><body><p>This page has moved. <a href="${target}">Continue to OmniSwitch</a>.</p></body></html>`,
+  )
+}
 await rm(resolve(dist, '.server'), { recursive: true })
 console.log(`Prerendered ${routes.length} routes and 404; sitemap and robots generated`)

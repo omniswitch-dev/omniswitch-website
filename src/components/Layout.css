@@ -20,8 +20,8 @@
   white-space: nowrap;
 }
 .brand > img {
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 30px;
 }
 .header-github {
   display: flex;
@@ -70,21 +70,11 @@
 }
 .footer-links {
   display: flex;
-  gap: 52px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
   font-size: 12px;
-}
-.footer-links div {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
   color: var(--text-secondary);
-}
-.footer-links strong {
-  color: var(--text-primary);
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  font-weight: 600;
-  margin-bottom: 6px;
 }
 .footer-bottom {
   display: flex;
@@ -202,21 +192,14 @@
   }
   .footer-links {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-    font-size: 11px;
-  }
-  .footer-links div {
-    gap: 0;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 24px;
+    font-size: 12px;
   }
   .footer-links a {
     min-height: 44px;
     display: flex;
     align-items: center;
-  }
-  .footer-links strong {
-    font-size: 9px;
-    margin-bottom: 7px;
   }
   .footer-bottom {
     margin-top: 24px;

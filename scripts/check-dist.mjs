@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { gzipSync } from 'node:zlib'
 import { validatePage } from './dist-checks.mjs'
 import { attributes, internalLinks } from './html.mjs'
+import redirects from '../src/data/redirects.json' with { type: 'json' }
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const dist = resolve(root, 'dist')
@@ -59,16 +60,31 @@ for (const route of manifest) {
   documents.set(route.path, { html, ids: new Set(ids), route })
 }
 if (
-  documents.size !== 19 ||
-  !documents.has('/404') ||
-  manifest.filter((r) => r.path.startsWith('/compare/')).length !== 6
+  documents.size !== 6 ||
+  !['/', '/quickstart', '/docs', '/api', '/security', '/404'].every((path) => documents.has(path))
 )
-  throw new Error('Expected 18 public routes plus 404, including six competitor pages')
+  throw new Error('Expected five public pages and a 404 page')
+const hosting = JSON.parse(await readFile(resolve(root, 'vercel.json'), 'utf8'))
+const configuredRedirects = Object.fromEntries(
+  hosting.redirects.map((r) => [r.source, r.destination]),
+)
+if (JSON.stringify(configuredRedirects) !== JSON.stringify(redirects))
+  throw new Error('Hosting redirects differ from the site map')
+for (const [from, to] of Object.entries(redirects)) {
+  const target = new URL(to, 'https://omniswitch.dev')
+  const page = documents.get(target.pathname)
+  if (!page || (target.hash && !page.ids.has(target.hash.slice(1))))
+    throw new Error(`Broken redirect: ${from} → ${to}`)
+  const fallback = await readFile(resolve(dist, from.slice(1), 'index.html'), 'utf8')
+  if (!fallback.includes('noindex,follow') || !fallback.includes(`href="${to}"`))
+    throw new Error(`Missing redirect fallback: ${from}`)
+}
 for (const [path, page] of documents) {
   for (const href of internalLinks(page.html)) {
     const url = new URL(href, `https://omniswitch.dev${path}`)
     const target = url.pathname === '/' ? '/' : url.pathname.replace(/\/+$/, '')
-    if (target === '/comparison') throw new Error(`Legacy comparison link on ${path}`)
+    if (redirects[target])
+      throw new Error(`Link should point to the current page: ${href} on ${path}`)
     const document = documents.get(target)
     if (document) {
       if (url.hash && !document.ids.has(decodeURIComponent(url.hash.slice(1))))

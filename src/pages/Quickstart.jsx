@@ -1,13 +1,12 @@
-import PageShell, { PageSection, NextSteps } from '../components/PageShell.jsx'
+import PageShell, { PageSection } from '../components/PageShell.jsx'
 import { CodePanel, TextLink } from '../components/UI.jsx'
-import { ReleaseNotice, KnownLimitations } from '../components/ReleaseNotice.jsx'
+import { installCommand, productDoc } from '../data/product.js'
 import release from '../data/release.json'
-import { installCommand } from '../data/product.js'
 
 const configuration = `apiVersion: omniswitch.dev/v1
 kind: GatewayConfig
 gateway:
-  listen: ":8080"
+  listen: "127.0.0.1:8080"
   auth: true
   cache_scope: api_key
   log_payloads: false
@@ -29,77 +28,52 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)`
 
 export default function Quickstart() {
-  const run = release.published ? release.commands.run.replace(/^\.\//, '') : release.commands.run
   return (
     <PageShell
-      eyebrow="Start with self-hosted control"
+      eyebrow="GET STARTED"
       title="Quickstart"
-      lede="Run the control plane locally, connect an OpenAI-compatible client, then explore governed tool and agent traffic."
-      updated={release.updated}
+      lede="Run OmniSwitch locally and send your first model request."
     >
-      <ReleaseNotice />
-      <PageSection id="install" title="01 / Install the gateway">
+      <PageSection id="install" title="1. Build the gateway">
         <p>
-          {release.published
-            ? `Install ${release.tag} from the published release.`
-            : `You need Git and Go ${release.prerelease.go_version} or newer to build the pinned evaluation source. No beta tag or download is assumed.`}{' '}
-          You also need a provider account or a local model endpoint.
+          This guide uses a pinned development source. You need Git, Go{' '}
+          {release.prerelease.go_version} or newer, and a provider API key.
         </p>
-        <CodePanel
-          title={release.published ? 'Install OmniSwitch' : 'Build the pinned evaluation source'}
-          language="Shell"
-          code={installCommand()}
-        />
-        <TextLink href="/install">All install options</TextLink>
+        <CodePanel title="Build OmniSwitch" language="Shell" code={installCommand()} />
+        <TextLink href={productDoc('docs/DEPLOYMENT.md')}>Docker & Kubernetes deployment</TextLink>
       </PageSection>
-      <PageSection id="run" title="02 / Set the boundaries, then run">
+      <PageSection id="run" title="2. Configure and start">
         <p>
-          Create <code>omniswitch.yaml</code> with authentication on, API-key-scoped caching, and
-          payload logging off. The example uses OpenAI; choose your own provider.
+          Save this as <code>omniswitch.yaml</code>. The gateway listens on your machine only, with
+          authentication enabled.
         </p>
-        <CodePanel title="Minimal gateway configuration" language="YAML" code={configuration} />
-        <p>
-          Keep provider credentials separate from gateway client keys. Generate a local bootstrap
-          key, and keep it out of git and shared logs.
-        </p>
+        <CodePanel title="omniswitch.yaml" language="YAML" code={configuration} />
         <CodePanel
-          title="Start with authentication enabled"
+          title="Start the gateway"
           language="Shell"
-          code={`export OPENAI_API_KEY="your-provider-key"\nexport OMNISWITCH_AUTH=true\nexport OMNISWITCH_BOOTSTRAP_API_KEY="$(openssl rand -hex 32)"\nexport OMNISWITCH_BOOTSTRAP_ROLE=admin\nexport OMNISWITCH_KEY="$OMNISWITCH_BOOTSTRAP_API_KEY"\n${run}`}
-          footer="Use a personal admin key after bootstrap; remove the bootstrap key from the server environment."
+          code={`export OPENAI_API_KEY="your-provider-key"\nexport OMNISWITCH_BOOTSTRAP_API_KEY="$(openssl rand -hex 32)"\nexport OMNISWITCH_KEY="$OMNISWITCH_BOOTSTRAP_API_KEY"\nOMNISWITCH_CONFIG=omniswitch.yaml ./omniswitch serve`}
         />
         <p>
-          The foreground server runs on port 8080. Open a second terminal for the client and supply
-          the same gateway key as <code>OMNISWITCH_KEY</code>; do not substitute your provider key.
+          Keep this terminal running. In a second terminal, set <code>OMNISWITCH_KEY</code> to the
+          same gateway key. Keep both keys private.
         </p>
       </PageSection>
-      <PageSection id="request" title="03 / Make one request">
+      <PageSection id="request" title="3. Send a request">
         <CodePanel
-          title="Install the OpenAI client"
+          title="Install the client"
           language="Shell"
-          code={release.commands.python_install}
+          code="python -m pip install openai"
         />
-        <CodePanel title="Send a governed chat request" language="Python" code={client} />
+        <CodePanel title="Make a model request" language="Python" code={client} />
         <p>
-          The SDK sends the gateway key as a Bearer token. Routing, local checks, budgets, and
-          request logs stay in the gateway. Responses and Messages APIs have a separate documented
-          scope.
+          Open <code>http://localhost:8080/</code> for the dashboard. Use named gateway keys for
+          applications after the initial setup.
         </p>
+        <div className="guide-actions">
+          <TextLink href="/docs">Configuration guides</TextLink>
+          <TextLink href="/api">API reference</TextLink>
+        </div>
       </PageSection>
-      <PageSection id="verify" title="Verify reachability and readiness">
-        <CodePanel
-          title="Check the gateway probes"
-          language="Shell"
-          code={release.commands.health}
-        />
-        <p>
-          <code>/healthz</code> checks reachability; <code>/readyz</code> checks readiness. A
-          healthy process alone does not prove provider connectivity—verify a representative model
-          call too.
-        </p>
-      </PageSection>
-      <KnownLimitations />
-      <NextSteps />
     </PageShell>
   )
 }
