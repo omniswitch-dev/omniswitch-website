@@ -37,9 +37,9 @@ export const routes = [
     '/',
     Home,
     'Home',
-    'OmniSwitch — secure self-hosted AI control',
-    'A secure self-hosted control plane for AI. Route providers through one gateway and govern model, MCP, and A2A access within explicit beta boundaries.',
-    { socialTitle: 'Your AI. Under your control.' },
+    'OmniSwitch — every model, one switch, your rules',
+    'Route models, guard your data, and govern your agents with OmniSwitch. One open-source, self-hosted AI gateway puts your traffic under your control.',
+    { socialTitle: 'Every model. One switch. Your rules.', updated: '2026-10-29' },
   ),
   route(
     '/quickstart',

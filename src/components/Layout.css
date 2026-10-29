@@ -1,7 +1,7 @@
 .announcement {
   height: 32px;
-  background: rgba(142, 45, 226, 0.08);
-  border-bottom: 1px solid rgba(142, 45, 226, 0.16);
+  background: #211c2a;
+  border-bottom: 1px solid #b69ad126;
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -26,13 +26,14 @@
   display: inline-block;
   width: 5px;
   height: 5px;
-  background: var(--accent-light);
+  background: #d7f58b;
   border-radius: 50%;
   margin-right: 7px;
 }
 .site-header {
   height: 80px;
   border-bottom: 1px solid var(--glass-border);
+  background: var(--bg-primary);
 }
 .header-inner {
   height: 100%;
@@ -47,6 +48,22 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
+}
+.brand > img {
+  width: 29px;
+  height: 28px;
+}
+.brand-period {
+  color: var(--accent-light);
+}
+.header-github {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.header-github .icon {
+  width: 16px;
+  height: 16px;
 }
 .brand .icon {
   color: var(--accent-light);
@@ -70,7 +87,7 @@
 .site-footer {
   min-height: 216px;
   border-top: 1px solid var(--glass-border);
-  padding: 34px 0 26px;
+  padding: 48px 0 26px;
 }
 .footer-top {
   display: flex;
@@ -111,6 +128,22 @@
   font-size: 12px;
   color: var(--text-secondary);
 }
+.footer-wordmark {
+  font-size: clamp(64px, 12.5vw, 176px);
+  font-weight: 650;
+  letter-spacing: -0.075em;
+  line-height: 1;
+  color: #c5c3bd;
+  padding-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-wordmark > span {
+  font-size: 0.7em;
+  font-weight: 300;
+  color: #bea1f4;
+}
 .nav .selected {
   color: var(--accent-light);
 }
@@ -145,7 +178,7 @@
   display: flex;
   flex-direction: column;
   padding: 12px;
-  background: #101016;
+  background: #202125;
   border: 1px solid rgba(201, 142, 255, 0.2);
   border-radius: var(--radius);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
@@ -193,6 +226,10 @@
 }
 
 @media (max-width: 768px) {
+  .footer-wordmark {
+    font-size: clamp(42px, 13vw, 80px);
+    padding-top: 34px;
+  }
   .announcement a,
   .brand,
   .github-link {

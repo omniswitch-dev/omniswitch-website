@@ -2,7 +2,9 @@
 
 The public site for [OmniSwitch](https://github.com/omniswitch-dev/omniswitch): secure self-hosted control first, universal AI routing second, governed MCP/A2A infrastructure third.
 
-React 19 + Vite 8. Every production route is prerendered with React's `react-dom/static`; React hydrates the static HTML for client-side navigation. There is no router, CMS, or SSR runtime dependency. System fonts, an HTML architecture diagram, and finite, reduced-motion-aware animations keep the site lightweight.
+React 19 + Vite 8. Every production route is prerendered with React's `react-dom/static`; React hydrates the static HTML for client-side navigation. There is no router, CMS, or SSR runtime dependency. System fonts, an HTML/SVG switchboard, and finite, reduced-motion-aware animations keep the site lightweight.
+
+The homepage uses an interactive routing illustration with Route, Fail over, and Redact scenarios. These are local sample states, not live gateway traffic or performance measurements. The initial route and all marketing content are prerendered. The shared violet/charcoal palette, existing lightning mark, and lime status accents carry through navigation, documentation, and social images.
 
 ## Develop and check
 

@@ -30,7 +30,7 @@ pre {
 h1,
 h2,
 h3 {
-  color: #fff;
+  color: var(--text-primary);
   letter-spacing: -0.035em;
   line-height: 1.12;
 }

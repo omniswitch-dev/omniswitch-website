@@ -1,6 +1,6 @@
 .button {
   height: 46px;
-  border-radius: 8px;
+  border-radius: 5px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +21,7 @@
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset;
 }
 .button.primary:hover {
-  background: #8e2de2;
+  background: #9764e9;
 }
 .button.secondary {
   background: rgba(255, 255, 255, 0.025);
