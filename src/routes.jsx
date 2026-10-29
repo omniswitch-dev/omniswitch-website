@@ -37,9 +37,9 @@ export const routes = [
     '/',
     Home,
     'Home',
-    'OmniSwitch — every model, one switch, your rules',
-    'Route models, guard your data, and govern your agents with OmniSwitch. One open-source, self-hosted AI gateway puts your traffic under your control.',
-    { socialTitle: 'Every model. One switch. Your rules.', updated: '2026-10-29' },
+    'OmniSwitch — self-hosted AI gateway for models and tools',
+    'Route LLM requests, apply guardrails, and connect MCP tools through one open-source, self-hosted AI gateway with logs, budgets, and policy controls.',
+    { socialTitle: 'One gateway for models and tools.', updated: '2026-10-29' },
   ),
   route(
     '/quickstart',
@@ -122,7 +122,7 @@ export const routes = [
         matrix.hub_rows,
         hubColumns.map((c) => c.id),
       ),
-      socialTitle: 'Choose for your architecture. Not a checklist.',
+      socialTitle: 'Compare AI gateways',
     },
   ),
   ...competitors.map((competitor) =>

@@ -33,7 +33,7 @@ export default function Quickstart() {
   return (
     <PageShell
       eyebrow="Start with self-hosted control"
-      title="One gateway. Your first governed request."
+      title="Quickstart"
       lede="Run the control plane locally, connect an OpenAI-compatible client, then explore governed tool and agent traffic."
       updated={release.updated}
     >

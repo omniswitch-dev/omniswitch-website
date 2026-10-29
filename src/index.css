@@ -47,7 +47,7 @@ button {
     color 0.18s;
 }
 a:hover {
-  color: #fff;
+  color: var(--accent);
 }
 .container {
   width: min(var(--container), calc(100% - 48px));

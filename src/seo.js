@@ -56,7 +56,7 @@ export function metadata(route) {
     meta: [
       ['name', 'description', route.description],
       ['name', 'robots', route.robots || 'index,follow'],
-      ['name', 'theme-color', '#06060a'],
+      ['name', 'theme-color', '#fcfcfd'],
       ['property', 'og:type', route.path === '/' ? 'website' : 'article'],
       ['property', 'og:title', route.title],
       ['property', 'og:description', route.description],
