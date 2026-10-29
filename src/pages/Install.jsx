@@ -24,7 +24,7 @@ export default function Install() {
   return (
     <PageShell
       eyebrow="Own the deployment"
-      title="Install on your terms."
+      title="Install OmniSwitch"
       lede="Start with a secure self-hosted control plane. Choose a binary, a container, or Kubernetes, then connect clients and governed agent workflows."
       updated={release.updated}
       toc={toc}

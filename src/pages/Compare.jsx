@@ -46,13 +46,11 @@ export default function Compare() {
                 <Link href="/">OmniSwitch</Link> / Compare
               </Eyebrow>
               <h1 id="compare-title" tabIndex={-1}>
-                Choose for your architecture.
-                <br />
-                <span>Not a checklist.</span>
+                Compare AI gateways
               </h1>
               <p>
-                A practical comparison of self-hosted control planes, universal AI gateways, and
-                governed agent infrastructure. Different operating models. Different trade-offs.
+                Compare deployment options, routing, security, and agent capabilities using dated
+                product documentation.
               </p>
             </div>
             <aside className="compare-aside">
@@ -88,7 +86,7 @@ export default function Compare() {
       >
         <div className="compare-section-title">
           <div>
-            <h2 id="matrix-title">Capabilities, with the boundaries left in.</h2>
+            <h2 id="matrix-title">Capability comparison</h2>
             <p>
               States describe the cited capability—not full product parity. Edition, deployment, and
               protocol scope matter. Open any state for its evidence.
@@ -106,7 +104,7 @@ export default function Compare() {
         <div className="container">
           <SectionHeading
             eyebrow="When to choose which"
-            title="Start with the constraint you can’t move."
+            title="Which gateway fits your stack?"
             id="fit-title"
           >
             Operating model, ecosystem, governance, or an existing investment—not a universal
@@ -157,7 +155,7 @@ export default function Compare() {
         <div className="container">
           <SectionHeading
             eyebrow="Migration starting points"
-            title="Move one workflow. Verify the behavior."
+            title="Migration starting points"
             id="migration-title"
           >
             A base URL change is a start—not a complete migration plan.

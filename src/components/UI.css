@@ -8,7 +8,7 @@
   padding: 0 21px;
   font-size: 14px;
   font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--glass-border);
 }
 .button .icon {
   width: 17px;
@@ -16,18 +16,18 @@
 }
 .button.primary {
   background: var(--accent-gradient);
-  border-color: rgba(201, 142, 255, 0.3);
+  border-color: #242329;
   color: #fff;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+  box-shadow: none;
 }
 .button.primary:hover {
-  background: #9764e9;
+  background: #44384f;
 }
 .button.secondary {
-  background: rgba(255, 255, 255, 0.025);
+  background: var(--card-bg);
 }
 .button.secondary:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: #f0eef4;
 }
 .button.small {
   height: 38px;
@@ -62,9 +62,13 @@
 .code-panel {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius);
-  background: #0a0a0e;
+  background: #23232b;
+  --glass-border: #3e3d48;
+  --text-muted: #c0bdce;
+  --text-secondary: #aaa6b9;
+  --accent-light: #d2b8fa;
   overflow: hidden;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+  box-shadow: none;
 }
 .code-header {
   height: 48px;
@@ -85,7 +89,7 @@
   padding: 23px 25px;
   font-size: 13px;
   line-height: 1.85;
-  color: #c0c0c0;
+  color: #e2deed;
   white-space: pre-wrap;
 }
 .code-panel .kw {
@@ -113,7 +117,7 @@
   color: var(--accent-light);
 }
 .card {
-  border: 1px solid rgba(255, 255, 255, 0.095);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   background: var(--card-bg);
 }

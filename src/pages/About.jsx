@@ -6,7 +6,7 @@ export default function About() {
   return (
     <PageShell
       eyebrow="AI infrastructure. Under your control."
-      title="Own the layer between your app and AI."
+      title="About OmniSwitch"
       lede="OmniSwitch is a secure self-hosted control plane, a universal AI gateway, and beta infrastructure for governed model, tool, and agent access."
     >
       <PageSection id="principles" title="A clear order of priorities">

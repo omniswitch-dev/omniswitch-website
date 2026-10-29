@@ -7,7 +7,7 @@ export default function Benchmarks() {
   return (
     <PageShell
       eyebrow="Proof before performance claims"
-      title="Measurements, not marketing numbers."
+      title="Benchmarks"
       lede="Evaluate the self-hosted gateway with reproducible workloads. Cross-gateway results remain pending; protocol coverage and operating model are separate questions."
       updated={benchmarks.updated}
     >

@@ -1,5 +1,5 @@
 import { useContext, useRef } from 'react'
-import { ArrowRight, ArrowUpRight, Menu, GitFork } from 'lucide-react'
+import { ArrowUpRight, Menu, GitFork } from 'lucide-react'
 import Link from './Link.jsx'
 import { Button } from './UI.jsx'
 import { NavigationContext } from './navigation.js'
@@ -7,9 +7,8 @@ import './Layout.css'
 
 const nav = [
   ['Product', '/#control', 'product'],
-  ['Security', '/security', 'security'],
-  ['Compare', '/compare', 'compare'],
   ['Docs', '/docs', 'docs'],
+  ['Compare', '/compare', 'compare'],
   ['Community', '/community', 'community'],
 ]
 const footer = [
@@ -46,9 +45,7 @@ function Brand({ id }) {
   return (
     <Link href="/" className="brand" aria-label="OmniSwitch home" data-component-id={id}>
       <img src="/favicon.svg" width="29" height="28" alt="" />
-      <span>
-        OmniSwitch<span className="brand-period">.</span>
-      </span>
+      <span>OmniSwitch</span>
     </Link>
   )
 }
@@ -65,17 +62,6 @@ export default function Layout({ children }) {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <div className="announcement">
-        <strong>
-          <span className="dot" />
-          Public beta
-        </strong>
-        <span className="desktop-announcement">Built in the open. Run on your terms.</span>
-        <Link href="/#beta" data-component-id="announcement-beta">
-          Explore the beta
-          <ArrowRight className="icon" aria-hidden="true" />
-        </Link>
-      </div>
       <header className="site-header">
         <div className="container header-inner">
           <Brand id="header-brand" />
@@ -101,7 +87,7 @@ export default function Layout({ children }) {
               <GitFork className="icon" aria-hidden="true" /> GitHub
             </Link>
             <Button href="/quickstart" small arrow data-component-id="nav-get-started">
-              Start building
+              Get started
             </Button>
           </div>
           <details className="mobile-navigation" ref={menu}>
@@ -116,6 +102,7 @@ export default function Layout({ children }) {
               ))}
               <Link href="/quickstart">Quickstart</Link>
               <Link href="/install">Install options</Link>
+              <Link href="https://github.com/omniswitch-dev/omniswitch">GitHub</Link>
             </nav>
           </details>
         </div>
@@ -128,10 +115,10 @@ export default function Layout({ children }) {
           <div className="footer-top">
             <div className="footer-brand">
               <Brand id="footer-brand" />
-              <p>Every model. One switch. Your rules.</p>
+              <p>Self-hosted AI gateway for models and tools.</p>
               <a className="github-link" href="https://github.com/omniswitch-dev/omniswitch">
                 <GitFork className="icon" aria-hidden="true" />
-                Build with us on GitHub
+                View on GitHub
                 <ArrowUpRight className="icon" aria-hidden="true" />
               </a>
             </div>
@@ -148,12 +135,9 @@ export default function Layout({ children }) {
               ))}
             </nav>
           </div>
-          <div className="footer-wordmark" aria-hidden="true">
-            OmniSwitch<span>↗</span>
-          </div>
           <div className="footer-bottom">
             <span>© 2026 OmniSwitch · Apache-2.0</span>
-            <Link href="/benchmarks">Self-hosted. Open source. Public beta.</Link>
+            <Link href="/roadmap">Open source · Public beta</Link>
           </div>
         </div>
       </footer>

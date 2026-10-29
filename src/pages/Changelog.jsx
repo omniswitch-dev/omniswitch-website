@@ -8,7 +8,7 @@ export default function Changelog() {
   return (
     <PageShell
       eyebrow="Changes you can review"
-      title="Release notes, without the guesswork."
+      title="Changelog"
       lede="Follow the self-hosted control plane, gateway API coverage, and governed agent work. Unreleased scope is not presented as a published artifact."
     >
       {entries

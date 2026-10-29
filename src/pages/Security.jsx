@@ -6,7 +6,7 @@ export default function Security() {
   return (
     <PageShell
       eyebrow="Security starts with ownership"
-      title="Set a boundary you can verify."
+      title="Security"
       lede="Run the control plane yourself, apply local gateway policy, and evaluate model, tool, and agent access within the documented beta scope."
     >
       <PageSection id="report" title="Report privately">

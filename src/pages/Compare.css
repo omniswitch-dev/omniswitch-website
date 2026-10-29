@@ -42,7 +42,7 @@
   width: 242px;
   flex-shrink: 0;
   padding: 20px 0 3px 22px;
-  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  border-left: 1px solid rgba(36, 35, 41, 0.14);
   margin-bottom: 3px;
 }
 .compare-aside strong {
@@ -66,7 +66,7 @@
   height: 42px;
 }
 .compare-hero-copy {
-  animation: arrive 0.6s ease both;
+  min-width: 0;
 }
 .matrix-section {
   padding: 47px 0 46px;
@@ -104,7 +104,7 @@
   padding: 13px 16px;
   border: 1px solid var(--glass-border);
   border-radius: 7px;
-  background: rgba(255, 255, 255, 0.015);
+  background: rgba(36, 35, 41, 0.015);
 }
 .legend > span:first-child {
   font-size: 12px;
@@ -129,7 +129,7 @@
   flex-shrink: 0;
 }
 .state.supported {
-  color: #b7c7c0;
+  color: var(--status-stable);
 }
 .state.supported i {
   background: var(--status-stable);
@@ -163,7 +163,7 @@
   border: 1px solid var(--text-secondary);
 }
 .matrix-wrap {
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(36, 35, 41, 0.13);
   border-radius: 10px;
   overflow-x: auto;
 }
@@ -192,7 +192,7 @@
   height: 120px;
   padding-top: 19px;
   padding-bottom: 19px;
-  background: rgba(255, 255, 255, 0.012);
+  background: rgba(36, 35, 41, 0.012);
   vertical-align: top;
   font-size: 13px;
   font-weight: 500;
@@ -202,7 +202,7 @@
   font-size: 14px;
   line-height: 1.3;
   max-width: 110px;
-  color: #e0e0e5;
+  color: var(--text-primary);
 }
 .capability-matrix thead th:nth-child(2) .product-heading {
   color: var(--accent-light);
@@ -256,7 +256,7 @@
   padding: 27px 30px;
   border: 1px solid rgba(201, 142, 255, 0.2);
   border-radius: 12px;
-  background: linear-gradient(115deg, rgba(142, 45, 226, 0.055), rgba(12, 12, 18, 0.8));
+  background: var(--bg-secondary);
   margin: 28px 0 18px;
 }
 .own-fit h3 {
@@ -276,7 +276,7 @@
   display: block;
   font-size: 13px;
   font-weight: 600;
-  color: #d6d6dc;
+  color: var(--text-soft);
   margin-bottom: 8px;
 }
 .fit-grid {
@@ -285,7 +285,7 @@
   gap: 15px;
 }
 .fit-card {
-  border: 1px solid rgba(255, 255, 255, 0.095);
+  border: 1px solid rgba(36, 35, 41, 0.095);
   border-radius: 12px;
   padding: 23px;
   background: var(--card-bg);
@@ -304,7 +304,7 @@
   line-height: 1.5;
   font-weight: 500;
   display: block;
-  color: #d6d6dc;
+  color: var(--text-soft);
   margin-bottom: 10px;
 }
 .fit-card p {
@@ -323,7 +323,7 @@
   margin-top: 26px;
 }
 .migration-card {
-  border: 1px solid rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(36, 35, 41, 0.11);
   border-radius: 12px;
   padding: 27px 29px;
 }
@@ -361,7 +361,7 @@
 .context-section {
   border-top: 1px solid var(--glass-border);
   padding: 44px 0;
-  background: rgba(255, 255, 255, 0.01);
+  background: rgba(36, 35, 41, 0.01);
 }
 .context-grid {
   display: grid;
@@ -370,7 +370,7 @@
   margin-top: 23px;
 }
 .context-item {
-  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  border-left: 1px solid rgba(36, 35, 41, 0.14);
   padding-left: 18px;
 }
 .context-item h3 {
@@ -457,7 +457,7 @@
   .compare-aside {
     width: auto;
     border-left: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid rgba(36, 35, 41, 0.12);
     padding: 17px 0 0;
     margin: 26px 0 0;
   }
@@ -517,7 +517,7 @@
     gap: 14px;
   }
   .matrix-product {
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(36, 35, 41, 0.12);
     border-radius: 10px;
     background: var(--card-bg);
     overflow: hidden;

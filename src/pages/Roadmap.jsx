@@ -12,7 +12,7 @@ export default function Roadmap() {
   return (
     <PageShell
       eyebrow="Implemented ≠ planned"
-      title="A roadmap with boundaries."
+      title="Roadmap"
       lede="Secure self-hosted control comes first, universal gateway coverage supports it, and governed agent infrastructure expands within an explicit scope."
       updated={roadmap.updated}
     >

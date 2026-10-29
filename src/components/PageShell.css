@@ -52,7 +52,7 @@
 .prose code:not(pre code) {
   font-size: 0.88em;
   color: var(--text-soft);
-  background: rgba(255, 255, 255, 0.045);
+  background: #efedf3;
   padding: 2px 5px;
   border-radius: 4px;
   overflow-wrap: anywhere;

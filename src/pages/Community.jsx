@@ -6,7 +6,7 @@ export default function Community() {
   return (
     <PageShell
       eyebrow="Built in the open"
-      title="Build the control layer with us."
+      title="Community"
       lede="Help make secure self-hosted AI practical: inspect the gateway, test representative workloads, and shape the boundaries of governed agent infrastructure."
     >
       <PageSection id="participate" title="Useful feedback beats inflated numbers">

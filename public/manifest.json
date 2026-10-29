@@ -1,11 +1,11 @@
 {
-  "name": "OmniSwitch — Secure Self-Hosted AI Control",
+  "name": "OmniSwitch — AI Gateway for Models and Tools",
   "short_name": "OmniSwitch",
-  "description": "A secure self-hosted control plane, universal AI gateway, and beta infrastructure for governed model, tool, and agent access.",
+  "description": "Route LLM requests, apply guardrails, and connect MCP tools through one open-source, self-hosted AI gateway.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#06060a",
-  "theme_color": "#06060a",
+  "background_color": "#fcfcfd",
+  "theme_color": "#fcfcfd",
   "icons": [
     {
       "src": "/favicon.svg",

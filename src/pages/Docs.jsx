@@ -115,7 +115,7 @@ export default function Docs() {
   return (
     <PageShell
       eyebrow="Operate the control layer"
-      title="Understand what you run."
+      title="Documentation"
       lede="Start with security and deployment, connect providers through the gateway, then add policy-aware tool and agent traffic."
       toc={[['quickstart', 'Quickstart'], ...sections.map(([id, title]) => [id, title])]}
     >

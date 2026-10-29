@@ -54,7 +54,7 @@ export default function ApiReference() {
   return (
     <PageShell
       eyebrow="One governed request path"
-      title="An API you can inspect."
+      title="API reference"
       lede="Authenticate at the self-hosted control plane, route model requests through a shared gateway, and evaluate the explicit MCP and A2A beta scope."
     >
       <PageSection id="authentication" title="Authenticate before inference">
