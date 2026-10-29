@@ -1,25 +1,27 @@
+import { useState } from 'react'
 import {
   Activity,
+  ArrowDown,
+  ArrowRight,
+  ArrowUpRight,
   Check,
+  CheckCheck,
+  CircleDot,
+  Code2,
   GitBranch,
+  GitFork,
   KeyRound,
   Layers,
-  Server,
-  Shield,
+  LockKeyhole,
+  Network,
+  Radio,
+  ShieldCheck,
   Terminal,
 } from 'lucide-react'
-import {
-  Button,
-  Card,
-  CodePanel,
-  Eyebrow,
-  Pill,
-  SectionHeading,
-  TextLink,
-} from '../components/UI.jsx'
+import { Button, CodePanel, Eyebrow, Pill, TextLink } from '../components/UI.jsx'
 import { ClaimCell } from '../components/Matrix.jsx'
 import { latestReview, displayDate, capabilityName } from '../data/comparison.js'
-import { A2A_SCOPE } from '../data/product.js'
+import { A2A_SCOPE, repoUrl } from '../data/product.js'
 import status from '../data/status.json'
 import './Home.css'
 
@@ -36,364 +38,582 @@ response = client.chat.completions.create(
                "content": "Hello"}],
 )`
 const teaserRows = ['fallbacks-retries', 'guardrails-builtin', 'mcp-http']
-const controls = [
+const scenarios = [
   {
-    Icon: KeyRound,
-    title: 'Control who gets access.',
-    body: 'Issue API keys with per-key budgets. Scope access with roles and workspace boundaries.',
-    proof: 'Hashed keys · budgets · rate limits',
+    id: 'route',
+    label: 'Route',
+    Icon: GitBranch,
+    event: 'Request routed to your primary provider.',
+    detail: 'Your app calls one endpoint. The gateway selects the configured upstream.',
+    trace: ['Key verified', 'Guardrails checked', 'Primary selected', 'Trace recorded'],
+    code: 'route: primary',
   },
   {
-    Icon: Shield,
-    title: 'Check what passes through.',
-    body: 'Run local PII, injection, and secret checks. Configure deny and redact actions.',
-    proof: 'Built-in checks · regex · redaction',
+    id: 'fallback',
+    label: 'Fail over',
+    Icon: Network,
+    event: 'Primary unavailable. Fallback selected.',
+    detail: 'A configured fallback chain keeps provider selection out of your application.',
+    trace: ['Key verified', 'Guardrails checked', 'Fallback selected', 'Trace recorded'],
+    code: 'route: fallback',
   },
   {
-    Icon: Activity,
-    title: 'Know what happened.',
-    body: 'Inspect request traces and guardrail events. Export telemetry to your observability stack.',
-    proof: 'SQLite logs · Prometheus · OTLP',
+    id: 'guard',
+    label: 'Redact',
+    Icon: ShieldCheck,
+    event: 'PII redacted before the upstream call.',
+    detail: 'Local checks apply your configured redaction rules before forwarding the request.',
+    trace: ['Key verified', 'PII redacted', 'Primary selected', 'Trace recorded'],
+    code: 'pii: redact',
   },
 ]
 
-function Architecture() {
+function Switchboard() {
+  const [selected, setSelected] = useState('route')
+  const scenario = scenarios.find((item) => item.id === selected)
   return (
     <figure
-      className="architecture"
-      aria-label="Request architecture: your app passes through the self-hosted OmniSwitch gateway to a configured cloud or local model endpoint."
+      className={`switchboard scenario-${selected}`}
+      aria-label="Interactive gateway illustration"
     >
-      <div className="diagram-top">
-        <span className="mono">ONE REQUEST. YOUR RULES.</span>
-        <span className="outline-label">Architecture</span>
+      <div className="board-heading mono">
+        <span>
+          <span className="signal-dot" /> YOUR INFRASTRUCTURE
+        </span>
+        <span>OS / 01</span>
       </div>
-      <div className="app-node">
-        <Terminal className="icon" aria-hidden="true" />
-        Your app / OpenAI SDK
+      <div className="board-tabs" role="group" aria-label="Explore a sample request">
+        {scenarios.map(({ id, label, Icon }) => (
+          <button
+            key={id}
+            type="button"
+            aria-pressed={selected === id}
+            onClick={() => setSelected(id)}
+          >
+            <Icon className="icon" aria-hidden="true" />
+            {label}
+          </button>
+        ))}
       </div>
-      <div className="wire" aria-hidden="true" />
-      <div className="boundary">
-        <div className="boundary-label">
-          <Server className="icon" aria-hidden="true" />
-          Your infrastructure
+      <div className="board-network" aria-hidden="true">
+        <div className="network-labels mono">
+          <span>INBOUND</span>
+          <span>THE SWITCH</span>
+          <span>UPSTREAMS</span>
         </div>
-        <div className="gateway-name">
-          <span className="logo-tile">
-            <Shield className="icon" aria-hidden="true" />
-          </span>
-          OmniSwitch<small>Self-hosted gateway</small>
+        <svg className="network-wires" viewBox="0 0 540 235" preserveAspectRatio="none">
+          <path
+            className="wire-idle"
+            d="M94 48H136Q156 48 156 68V100Q156 118 180 118H215M94 118H215M94 188H136Q156 188 156 168V136Q156 118 180 118M325 118H355Q378 118 378 96V70Q378 48 400 48H446M325 118H446M325 118H355Q378 118 378 140V166Q378 188 400 188H446"
+          />
+          <path className="wire-active inbound-wire" d="M94 118H215" />
+          <path
+            className="wire-active primary-wire"
+            d="M325 118H355Q378 118 378 96V70Q378 48 400 48H446"
+          />
+          <path className="wire-active fallback-wire" d="M325 118H446" />
+        </svg>
+        <div className="network-sources">
+          <div className="network-node">
+            <Code2 className="icon" />
+            <span>Apps</span>
+          </div>
+          <div className="network-node active">
+            <Terminal className="icon" />
+            <span>SDKs</span>
+          </div>
+          <div className="network-node">
+            <Layers className="icon" />
+            <span>Agents</span>
+          </div>
         </div>
-        <div className="pipeline">
-          {[
-            [KeyRound, 'Authenticate'],
-            [Shield, 'Guard'],
-            [GitBranch, 'Route'],
-            [Activity, 'Observe'],
-          ].map(([Icon, label]) => (
-            <div className="pipeline-step" key={label}>
-              <Icon className="icon" aria-hidden="true" />
-              {label}
-            </div>
-          ))}
+        <div className="switch-core">
+          <div className="core-corners" />
+          <img src="/favicon.svg" width="48" height="46" alt="" />
+          <span className="mono">OMNISWITCH</span>
+          <span className="core-status mono">{scenario.code}</span>
         </div>
-        <div className="config-strip mono">
-          <span>
-            auth: <b>true</b>
-          </span>
-          <span>
-            cache_scope: <b>api_key</b>
-          </span>
-          <span>
-            log_payloads: <b>false</b>
-          </span>
+        <div className="network-destinations">
+          <div className={`destination ${selected === 'fallback' ? 'unavailable' : 'active'}`}>
+            <span className="destination-symbol">01</span>
+            <span>
+              Primary<small>{selected === 'fallback' ? 'Unavailable' : 'Cloud model'}</small>
+            </span>
+            <span className="destination-light" />
+          </div>
+          <div className={`destination ${selected === 'fallback' ? 'active' : ''}`}>
+            <span className="destination-symbol">02</span>
+            <span>
+              Fallback<small>Cloud model</small>
+            </span>
+            <span className="destination-light" />
+          </div>
+          <div className="destination">
+            <span className="destination-symbol">03</span>
+            <span>
+              Local<small>Your endpoint</small>
+            </span>
+            <span className="destination-light" />
+          </div>
         </div>
       </div>
-      <div className="wire" aria-hidden="true" />
-      <div className="upstream-grid">
-        <div className="upstream">
-          Cloud providers<small>Native adapters</small>
-        </div>
-        <div className="upstream">
-          Local models<small>OpenAI-compatible</small>
-        </div>
+      <div className="board-trace" aria-label="Sample request steps">
+        {scenario.trace.map((step, index) => (
+          <div key={index}>
+            <Check className="icon" aria-hidden="true" />
+            <span>{step}</span>
+          </div>
+        ))}
       </div>
-      <figcaption className="diagram-caption">
-        Example configuration. Requests go to the upstreams you choose.
+      <div className="board-result" role="status" aria-live="polite" aria-atomic="true">
+        <div>
+          <CircleDot className="icon" aria-hidden="true" />
+          <strong>{scenario.event}</strong>
+        </div>
+        <p>{scenario.detail}</p>
+      </div>
+      <figcaption className="board-caption mono">
+        INTERACTIVE ILLUSTRATION / SAMPLE REQUEST
       </figcaption>
     </figure>
   )
 }
 
+function SectionLabel({ number, children }) {
+  return (
+    <div className="section-label mono">
+      <span>{number}</span>
+      {children}
+    </div>
+  )
+}
+
 export default function Home() {
   return (
-    <>
-      <section className="hero" id="top" aria-labelledby="hero-title">
-        <div className="container hero-inner">
+    <div className="home">
+      <section className="switch-hero" id="top" aria-labelledby="hero-title">
+        <div className="container switch-hero-inner">
           <div className="hero-copy">
-            <Eyebrow>Self-hosted AI. Security in your hands.</Eyebrow>
+            <Eyebrow>
+              <span className="tiny-cross" aria-hidden="true">
+                +
+              </span>{' '}
+              THE OPEN-SOURCE AI GATEWAY
+            </Eyebrow>
             <h1 id="hero-title" tabIndex={-1}>
-              Your AI.
+              Every model.
               <br />
-              Under your
+              One switch.
               <br />
-              <span>control.</span>
+              <span>Your rules.</span>
             </h1>
             <p className="hero-description">
-              Secure and route AI traffic through a gateway you run. Keep keys, local guardrails,
-              budgets, and request traces in your own infrastructure.
+              Route models. Guard your data. Govern your agents. One self-hosted gateway puts you in
+              control of the AI traffic that matters.
             </p>
             <div className="hero-actions">
               <Button href="/quickstart" variant="primary" arrow data-component-id="hero-run">
                 Run OmniSwitch
               </Button>
-              <Button href="/docs" data-component-id="hero-docs">
-                Explore the docs
-              </Button>
+              <a href={repoUrl} className="hero-github" data-component-id="hero-github">
+                <GitFork className="icon" aria-hidden="true" /> Explore the code{' '}
+                <ArrowUpRight className="icon" aria-hidden="true" />
+              </a>
             </div>
-            <div className="hero-note">
-              <GitBranch className="icon" aria-hidden="true" />
-              Apache-2.0 <span>·</span> No cloud control plane
+            <div className="hero-note mono">
+              <span className="signal-dot" /> SELF-HOSTED <span>/</span> APACHE-2.0 <span>/</span>{' '}
+              PUBLIC BETA
             </div>
           </div>
-          <Architecture />
+          <Switchboard />
+        </div>
+        <div className="container hero-baseline mono">
+          <span>YOUR STACK. YOUR BOUNDARIES.</span>
+          <a href="#control">
+            MEET YOUR CONTROL LAYER <ArrowDown className="icon" aria-hidden="true" />
+          </a>
         </div>
       </section>
-      <section className="foundation" aria-label="Deployment fundamentals">
-        <div className="container foundation-inner">
-          <p className="foundation-intro">
-            <b>Own the control layer.</b>
-            <br /> Keep the deployment simple.
+      <section className="foundation-strip" aria-label="Deployment fundamentals">
+        <div className="container foundation-grid">
+          <div>
+            <span className="fact-index mono">01 /</span>
+            <p>
+              <strong>One Go binary.</strong>
+              <span>Binary, Docker, or Kubernetes.</span>
+            </p>
+          </div>
+          <div>
+            <span className="fact-index mono">02 /</span>
+            <p>
+              <strong>Your infrastructure.</strong>
+              <span>SQLite built in. Redis optional.</span>
+            </p>
+          </div>
+          <div>
+            <span className="fact-index mono">03 /</span>
+            <p>
+              <strong>Open by design.</strong>
+              <span>Apache-2.0. Read every line.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+      <section className="control-section container" id="control" aria-labelledby="control-title">
+        <SectionLabel number="01">THE CONTROL LAYER</SectionLabel>
+        <div className="section-intro">
+          <h2 id="control-title">
+            More possibility.
+            <br />
+            <span>Less crossed wires.</span>
+          </h2>
+          <p>
+            Providers change. Requests fail. Agents need boundaries. Put the decisions in one place,
+            and keep building your product.
           </p>
-          <div className="foundation-facts">
-            <div className="fact">
-              <b>One Go binary</b>
-              <span>Binary, Docker, or Kubernetes</span>
-            </div>
-            <div className="fact">
-              <b>SQLite built in</b>
-              <span>Redis optional for shared rate limits</span>
-            </div>
-            <div className="fact">
-              <b>Apache-2.0</b>
-              <span>Inspect it. Run it. Make it yours.</span>
-            </div>
-          </div>
         </div>
+        <div className="capability-grid">
+          <article className="capability routing-capability">
+            <div className="capability-top">
+              <GitBranch className="icon" aria-hidden="true" />
+              <span className="mono">ROUTING / RESILIENCE</span>
+              <span className="feature-index mono">01</span>
+            </div>
+            <h3>
+              The right route.
+              <br />A way around failure.
+            </h3>
+            <p>
+              Set weighted routes, fallback chains, retries, and timeouts. Reload routing config
+              without restarting the gateway.
+            </p>
+            <div
+              className="route-illustration"
+              aria-label="Illustrative fallback chain: primary provider unavailable, secondary selected."
+            >
+              <div className="route-origin mono">
+                REQUEST <ArrowRight className="icon" aria-hidden="true" />
+              </div>
+              <div className="route-options">
+                <div>
+                  <span className="route-node-dot unavailable" />
+                  <span>Primary provider</span>
+                  <span className="route-state mono">UNAVAILABLE</span>
+                </div>
+                <div className="chosen">
+                  <span className="route-node-dot" />
+                  <span>Fallback provider</span>
+                  <span className="route-state mono">
+                    SELECTED <Check className="icon" aria-hidden="true" />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <TextLink href="/docs#routing">Explore routing</TextLink>
+          </article>
+          <article className="capability access-capability">
+            <div className="capability-top">
+              <KeyRound className="icon" aria-hidden="true" />
+              <span className="mono">ACCESS / BUDGETS</span>
+              <span className="feature-index mono">02</span>
+            </div>
+            <h3>
+              Give access.
+              <br />
+              Keep the boundaries.
+            </h3>
+            <p>
+              Hashed API keys, roles, workspace boundaries, per-key budgets, and request limits. Set
+              the terms for every caller.
+            </p>
+            <div className="key-illustration mono">
+              <span>
+                <LockKeyhole className="icon" aria-hidden="true" /> KEY / PRODUCT-TEAM
+              </span>
+              <div>
+                <span>access</span>
+                <strong>scoped</strong>
+              </div>
+              <div>
+                <span>budget</span>
+                <strong>
+                  enforced <Check className="icon" aria-hidden="true" />
+                </strong>
+              </div>
+            </div>
+            <TextLink href="/security">Explore access controls</TextLink>
+          </article>
+          <article className="capability guard-capability">
+            <div className="capability-top">
+              <ShieldCheck className="icon" aria-hidden="true" />
+              <span className="mono">GUARDRAILS / LOCAL CHECKS</span>
+              <span className="feature-index mono">03</span>
+            </div>
+            <h3>
+              Your data.
+              <br />
+              Your line in the sand.
+            </h3>
+            <p>
+              Check for PII, injection, and secrets locally. Configure deny and redact actions
+              before traffic reaches an upstream.
+            </p>
+            <div className="redact-illustration mono">
+              <span>BEFORE THE UPSTREAM CALL</span>
+              <div>
+                Contact: <mark>[EMAIL_REDACTED]</mark>
+              </div>
+              <p>
+                <ShieldCheck className="icon" aria-hidden="true" /> PII rule applied
+              </p>
+            </div>
+            <TextLink href="/security">Explore guardrails</TextLink>
+          </article>
+          <article className="capability observe-capability">
+            <div className="capability-top">
+              <Activity className="icon" aria-hidden="true" />
+              <span className="mono">TRACES / VISIBILITY</span>
+              <span className="feature-index mono">04</span>
+            </div>
+            <h3>
+              Follow the request.
+              <br />
+              Understand the result.
+            </h3>
+            <p>
+              Inspect request traces and guardrail events. Send metrics and telemetry to the
+              observability stack you already use.
+            </p>
+            <div
+              className="trace-illustration"
+              aria-label="Illustrative request trace stages, not measured performance."
+            >
+              {[
+                ['Authenticate', 'auth'],
+                ['Guardrails', 'guard'],
+                ['Upstream call', 'upstream'],
+                ['Record trace', 'record'],
+              ].map(([label, name]) => (
+                <div key={name}>
+                  <span className="mono">{label}</span>
+                  <div className={`trace-bar ${name}`} />
+                  <Check className="icon" aria-hidden="true" />
+                </div>
+              ))}
+            </div>
+            <TextLink href="/docs#observability">Explore observability</TextLink>
+          </article>
+        </div>
+        <p className="illustration-note mono">
+          CONTROL EXAMPLES ARE ILLUSTRATIVE. CONFIGURE POLICIES FOR YOUR DEPLOYMENT.
+        </p>
       </section>
-      <section className="controls container" id="control" aria-labelledby="control-title">
-        <div className="section-top">
-          <SectionHeading
-            eyebrow="01 / Secure self-hosted control"
-            title={
-              <>
-                Set the boundaries.
-                <br />
-                See what crosses them.
-              </>
-            }
-            id="control-title"
-          >
-            Policy, visibility, and ownership where your AI traffic meets your infrastructure.
-          </SectionHeading>
-          <TextLink href="/security" data-component-id="control-security">
-            Explore security
-          </TextLink>
-        </div>
-        <div className="control-grid">
-          {controls.map(({ Icon, title, body, proof }) => (
-            <Card className="control-card" key={title}>
-              <Icon className="icon" aria-hidden="true" />
-              <h3>{title}</h3>
-              <p>{body}</p>
-              <div className="card-proof mono">{proof}</div>
-            </Card>
-          ))}
-        </div>
-      </section>
-      <section className="routing" id="routing" aria-labelledby="routing-title">
+      <section className="developer-section" id="routing" aria-labelledby="routing-title">
         <div className="container">
-          <div className="routing-layout">
-            <SectionHeading
-              eyebrow="02 / Universal AI gateway"
-              title={
-                <>
-                  Your SDK.
-                  <br />A different base URL.
-                </>
-              }
-              id="routing-title"
-            >
-              Use OpenAI-compatible clients across native provider adapters and custom endpoints.
-              Keep routing decisions in the gateway, not scattered through your app.
-            </SectionHeading>
-            <CodePanel
-              title="Client configuration"
-              language="Python"
-              code={clientCode}
-              footer="Set GATEWAY_URL to your gateway’s /v1 endpoint."
-            >
-              <>
-                <span className="kw">from</span>
-                {' openai '}
-                <span className="kw">import</span>
-                {' OpenAI\n\nclient = OpenAI(\n    '}
-                <span className="kw">base_url</span>
-                {
-                  '=GATEWAY_URL,\n    api_key=OMNISWITCH_KEY,\n)\n\nresponse = client.chat.completions.create(\n    model='
-                }
-                <span className="str">"gpt-4o-mini"</span>
-                {',\n    messages=[{"role": "user",\n               "content": "Hello"}],\n)'}
-              </>
-            </CodePanel>
-            <div className="routing-features">
-              <ul className="feature-list">
+          <SectionLabel number="02">KEEP YOUR FLOW</SectionLabel>
+          <div className="developer-layout">
+            <div className="developer-copy">
+              <h2 id="routing-title">
+                Switch models.
+                <br />
+                <span>
+                  Keep your
+                  <br />
+                  application.
+                </span>
+              </h2>
+              <p>
+                Use an OpenAI-compatible client with your gateway’s base URL. Keep provider
+                selection and routing policies in OmniSwitch.
+              </p>
+              <ul className="developer-checks">
                 {[
-                  'Fallback chains, retries, and timeouts',
-                  'Weighted routes and CEL conditions',
-                  'Hot-reload routes without a restart',
-                ].map((feature) => (
-                  <li key={feature}>
-                    <Check className="icon" aria-hidden="true" />
-                    {feature}
+                  'Native provider adapters and custom endpoints',
+                  'Routing configuration outside your app',
+                  'Cloud and local models on your terms',
+                ].map((item) => (
+                  <li key={item}>
+                    <CheckCheck className="icon" aria-hidden="true" />
+                    {item}
                   </li>
                 ))}
               </ul>
               <TextLink href="/quickstart" data-component-id="routing-quickstart">
-                Follow the quickstart
+                Send your first request
               </TextLink>
             </div>
-          </div>
-          <div className="providers">
-            <div className="provider-label">Native provider adapters</div>
-            <div className="provider-list">
-              {[
-                'OpenAI',
-                'Anthropic',
-                'Google Gemini',
-                'Groq',
-                'Azure OpenAI',
-                'AWS Bedrock',
-                'Cohere',
-              ].map((provider) => (
-                <span key={provider}>{provider}</span>
-              ))}
-              <p className="provider-extra">
-                Plus OpenAI-compatible endpoints, including Ollama and vLLM. Responses and Messages
-                APIs are documented subsets.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="agents" id="agents" aria-labelledby="agents-title">
-        <div className="container agents-inner">
-          <div>
-            <SectionHeading
-              eyebrow="03 / Governed agent infrastructure"
-              title={
-                <>
-                  Beyond model calls.
-                  <br />
-                  Into agent workflows.
-                </>
-              }
-              id="agents-title"
-            >
-              Bring tool access and agent messages into a policy-aware gateway. Start with the MCP
-              and A2A capabilities available in beta.
-            </SectionHeading>
-            <TextLink href="/api#agents" data-component-id="agents-api">
-              Explore agent protocols
-            </TextLink>
-          </div>
-          <div className="agent-panel">
-            <Card className="agent-card">
-              <div className="agent-card-top">
-                <Layers className="icon" aria-hidden="true" />
-                <h3>Govern MCP tool access</h3>
-                <Pill />
+            <div className="developer-code">
+              <div className="code-label mono">
+                <span>YOUR APP → OMNISWITCH → YOUR PROVIDER</span>
+                <Code2 className="icon" aria-hidden="true" />
               </div>
+              <CodePanel
+                title="Client configuration"
+                language="Python"
+                code={clientCode}
+                footer="GATEWAY_URL is your gateway’s /v1 endpoint."
+              />
               <p>
-                Federate tool discovery and gate tool calls with policy across HTTP, SSE, and
-                persistent stdio targets.
+                Responses and Messages APIs are documented subsets.{' '}
+                <a href="/api">
+                  Review endpoint scope <ArrowUpRight className="icon" aria-hidden="true" />
+                </a>
               </p>
-              <div className="mono">tools/list → policy → tools/call</div>
-            </Card>
-            <Card className="agent-card">
-              <div className="agent-card-top">
-                <GitBranch className="icon" aria-hidden="true" />
-                <h3>Governed A2A model access</h3>
-                <Pill />
-              </div>
-              <p>{A2A_SCOPE}</p>
-              <div className="mono">Agent Card → message → model pipeline</div>
-            </Card>
+            </div>
+          </div>
+          <div className="adapter-row">
+            <span className="mono">NATIVE ADAPTERS</span>
+            <div>
+              {['OpenAI', 'Anthropic', 'Google Gemini', 'Groq', 'Azure', 'Bedrock', 'Cohere'].map(
+                (provider) => (
+                  <span key={provider}>{provider}</span>
+                ),
+              )}
+            </div>
+            <p>Plus OpenAI-compatible endpoints, including Ollama and vLLM.</p>
           </div>
         </div>
       </section>
-      <section className="compare-teaser container" aria-labelledby="compare-teaser-title">
-        <div className="teaser-panel">
-          <div>
-            <Eyebrow>Choose for your architecture</Eyebrow>
-            <h2 id="compare-teaser-title">How OmniSwitch compares.</h2>
+      <section className="agent-section container" id="agents" aria-labelledby="agents-title">
+        <SectionLabel number="03">BEYOND THE MODEL CALL</SectionLabel>
+        <div className="section-intro">
+          <h2 id="agents-title">
+            Your agents have tools.
+            <br />
+            <span>Give them boundaries.</span>
+          </h2>
+          <p>
+            Bring tool access and agent messages into the same policy-aware gateway. Explore the
+            protocol capabilities available in beta.
+          </p>
+        </div>
+        <div className="protocol-grid">
+          <article className="protocol-card">
+            <div className="protocol-title">
+              <span className="protocol-symbol">
+                <Layers className="icon" aria-hidden="true" />
+              </span>
+              <h3>MCP gateway</h3>
+              <Pill />
+            </div>
             <p>
-              Explore the trade-offs across LiteLLM, Portkey, Helicone, Kong, Cloudflare, and Agent
-              Router. Compare capabilities, deployment models, and beta boundaries.
+              Federate tool discovery and gate calls with policy across HTTP, SSE, and persistent
+              stdio targets.
             </p>
-            <div className="teaser-states">
-              {teaserRows.map((row) => (
-                <div className="teaser-state" key={row}>
-                  <span>{capabilityName(row)}</span>
-                  <ClaimCell gateway="omniswitch" capability={row} />
-                </div>
-              ))}
+            <div className="protocol-flow mono">
+              <span>tools/list</span>
+              <ArrowRight className="icon" aria-hidden="true" />
+              <span className="policy-step">policy</span>
+              <ArrowRight className="icon" aria-hidden="true" />
+              <span>tools/call</span>
             </div>
-            <div className="teaser-date">
-              OmniSwitch register · Reviewed {displayDate(latestReview(teaserRows, ['omniswitch']))}
+            <TextLink href="/api#agents">Explore MCP</TextLink>
+          </article>
+          <article className="protocol-card">
+            <div className="protocol-title">
+              <span className="protocol-symbol">
+                <Network className="icon" aria-hidden="true" />
+              </span>
+              <h3>A2A model access</h3>
+              <Pill />
             </div>
-          </div>
-          <Button href="/compare" arrow data-component-id="homepage-compare">
+            <p>{A2A_SCOPE}</p>
+            <div className="protocol-flow mono">
+              <span>Agent Card</span>
+              <ArrowRight className="icon" aria-hidden="true" />
+              <span className="policy-step">message</span>
+              <ArrowRight className="icon" aria-hidden="true" />
+              <span>model</span>
+            </div>
+            <TextLink href="/api#agents">Explore A2A scope</TextLink>
+          </article>
+        </div>
+      </section>
+      <section className="evidence-section container" aria-labelledby="compare-teaser-title">
+        <div className="evidence-copy">
+          <Eyebrow>OPEN CODE. CLEAR TRADE-OFFS.</Eyebrow>
+          <h2 id="compare-teaser-title">
+            Find your fit.
+            <br />
+            <span>Check the evidence.</span>
+          </h2>
+          <p>
+            Compare architecture, capabilities, and edition boundaries across OmniSwitch and other
+            AI gateways. Every comparison links to its sources.
+          </p>
+          <TextLink href="/compare" data-component-id="homepage-compare">
             Explore the comparison
-          </Button>
+          </TextLink>
+        </div>
+        <div className="evidence-register">
+          <div className="register-heading mono">
+            <span>OMNISWITCH / CAPABILITY REGISTER</span>
+            <ArrowUpRight className="icon" aria-hidden="true" />
+          </div>
+          {teaserRows.map((row) => (
+            <div className="register-row" key={row}>
+              <span>{capabilityName(row)}</span>
+              <ClaimCell gateway="omniswitch" capability={row} />
+            </div>
+          ))}
+          <p className="register-date mono">
+            REVIEWED {displayDate(latestReview(teaserRows, ['omniswitch']))}
+          </p>
         </div>
       </section>
-      <section className="scope" id="beta" aria-labelledby="scope-title">
-        <div className="container">
-          <div className="scope-head">
+      <section className="beta-section container" id="beta" aria-labelledby="scope-title">
+        <div className="beta-heading">
+          <div>
+            <Pill>Public beta</Pill>
             <h2 id="scope-title">
-              <Pill>Public beta</Pill>Clear about what’s here.
+              Built in the open.
+              <br />
+              Clear about the edges.
             </h2>
-            <TextLink href="/roadmap" data-component-id="beta-roadmap">
-              Read the roadmap
-            </TextLink>
           </div>
-          <div className="scope-columns">
-            {status.columns.map((column) => (
-              <div className="scope-column" key={column.key}>
-                <h3>
-                  <span className="status-dot" aria-hidden="true" />
-                  {column.home_title}
-                </h3>
-                <p>{column.summary}</p>
-              </div>
-            ))}
+          <TextLink href="/roadmap" data-component-id="beta-roadmap">
+            Read the roadmap
+          </TextLink>
+        </div>
+        <div className="beta-columns">
+          {status.columns.map((column, index) => (
+            <div key={column.key}>
+              <span className="mono beta-index">0{index + 1} /</span>
+              <h3>{column.home_title}</h3>
+              <p>{column.summary}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="switch-cta" aria-labelledby="start-title">
+        <div className="container cta-inner">
+          <div className="cta-copy">
+            <Eyebrow>
+              <Radio className="icon" aria-hidden="true" /> YOUR NEXT REQUEST STARTS HERE
+            </Eyebrow>
+            <h2 id="start-title">
+              Make the switch.
+              <br />
+              <span>Keep the control.</span>
+            </h2>
+            <p>Run the gateway. Set the rules. Build what’s next.</p>
+            <div className="hero-actions">
+              <Button href="/quickstart" variant="primary" arrow data-component-id="bottom-run">
+                Run OmniSwitch
+              </Button>
+              <Button href={repoUrl} data-component-id="bottom-github">
+                <GitFork className="icon" aria-hidden="true" /> Build with us
+              </Button>
+            </div>
+          </div>
+          <div className="giant-switch" aria-hidden="true">
+            <div className="giant-switch-knob">
+              <img src="/favicon.svg" width="88" height="84" alt="" />
+            </div>
+            <span className="mono">YOU’RE IN CONTROL</span>
           </div>
         </div>
       </section>
-      <section className="start" aria-labelledby="start-title">
-        <div className="container">
-          <h2 id="start-title">Make your next AI request yours.</h2>
-          <p>Run OmniSwitch on your infrastructure. Start with a governed request.</p>
-          <div className="start-actions">
-            <Button href="/quickstart" variant="primary" arrow data-component-id="bottom-run">
-              Run OmniSwitch
-            </Button>
-            <Button href="/install" data-component-id="bottom-install">
-              Read the install guide
-            </Button>
-          </div>
-        </div>
-      </section>
-    </>
+    </div>
   )
 }

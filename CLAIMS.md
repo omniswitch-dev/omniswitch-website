@@ -6,6 +6,8 @@ Reviewed 2026-10-09 against the release foundation `a8a594b` and the approved v0
 
 ## Homepage and shared layout
 
+Design review, 2026-10-29: the switchboard and control panels are labelled illustrations. Routing, fallback, local PII redaction, scoped keys, budgets, and request tracing restate the sourced capabilities below; sample status changes do not make network calls. The redesign adds no performance, customer, or compatibility claims and preserves the pinned comparison register and release state.
+
 | Prose claim / proof line                                                                                                                                       | Source                                                                                                              | Verified       |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------- |
 | Self-hosted control plane; keep keys, local guardrails, budgets and request traces in your infrastructure                                                      | `README.md`, `internal/gateway/`, `internal/store/`                                                                 | 2026-10-09     |
