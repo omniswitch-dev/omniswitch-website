@@ -16,12 +16,12 @@
 }
 .button.primary {
   background: var(--accent-gradient);
-  border-color: #242329;
+  border-color: #7041b0;
   color: #fff;
   box-shadow: none;
 }
 .button.primary:hover {
-  background: #44384f;
+  background: #5e329d;
 }
 .button.secondary {
   background: var(--card-bg);
