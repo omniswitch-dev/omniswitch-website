@@ -6,9 +6,9 @@ Keep the product site quiet: whitespace, short copy, clear typography, thin bord
 
 ## Mark
 
-The two opposing paths form an open routing loop. Its rounded, uniform strokes stay readable at navigation and favicon sizes. The geometry lives in `src/data/brand.js`; `BrandMark` uses the active theme's accent color.
+The original logo is retained: two opposing filled routes suggest switching and an S. Its geometry and proportions match the previous website identity. The geometry lives in `src/data/brand.js`; `BrandMark` uses the active theme's accent color.
 
-`npm run brand` generates the transparent marks and wordmarks, adaptive favicon, and 180/192/512 px home-screen icons. Use the `-light` asset variants on dark backgrounds. Keep the mark square and leave clear space around it. `npm run og` regenerates all six social previews from the same identity.
+`npm run brand` generates the transparent marks and wordmarks, adaptive favicon, and 180/192/512 px home-screen icons. Use the `-light` asset variants on dark backgrounds. Preserve the mark’s 64:72 aspect ratio and leave clear space around it. `npm run og` regenerates all six social previews from the same identity.
 
 ## Theme behavior
 
@@ -38,4 +38,4 @@ Tokens are in `src/styles/tokens.css`. Code examples keep their own dark palette
 - Browser review covers light/dark themes, persistence on reload, cross-tab theme synchronization, Docs navigation, and mobile menu navigation.
 - Fixed-width frames cover the homepage at 320 px and API reference at 390 px (305/375 px content areas after scrollbars), with no page overflow. This is browser layout QA, not physical-device testing.
 
-![Minimalist light-theme homepage](minimal-light-20261109.jpg)
+The previous logo was restored after the theme review. The mark and wordmark were compared with the original SVG renders.

@@ -6,7 +6,7 @@ React 19 + Vite 8. Five public pages—Home, Quickstart, Documentation, API refe
 
 The minimalist design uses generous whitespace, charcoal typography, and restrained violet accents. Light is the first-visit default; the header theme control offers Light, Dark, and System and remembers the choice. Shared color tokens cover the homepage, documentation, and API pages.
 
-The routing-loop mark is native SVG geometry shared by the header, footer, favicon, and social cards. Transparent SVG/PNG marks and wordmarks for light and dark backgrounds, plus home-screen icons, live in `public/brand/`. Edit `src/data/brand.js` and run `npm run brand` followed by `npm run og` to regenerate them. See [the identity notes](docs/design/IDENTITY.md).
+The original opposing-route mark is native SVG geometry shared by the header, footer, favicon, and social cards. Transparent SVG/PNG marks and wordmarks for light and dark backgrounds, plus home-screen icons, live in `public/brand/`. Edit `src/data/brand.js` and run `npm run brand` followed by `npm run og` to regenerate them. See [the identity notes](docs/design/IDENTITY.md).
 
 ## Development
 
