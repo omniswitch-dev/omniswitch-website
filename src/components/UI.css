@@ -1,6 +1,6 @@
 .button {
   height: 46px;
-  border-radius: 5px;
+  border-radius: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -27,7 +27,7 @@
   background: var(--card-bg);
 }
 .button.secondary:hover {
-  background: #f0eef4;
+  background: var(--button-hover);
 }
 .button.small {
   height: 38px;

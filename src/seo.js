@@ -1,4 +1,5 @@
 import release from './data/release.json' with { type: 'json' }
+import { applyThemeColor } from './theme.js'
 
 export const origin = 'https://omniswitch.dev'
 export const canonicalUrl = (path) => origin + path
@@ -125,4 +126,5 @@ export function applyMeta(route) {
     document.head.append(structured)
   }
   structured.textContent = JSON.stringify(head.jsonLd)
+  applyThemeColor()
 }

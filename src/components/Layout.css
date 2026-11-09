@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
+  gap: 24px;
 }
 .brand {
   font-weight: 650;
@@ -16,12 +16,47 @@
   letter-spacing: -0.05em;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   white-space: nowrap;
 }
-.brand > img {
-  width: 28px;
-  height: 30px;
+.brand-mark {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.brand > .brand-mark {
+  width: 29px;
+  height: 29px;
+}
+.theme-control {
+  position: relative;
+  display: none;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text-secondary);
+}
+.js-enabled .theme-control {
+  display: inline-flex;
+}
+.theme-control > .icon {
+  position: absolute;
+  left: 8px;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+.theme-control select {
+  min-height: 44px;
+  width: 102px;
+  padding: 0 6px 0 30px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: inherit;
+  cursor: pointer;
+  font-size: 12px;
+}
+.theme-control select:hover {
+  border-color: var(--glass-border);
 }
 .header-github {
   display: flex;
@@ -173,6 +208,25 @@
   .mobile-navigation {
     display: block;
   }
+  .header-inner {
+    gap: 10px;
+  }
+  .theme-control {
+    margin-left: auto;
+  }
+  .theme-control select {
+    width: 44px;
+    padding: 0;
+    color: transparent;
+    appearance: none;
+  }
+  .theme-control option {
+    color: var(--text-primary);
+    background: var(--bg-primary);
+  }
+  .theme-control > .icon {
+    left: 14px;
+  }
   .site-header {
     height: 68px;
   }
@@ -212,5 +266,19 @@
     min-height: 44px;
     display: inline-flex;
     align-items: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .header-inner {
+    gap: 5px;
+  }
+  .site-header .brand {
+    font-size: 18px;
+    gap: 7px;
+  }
+  .site-header .brand-mark {
+    width: 25px;
+    height: 25px;
   }
 }

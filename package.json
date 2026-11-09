@@ -14,6 +14,7 @@
     "claims:sync": "node scripts/sync-claims.mjs",
     "claims:check": "node scripts/sync-claims.mjs --check",
     "og": "vite build --ssr src/entry-server.jsx --outDir dist/.server && node scripts/og-images.mjs",
+    "brand": "node scripts/brand-assets.mjs",
     "check:dist": "node scripts/check-dist.mjs",
     "check:links": "node scripts/check-links.mjs --external",
     "check:release": "node scripts/check-release.mjs"
