@@ -5,18 +5,13 @@ export default function BrandMark({ className = '', size = 32 }) {
     <svg
       className={`brand-mark ${className}`}
       width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
+      height={(size * 72) / 64}
+      viewBox="0 0 64 72"
+      fill="currentColor"
       aria-hidden="true"
     >
-      <path
-        d={markPath}
-        stroke="currentColor"
-        strokeWidth="7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d={markPath} />
+      <path d={markPath} transform="rotate(180 32 36)" />
     </svg>
   )
 }
