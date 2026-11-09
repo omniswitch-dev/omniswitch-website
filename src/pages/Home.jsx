@@ -2,6 +2,7 @@ import { Activity, ArrowRight, Boxes, GitBranch, GitFork, ShieldCheck } from 'lu
 import { Button, CodePanel, TextLink } from '../components/UI.jsx'
 import { repoUrl } from '../data/product.js'
 import './Home.css'
+import BrandMark from '../components/BrandMark.jsx'
 
 const clientCode = `import os
 from openai import OpenAI
@@ -61,7 +62,7 @@ function GatewayFlow() {
       </div>
       <ArrowRight className="flow-arrow" aria-hidden="true" />
       <div className="flow-gateway">
-        <img src="/brand/omniswitch-mark.svg" width="25" height="25" alt="" />
+        <BrandMark size={28} />
         <span>OmniSwitch</span>
       </div>
       <ArrowRight className="flow-arrow" aria-hidden="true" />

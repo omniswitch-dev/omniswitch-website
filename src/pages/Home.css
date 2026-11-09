@@ -1,23 +1,18 @@
 .home-hero {
-  padding-top: 83px;
+  padding-top: 96px;
   text-align: center;
-  background: radial-gradient(
-    ellipse 55% 60% at 50% 35%,
-    rgba(117, 66, 191, 0.065),
-    transparent 75%
-  );
 }
 .hero-release {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  color: #6938ad;
-  background: #f3eefb;
-  border: 1px solid #e8ddf7;
+  color: var(--accent-light);
+  background: var(--accent-surface);
+  border: 1px solid var(--accent-border);
   border-radius: 999px;
   padding: 0 13px;
   font-size: 12px;
-  min-height: 32px;
+  min-height: 36px;
 }
 .release-dot {
   width: 6px;
@@ -37,7 +32,7 @@
   letter-spacing: -0.055em;
 }
 .home-hero h1 span {
-  color: #7043a8;
+  color: var(--accent);
 }
 .hero-description {
   max-width: 560px;
@@ -63,11 +58,11 @@
   align-items: center;
   justify-content: center;
   gap: 36px;
-  border: 1px solid #ebe4f4;
-  border-radius: 10px;
-  background: #faf8fd;
-  padding: 33px 20px;
-  margin-top: 62px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  padding: 36px 20px;
+  margin-top: 68px;
 }
 .flow-endpoint {
   display: flex;
@@ -78,7 +73,7 @@
 }
 .flow-label {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.1em;
   color: var(--text-secondary);
 }
@@ -93,7 +88,7 @@
 .flow-arrow {
   width: 44px;
   height: 17px;
-  color: #aaa6b1;
+  color: var(--text-secondary);
   flex-shrink: 0;
 }
 .capabilities-section {
@@ -103,9 +98,9 @@
 .section-kicker {
   display: block;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.12em;
-  color: #7542bf;
+  color: var(--accent);
 }
 .home h2 {
   font-size: 34px;
@@ -159,7 +154,7 @@
 .client-section {
   border-top: 1px solid var(--glass-border);
   border-bottom: 1px solid var(--glass-border);
-  background: #f8f6fb;
+  background: var(--section-bg);
   padding: 76px 0;
 }
 .client-layout {

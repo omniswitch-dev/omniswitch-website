@@ -19,6 +19,13 @@ a {
 button {
   font: inherit;
 }
+select {
+  font: inherit;
+}
+::selection {
+  background: var(--accent-border);
+  color: var(--text-primary);
+}
 h1,
 h2,
 h3,
@@ -35,7 +42,8 @@ h3 {
   line-height: 1.12;
 }
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+select:focus-visible {
   outline: 2px solid var(--accent-light);
   outline-offset: 5px;
 }

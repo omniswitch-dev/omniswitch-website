@@ -5,6 +5,8 @@ import { Button } from './UI.jsx'
 import { NavigationContext } from './navigation.js'
 import { repoUrl } from '../data/product.js'
 import './Layout.css'
+import BrandMark from './BrandMark.jsx'
+import ThemeControl from './ThemeControl.jsx'
 
 const nav = [
   ['Product', '/#control', 'product'],
@@ -19,7 +21,7 @@ const footer = [
 function Brand({ id }) {
   return (
     <Link href="/" className="brand" aria-label="OmniSwitch home" data-component-id={id}>
-      <img src="/brand/omniswitch-mark.svg" width="28" height="30" alt="" />
+      <BrandMark />
       <span>OmniSwitch</span>
     </Link>
   )
@@ -59,6 +61,7 @@ export default function Layout({ children }) {
               Get started
             </Button>
           </div>
+          <ThemeControl />
           <details className="mobile-navigation" ref={menu}>
             <summary aria-label="Toggle navigation">
               <Menu className="icon" aria-hidden="true" />
